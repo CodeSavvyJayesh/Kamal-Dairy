@@ -1,0 +1,106 @@
+/* ==========================================================
+   AUTH PAGE WRAPPER  (centers whole page)
+=========================================================== */
+.auth-page {
+  width: 100%;
+  min-height: 90vh;
+  background: #fffaf0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+}
+
+/* ==========================================================
+   AUTH CARD BOX
+=========================================================== */
+.auth-box {
+  width: 420px;
+  background: #ffffff;
+  padding: 40px 45px;
+  border-radius: 20px;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(0, 0, 0, 0.07);
+  animation: fadeIn 0.6s ease-out;
+}
+
+/* Fade animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(25px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ==========================================================
+   TITLE
+=========================================================== */
+.auth-title {
+  text-align: center;
+  font-size: 30px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: #2b2d42;
+  margin-bottom: 25px;
+}
+
+/* ==========================================================
+   INPUT FIELDS
+=========================================================== */
+.auth-input {
+  width: 100%;
+  padding: 14px;
+  margin-top: 14px;
+  font-size: 16px;
+  border-radius: 12px;
+  border: 1px solid #cfcfcf;
+  background: #fafafa;
+  transition: all 0.25s ease;
+}
+
+.auth-input:focus {
+  border-color: #3394c8;
+  background: #ffffff;
+  box-shadow: 0 0 8px rgba(51, 148, 200, 0.35);
+  outline: none;
+}
+
+/* ==========================================================
+   BUTTON
+=========================================================== */
+.auth-btn {
+  width: 100%;
+  padding: 15px;
+  background: #3394c8;
+  color: white;
+  font-size: 18px;
+  border-radius: 12px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 22px;
+  transition: 0.25s ease;
+}
+
+.auth-btn:hover {
+  background: #1d7bb6;
+  transform: translateY(-2px);
+}
+
+/* ==========================================================
+   SWITCH LOGIN/SIGNUP
+=========================================================== */
+.auth-switch {
+  margin-top: 18px;
+  font-size: 15px;
+  text-align: center;
+  color: #444;
+}
+
+.auth-switch span {
+  color: #1d7bb6;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.auth-switch span:hover {
+  text-decoration: underline;
+}
