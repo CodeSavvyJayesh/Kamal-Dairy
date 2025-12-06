@@ -6,6 +6,7 @@ import CategoryProducts from "./pages/CategoryProducts";
 import Contact from "./pages/Contact"; 
 import Footer from "./components/Footer";
 import Auth from "./pages/Auth";
+import Subscription from "./pages/Subscription";
 
 
 function App() {
@@ -21,7 +22,7 @@ function App() {
           {/* 👇 THIS WAS MISSING */}
           <Route path="/products/:category" element={<CategoryProducts />} />
           <Route path="/contact" element={<Contact />} />
-      
+          <Route path="/subscription" element={<Subscription />} />
           <Route path="/Login" element={<Auth />} />
         </Routes>
       </div>

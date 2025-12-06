@@ -30,7 +30,7 @@ function Navbar() {
         
         <Link to="/" style={{ color: "black", textDecoration: "none",fontSize:25,color:'#0A2540' }}>Home</Link>
         <Link to="/products" style={{ color: "black", textDecoration: "none",fontSize:25, color:'#0A2540' }}>Products</Link>
-        <Link to="/about" style={{ color: "black", textDecoration: "none",fontSize:25, color:'#0A2540'}}>Subscription</Link>
+        <Link to="/subscription" style={{ color: "black", textDecoration: "none",fontSize:25, color:'#0A2540'}}>Subscription</Link>
         <Link to="/contact" style={{ color: "black", textDecoration: "none",fontSize:25,color: '#0A2540' }}>Contact</Link>
         <Link to="/cart" style={{ color: "black", textDecoration: "none",fontSize:25,color:'#0A2540'}}>Cart</Link>
         <Link to="/login" style={{ color: "black", textDecoration: "none",fontSize:25,color:'#0A2540' }}>Login</Link>
