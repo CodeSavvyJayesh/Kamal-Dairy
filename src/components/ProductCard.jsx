@@ -1,3 +1,5 @@
+import {useContext } from "react";
+
 function ProductCard({ product }) {
   return (
     <div

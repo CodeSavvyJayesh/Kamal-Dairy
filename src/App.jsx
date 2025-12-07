@@ -7,6 +7,7 @@ import Contact from "./pages/Contact";
 import Footer from "./components/Footer";
 import Auth from "./pages/Auth";
 import Subscription from "./pages/Subscription";
+import Cart from "./pages/Cart";
 
 
 function App() {
@@ -23,7 +24,10 @@ function App() {
           <Route path="/products/:category" element={<CategoryProducts />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/subscription" element={<Subscription />} />
+    
           <Route path="/Login" element={<Auth />} />
+
+          <Route path="/cart" element={<Cart />}  />
         </Routes>
       </div>
 
