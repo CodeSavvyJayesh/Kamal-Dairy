@@ -13,14 +13,15 @@ function TrustedBrands() {
     "/images/brands/gokul.png",
     "/images/brands/govardhan.png",
     "/images/brands/freshfarm.png",
-    "/images/brands/creamland.png"
+    "/images/brands/creamland.png",
+    "/images/brands/milkyway.png"
 
   ];
 
   return (
     <section
       style={{
-        width: "100%",
+        width: "110%",
         padding: "30px 0",
         background: "#f9f8f6ff",
       }}
