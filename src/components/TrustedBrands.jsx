@@ -15,7 +15,8 @@ function TrustedBrands() {
     "/images/brands/freshfarm.png",
     "/images/brands/creamland.png",
     "/images/brands/milkyway.png",
-    "/images/brands/FarmerFresh.png"
+    "/images/brands/FarmerFresh.png",
+    "/images/brands/FarmLand.png"
 
   ];
 
