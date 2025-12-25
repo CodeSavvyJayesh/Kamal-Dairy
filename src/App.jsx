@@ -15,19 +15,19 @@ function App() {
     <BrowserRouter>
       <Navbar />
 
-      <div style={{ marginTop: "100px" }}>
+      <div style={{ marginTop: "80px" }}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/products" element={<Products />} />
 
-          {/* 👇 THIS WAS MISSING */}
           <Route path="/products/:category" element={<CategoryProducts />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/subscription" element={<Subscription />} />
     
+          <Route path="/cart" element={<Cart />}  />
           <Route path="/Login" element={<Auth />} />
 
-          <Route path="/cart" element={<Cart />}  />
+         
         </Routes>
       </div>
 
