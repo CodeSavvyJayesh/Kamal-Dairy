@@ -18,13 +18,16 @@ function Navbar() {
       left: 0,
 
       zIndex: 1000
-    }}>
+    }}> 
+        <Link to = "/">
         <img 
           src="images/logo/logo.jpg"
           alt="logo"
           style={{ width: "100px",height:"80px" ,borderRadius: "5px" }}
       
         />
+        </Link>
+        
 
       <div style={{ display: "flex",margin:70, gap: "50px" }}>
         

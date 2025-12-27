@@ -16,14 +16,13 @@ function TrustedBrands() {
     "/images/brands/creamland.png",
     "/images/brands/milkyway.png",
     "/images/brands/FarmerFresh.png",
-    "/images/brands/FarmLand.png"
-
+    "/images/brands/FarmLand.png",
   ];
 
   return (
     <section
       style={{
-        width: "110%",
+        width: "100%",
         padding: "30px 0",
         background: "#f9f8f6ff",
       }}
@@ -54,19 +53,24 @@ function TrustedBrands() {
       {/* Slider */}
       <Swiper
         modules={[Autoplay, FreeMode]}
-        freeMode={true}
+        freeMode={{
+          enabled: true,
+          momentum: false,  
+        }}
         loop={true}
-        speed={1000}
+        speed={1500}         
         autoplay={{
           delay: 0,
           disableOnInteraction: false,
+          pauseOnMouseEnter: false,
         }}
         slidesPerView={5}
         spaceBetween={30}
         allowTouchMove={true}
         breakpoints={{
-
-          1200: { slidesPerView: 5 },
+          0: { slidesPerView: 2 },
+          768: { slidesPerView: 3 },
+          1024: { slidesPerView: 5 },
         }}
         style={{
           width: "90%",
@@ -78,25 +82,26 @@ function TrustedBrands() {
             <img
               src={src}
               alt="brand"
+              className="brand-img"
               style={{
                 width: "120px",
                 height: "auto",
                 objectFit: "contain",
-
-                opacity: 1,
                 filter: "grayscale(40%)",
-                
               }}
-              className="brand-img"
             />
           </SwiperSlide>
         ))}
       </Swiper>
 
+      {/* REQUIRED CSS FOR TRUE CONTINUOUS MOTION */}
       <style>
         {`
+          .swiper-wrapper {
+            transition-timing-function: linear !important;
+          }
+
           .brand-img:hover {
-            opacity: 1 !important;
             filter: grayscale(0%) !important;
             transform: scale(1.1);
           }
@@ -106,4 +111,4 @@ function TrustedBrands() {
   );
 }
 
-export default TrustedBrands;
+export default TrustedBrands;
