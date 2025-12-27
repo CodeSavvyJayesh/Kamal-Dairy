@@ -22,6 +22,8 @@ function TrustedBrands() {
   return (
     <section
       style={{
+        paddingTop: "10px",
+        height : "200px",
         width: "100%",
         padding: "30px 0",
         background: "#f9f8f6ff",
@@ -31,7 +33,7 @@ function TrustedBrands() {
       <h2
         style={{
           textAlign: "center",
-          fontSize: 22,
+          fontSize: 30,
           marginBottom: 10,
           fontWeight: 700,
         }}

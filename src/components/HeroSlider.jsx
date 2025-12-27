@@ -15,8 +15,8 @@ function HeroSlider() {
       style={{
         width: "100%",
         background: "#fffaf0",
-        paddingTop: "30px",
-        paddingBottom: "60px",
+        paddingTop: "15px",
+        paddingBottom: "30px",
       }}
     >
       <Swiper

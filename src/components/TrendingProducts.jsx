@@ -3,22 +3,22 @@ import React from "react";
 function TrendingProducts() {
   const products = [
     {
-      name: "Full Cream Milk 1L",
+      name: "Mother Dairy Full Cream Cow Milk 1L",
       price: "₹62",
       image: "/images/milk/Kamal Dairy Full Cream Milk 1L.jpg",
     },
     {
-      name: "Fresh Farm Cow Milk 1L",
+      name: "Heritage Fresh Farm Cow Milk 1L",
       price: "₹58",
       image: "/images/milk/FreshFarm Double Toned Milk 1L.jpg",
     },
     {
-      name: "Paneer 200g",
+      name: "Heritage Fresh Paneer 200g",
       price: "₹85",
       image: "images/paneer/DailyFresh Classic Paneer 500g.jpg",
     },
     {
-      name: "CreamLand Malai Paneer",
+      name: "DairyLane Malai Paneer",
       price: "₹120",
       image: "/images/paneer/CreamLand Malai Paneer 1kg.jpg",
     },
@@ -38,6 +38,8 @@ function TrendingProducts() {
   return (
     <div
       style={{
+      
+        paddingTop: "0px",
         padding: "60px 20px",
         background: "#fffdf6",
       }}
@@ -45,7 +47,7 @@ function TrendingProducts() {
       <h2
         style={{
           textAlign: "center",
-          fontSize: "36px",
+          fontSize: "30px",
           marginBottom: "40px",
           color: "#2c2c2c",
         }}

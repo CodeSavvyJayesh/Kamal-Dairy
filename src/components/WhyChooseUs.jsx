@@ -7,8 +7,8 @@ function WhyChooseUs() {
   ];
 
   return (
-    <div style={{ background: "#fffaf0", padding: "60px 20px" }}>
-      <h2 style={{ textAlign: "center", fontSize: "36px", marginBottom: "40px" }}>
+    <div style={{ background: "#fffaf0",paddingTop: "10px", padding: "60px 20px" }}>
+      <h2 style={{ textAlign: "center", fontSize: "30px", marginBottom: "40px" }}>
         Why Choose Kamal Dairy?
       </h2>
 

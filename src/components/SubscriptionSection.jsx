@@ -24,13 +24,13 @@ function SubscriptionSection() {
   ];
 
   return (
-    <div style={{ padding: "40px 20px", background: "rgba(252, 252, 252, 1)" }}>
+    <div style={{ marginTop: "-20px",marginBottom: "20px", padding: "20px", background: "rgba(252, 252, 252, 1)" }}>
       <h2 style={{
         textAlign: "center",
         fontSize: "32px",
         fontWeight: "700",
         marginBottom: "30px",
-        color: "#1d3557"
+        color: "#2c2c2c"
       }}>
         🥛 Choose Your Delivery Subscription
       </h2>
