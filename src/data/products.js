@@ -295,7 +295,7 @@ const products = [
   { id: 251, name: "Varna Shrikhand Badam Pista 500g", price: 120, category: "shrikhand" , image: "/images/shrikhand/Varna Shrikhand Badam Pista 500g.jpg"},
   { id: 252, name: "Varna Shrikhand Kesar Elaichi 500g", price: 115, category: "shrikhand", image: "/images/shrikhand/Varna Shrikhand Kesar Elaichi 500g.jpg" },
   { id: 253, name: "Chitale Shrikhand Mango 500g", price: 130, category: "shrikhand", image: "/images/shrikhand/Chitale Shrikhand Mango 500g.jpg" },
-  { id: 254, name: "Chitale Shrikhand Keshar 1Kg", price: 250, category: "shrikhand", image: "/images/shrikhand/Chitale Shrikhand Keshar 500g.jpg" },
+  { id: 254, name: "Chitale Shrikhand Keshar 500g", price: 250, category: "shrikhand", image: "/images/shrikhand/Chitale Shrikhand Keshar 500g.jpg" },
   { id: 255, name: "Chitale Shrikhand Elaichi 500g", price: 125, category: "shrikhand", image: "/images/shrikhand/Chitale Shrikhand Elaichi 500g.jpg" },
   { id: 256, name: "Chitale Shrikhand Badam Pista 500g", price: 110, category: "shrikhand" , image: "/images/shrikhand/Chitale Shrikhand Badam Pista 500g.jpg"},
   { id: 257, name: "Milkymist Elaichi Shrikhand 500g", price: 140, category: "shrikhand" , image: "/images/shrikhand/Milkymist Elaichi Shrikhand 500g.jpg"},
