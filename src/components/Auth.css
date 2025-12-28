@@ -1,33 +1,52 @@
 /* ==========================================================
-   AUTH PAGE WRAPPER  (centers whole page)
+   AUTH PAGE WRAPPER
 =========================================================== */
 .auth-page {
   width: 100%;
   min-height: 90vh;
-  background: #fffaf0;
+  background: radial-gradient(circle at top, #fffaf0, #eef9ff);
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 40px 20px;
+  padding: 50px 20px;
 }
 
 /* ==========================================================
-   AUTH CARD BOX
+   AUTH CARD
 =========================================================== */
 .auth-box {
   width: 420px;
-  background: #ffffff;
-  padding: 40px 45px;
-  border-radius: 20px;
-  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
-  border: 1px solid rgba(0, 0, 0, 0.07);
-  animation: fadeIn 0.6s ease-out;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(16px);
+  padding: 45px 45px;
+  border-radius: 26px;
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  animation: fadeIn 0.7s ease-out;
+  position: relative;
+}
+
+/* Glow border */
+.auth-box::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: 26px;
+  background: linear-gradient(135deg, #4eb3e6, #f2c94c);
+  opacity: 0.25;
+  z-index: -1;
 }
 
 /* Fade animation */
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(25px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 /* ==========================================================
@@ -35,11 +54,18 @@
 =========================================================== */
 .auth-title {
   text-align: center;
-  font-size: 30px;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-  color: #2b2d42;
-  margin-bottom: 25px;
+  font-size: 32px;
+  font-weight: 800;
+  letter-spacing: 0.4px;
+  color: #0a2540;
+  margin-bottom: 8px;
+}
+
+.auth-subtitle {
+  text-align: center;
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 28px;
 }
 
 /* ==========================================================
@@ -47,19 +73,19 @@
 =========================================================== */
 .auth-input {
   width: 100%;
-  padding: 14px;
+  padding: 15px;
   margin-top: 14px;
   font-size: 16px;
-  border-radius: 12px;
-  border: 1px solid #cfcfcf;
-  background: #fafafa;
+  border-radius: 14px;
+  border: 1px solid #d7d7d7;
+  background: rgba(250, 250, 250, 0.9);
   transition: all 0.25s ease;
 }
 
 .auth-input:focus {
   border-color: #3394c8;
   background: #ffffff;
-  box-shadow: 0 0 8px rgba(51, 148, 200, 0.35);
+  box-shadow: 0 0 14px rgba(51, 148, 200, 0.35);
   outline: none;
 }
 
@@ -68,28 +94,29 @@
 =========================================================== */
 .auth-btn {
   width: 100%;
-  padding: 15px;
-  background: #3394c8;
+  padding: 16px;
+  background: linear-gradient(135deg, #3394c8, #2e8bc0);
   color: white;
   font-size: 18px;
-  border-radius: 12px;
+  border-radius: 14px;
   border: none;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
-  margin-top: 22px;
-  transition: 0.25s ease;
+  margin-top: 26px;
+  transition: all 0.35s ease;
 }
 
 .auth-btn:hover {
-  background: #1d7bb6;
-  transform: translateY(-2px);
+  transform: translateY(-3px);
+  box-shadow: 0 14px 30px rgba(46, 139, 192, 0.55);
+  background: linear-gradient(135deg, #2e8bc0, #1a6b97);
 }
 
 /* ==========================================================
-   SWITCH LOGIN/SIGNUP
+   SWITCH LOGIN / SIGNUP
 =========================================================== */
 .auth-switch {
-  margin-top: 18px;
+  margin-top: 22px;
   font-size: 15px;
   text-align: center;
   color: #444;
@@ -97,10 +124,12 @@
 
 .auth-switch span {
   color: #1d7bb6;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
+  transition: color 0.2s ease;
 }
 
 .auth-switch span:hover {
-  text-decoration: underline;
+  color: #0a2540;
+  text-decoration: underline;
 }

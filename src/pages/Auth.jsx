@@ -21,13 +21,11 @@ const handleSubmit = (e) => {
 
     localStorage.setItem("token", "LOGGED_IN");
 
-    alert("Login Successful!");
-    navigate("/");         // go to HOME after login
+    
+    navigate("/");         
   } else {
     // SIGNUP
     console.log("SIGNUP :", { name, email, password });
-
-    alert("Signup Successful! Please log in.");
 
     setIsLogin(true);      // switch to login form
     navigate("/login");    // go to LOGIN page
