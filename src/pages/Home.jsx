@@ -3,7 +3,7 @@ import SubscriptionSection from "../components/SubscriptionSection";
 import TrendingProducts from "../components/TrendingProducts";
 import TrustedBrands from "../components/TrustedBrands";
 import WhyChooseUs from "../components/WhyChooseUs";
-
+import {Link} from "react-router-dom";
 function Home() {
   return (
     <div style={{ margin: 0, padding: 0 }}>
