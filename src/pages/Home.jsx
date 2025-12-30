@@ -14,7 +14,7 @@ function Home() {
           🌟 Fresh • Pure • Premium • Kamal Dairy brings nature’s best to your home |
           🚚 Same-Day Delivery | 🎉 Orders Above ₹1000 → FLAT 10% OFF |
           📍 Now Delivering in Marine Lines • Borivali • Ghatkopar • Chembur |
-          🧈 100% Farm Fresh Dairy | ❄ Hygienic Packaging | 🥛 Trusted Since 1980
+          🧈 100% Farm Fresh Dairy | ❄ Hygienic Packaging | 🥛 Trusted Since 2025
         </div>
 
         <div className="marquee-content">
