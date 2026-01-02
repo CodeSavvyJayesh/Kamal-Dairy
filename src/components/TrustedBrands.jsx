@@ -1,8 +1,8 @@
-import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, FreeMode } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/free-mode";
+import "./TrustedBrands.css";
 
 function TrustedBrands() {
   const brands = [
@@ -20,95 +20,37 @@ function TrustedBrands() {
   ];
 
   return (
-    <section
-      style={{
-        paddingTop: "10px",
-        height : "200px",
-        width: "100%",
-        padding: "30px 0",
-        background: "#f9f8f6ff",
-      }}
-    >
-      {/* Title */}
-      <h2
-        style={{
-          textAlign: "center",
-          fontSize: 30,
-          marginBottom: 10,
-          fontWeight: 700,
-        }}
-      >
-        Trusted Brands We Deliver
-      </h2>
-
-      <p
-        style={{
-          textAlign: "center",
-          marginTop: 0,
-          marginBottom: 25,
-          color: "#6a6a6a",
-        }}
-      >
+    <section className="trusted-brands">
+      <h2 className="brands-title">Trusted Brands We Deliver</h2>
+      <p className="brands-subtitle">
         We source from recognized, trusted dairy brands.
       </p>
 
-      {/* Slider */}
       <Swiper
         modules={[Autoplay, FreeMode]}
-        freeMode={{
-          enabled: true,
-          momentum: false,  
-        }}
+        freeMode={{ enabled: true, momentum: false }}
         loop={true}
-        speed={1500}         
+        speed={1500}
         autoplay={{
           delay: 0,
           disableOnInteraction: false,
           pauseOnMouseEnter: false,
         }}
-        slidesPerView={5}
-        spaceBetween={30}
         allowTouchMove={true}
+        spaceBetween={30}
         breakpoints={{
           0: { slidesPerView: 2 },
-          768: { slidesPerView: 3 },
-          1024: { slidesPerView: 5 },
+          576: { slidesPerView: 3 },
+          992: { slidesPerView: 5 },
         }}
-        style={{
-          width: "90%",
-          margin: "0 auto",
-        }}
+        className="brands-swiper"
       >
         {brands.map((src, index) => (
-          <SwiperSlide key={index}>
-            <img
-              src={src}
-              alt="brand"
-              className="brand-img"
-              style={{
-                width: "120px",
-                height: "auto",
-                objectFit: "contain",
-                filter: "grayscale(40%)",
-              }}
-            />
+          <SwiperSlide key={index} className="brand-slide">
+            <img src={src} alt="brand" className="brand-img" />
           </SwiperSlide>
         ))}
       </Swiper>
-
-      {/* REQUIRED CSS FOR TRUE CONTINUOUS MOTION */}
-      <style>
-        {`
-          .swiper-wrapper {
-            transition-timing-function: linear !important;
-          }
-
-          .brand-img:hover {
-            filter: grayscale(0%) !important;
-            transform: scale(1.1);
-          }
-        `}
-      </style>
     </section>
   );
 }

@@ -1,0 +1,104 @@
+/* PAGE WRAPPER */
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #fffaf0, #f3f7ff);
+  padding: 20px;
+}
+
+/* AUTH BOX */
+.auth-box {
+  width: 100%;
+  max-width: 420px;
+  background: #ffffff;
+  padding: 32px 28px;
+  border-radius: 16px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+}
+
+/* TITLE */
+.auth-title {
+  text-align: center;
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 24px;
+  color: #1d3557;
+}
+
+/* INPUTS */
+.auth-input {
+  width: 100%;
+  padding: 14px 16px;
+  margin-bottom: 14px;
+  border-radius: 10px;
+  border: 1.5px solid #d0d7de;
+  font-size: 16px;
+  outline: none;
+  transition: border 0.25s ease, box-shadow 0.25s ease;
+}
+
+.auth-input:focus {
+  border-color: #3a86ff;
+  box-shadow: 0 0 0 3px rgba(58, 134, 255, 0.15);
+}
+
+/* BUTTON */
+.auth-btn {
+  width: 100%;
+  padding: 14px;
+  margin-top: 10px;
+  border-radius: 12px;
+  border: none;
+  background: #3a86ff;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.auth-btn:hover {
+  background: #1d5ed8;
+}
+
+/* SWITCH TEXT */
+.auth-switch {
+  text-align: center;
+  margin-top: 18px;
+  font-size: 15px;
+  color: #555;
+}
+
+.auth-switch span {
+  color: #3a86ff;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.auth-switch span:hover {
+  text-decoration: underline;
+}
+
+/* 📱 MOBILE OPTIMIZATION */
+@media (max-width: 480px) {
+  .auth-box {
+    padding: 26px 20px;
+    border-radius: 14px;
+  }
+
+  .auth-title {
+    font-size: 24px;
+  }
+
+  .auth-input {
+    font-size: 15px;
+    padding: 13px 14px;
+  }
+
+  .auth-btn {
+    font-size: 15px;
+    padding: 13px;
+  }
+}

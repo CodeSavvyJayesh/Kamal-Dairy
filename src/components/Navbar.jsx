@@ -113,17 +113,7 @@ function Navbar() {
         }
 
         /* TABLET */
-        @media (max-width: 768px) {
-          .nav-link {
-            font-size: 15px;
-          }
-            .menu-icon {
-            display: block;
-            font-size : 40px;
-            color: #0a2540;
-            z-index : 1100;
-          }
-        }
+ 
 
         /* MOBILE */
         @media (max-width: 900px) {

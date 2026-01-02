@@ -29,7 +29,7 @@ function HeroSlider() {
         pagination={{ clickable: true }}
         style={{
           width: "100%",
-          overflow: "visible",
+          overflow: "hidden",
         }}
       >
         {banners.map((img, index) => (

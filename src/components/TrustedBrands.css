@@ -1,0 +1,72 @@
+/* SECTION */
+.trusted-brands {
+  background: #f9f8f6;
+  padding: 40px 0;
+  width: 100%;
+  overflow: hidden;
+}
+
+/* TITLES */
+.brands-title {
+  text-align: center;
+  font-size: 30px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.brands-subtitle {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #6a6a6a;
+}
+
+/* SWIPER */
+.brands-swiper {
+  width: 90%;
+  margin: 0 auto;
+}
+
+/* SLIDE */
+.brand-slide {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* IMAGE */
+.brand-img {
+  width: 120px;
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+  filter: grayscale(40%);
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+/* Hover only for non-touch devices */
+@media (hover: hover) {
+  .brand-img:hover {
+    filter: grayscale(0%);
+    transform: scale(1.1);
+  }
+}
+
+/* Swiper smooth continuous motion */
+.swiper-wrapper {
+  transition-timing-function: linear !important;
+}
+
+/* 📱 MOBILE */
+@media (max-width: 576px) {
+  .brands-title {
+    font-size: 22px;
+  }
+
+  .brands-subtitle {
+    font-size: 14px;
+  }
+
+  .brand-img {
+    width: 90px;
+  }
+}

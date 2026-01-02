@@ -1,3 +1,5 @@
+import "./SubscriptionSection.css";
+
 function SubscriptionSection() {
   const plans = [
     {
@@ -24,71 +26,29 @@ function SubscriptionSection() {
   ];
 
   return (
-    <div style={{ marginTop: "-20px",marginBottom: "20px", padding: "20px", background: "rgba(252, 252, 252, 1)" }}>
-      <h2 style={{
-        textAlign: "center",
-        fontSize: "32px",
-        fontWeight: "700",
-        marginBottom: "30px",
-        color: "#2c2c2c"
-      }}>
+    <section className="subscription-section">
+      <h2 className="subscription-title">
         🥛 Choose Your Delivery Subscription
       </h2>
 
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(3, 1fr)",
-          gap: "25px",
-          maxWidth: "1200px",
-          margin: "0 auto",
-        }}
-      >
+      <div className="subscription-grid">
         {plans.map((plan) => (
           <div
             key={plan.id}
-            style={{
-              padding: "25px",
-              background: plan.bg,
-              borderRadius: "16px",
-              boxShadow: "0px 5px 20px rgba(0,0,0,0.1)",
-              transition: "0.3s",
-              cursor: "pointer",
-            }}
-            onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.05)")}
-            onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
+            className="subscription-card"
+            style={{ background: plan.bg }}
           >
-            <h3 style={{ fontSize: "22px", marginBottom: "10px", color: "#333" }}>
-              {plan.title}
-            </h3>
-            <p style={{ fontSize: "16px", marginBottom: "10px", color: "#555" }}>
-              {plan.desc}
-            </p>
-            <p style={{ fontWeight: "bold", marginBottom: "20px", color: "#2a9d8f" }}>
-              {plan.price}
-            </p>
+            <h3>{plan.title}</h3>
+            <p className="desc">{plan.desc}</p>
+            <p className="price">{plan.price}</p>
 
-            <button
-              style={{
-                width: "100%",
-                padding: "12px",
-                background: "#3394c8",
-                color: "white",
-                border: "none",
-                borderRadius: "8px",
-                fontWeight: "bold",
-                cursor: "pointer",
-                transition: "0.25s",
-              }}
-              onMouseEnter={(e) => (e.target.style.background = "#1d7bb6")}
-              onMouseLeave={(e) => (e.target.style.background = "#3394c8")}
-            >
+            <button className="subscribe-btn">
               Subscribe Now
             </button>
           </div>
         ))}
       </div>
-    </div>
+    </section>
   );
 }
 

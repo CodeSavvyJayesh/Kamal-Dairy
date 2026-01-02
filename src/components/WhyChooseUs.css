@@ -1,0 +1,78 @@
+/* SECTION */
+.why-choose-us {
+  background: #fffaf0;
+  padding: 60px 20px;
+  width: 100%;
+}
+
+/* TITLE */
+.why-title {
+  text-align: center;
+  font-size: 30px;
+  margin-bottom: 40px;
+  font-weight: 700;
+  color: #2c2c2c;
+}
+
+/* GRID */
+.why-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 25px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* CARD */
+.choose-card {
+  background: #ffffff;
+  padding: 25px;
+  border-radius: 18px;
+  text-align: center;
+  box-shadow: 0 6px 18px rgba(77, 30, 30, 0.15);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.choose-card h3 {
+  font-size: 22px;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.choose-card p {
+  font-size: 16px;
+  opacity: 0.85;
+  line-height: 1.5;
+}
+
+/* Hover only for non-touch devices */
+@media (hover: hover) {
+  .choose-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+  }
+}
+
+/* 📱 MOBILE */
+@media (max-width: 576px) {
+  .why-choose-us {
+    padding: 40px 14px;
+  }
+
+  .why-title {
+    font-size: 24px;
+    margin-bottom: 30px;
+  }
+
+  .choose-card {
+    padding: 20px;
+  }
+
+  .choose-card h3 {
+    font-size: 20px;
+  }
+
+  .choose-card p {
+    font-size: 15px;
+  }
+}

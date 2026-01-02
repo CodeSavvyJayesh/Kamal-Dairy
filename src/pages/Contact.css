@@ -1,0 +1,114 @@
+/* PAGE */
+.contact-page {
+  background: #fffaf0;
+  padding: 40px;
+}
+
+/* TITLES */
+.contact-title,
+.query-title {
+  text-align: center;
+  color: #005f73;
+  margin-bottom: 40px;
+}
+
+.contact-title span,
+.query-title span {
+  color: #e63946;
+}
+
+/* LAYOUT */
+.contact-layout {
+  display: flex;
+  gap: 30px;
+  align-items: flex-start;
+}
+
+.contact-locations {
+  flex: 1;
+}
+
+.location-card {
+  margin-bottom: 24px;
+}
+
+.location-card h3 {
+  color: #005f73;
+  margin-bottom: 6px;
+}
+
+.location-card p {
+  margin: 4px 0;
+  line-height: 1.5;
+}
+
+/* MAP */
+.contact-map {
+  width: 700px;
+  max-width: 100%;
+  border-radius: 10px;
+}
+
+/* FORM SECTION */
+.contact-form-layout {
+  display: flex;
+  gap: 40px;
+  margin-top: 30px;
+}
+
+.contact-form {
+  flex: 2;
+}
+
+.contact-form input,
+.contact-form textarea {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 12px;
+  border-radius: 6px;
+  border: 2px solid #ccc;
+  font-size: 15px;
+}
+
+.contact-form textarea {
+  height: 120px;
+}
+
+.contact-form button {
+  background: #0077b6;
+  color: white;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* CONTACT INFO */
+.contact-info {
+  flex: 1;
+}
+
+.contact-info h3 {
+  margin-top: 20px;
+  color: #005f73;
+}
+
+/* 📱 MOBILE FIX */
+@media (max-width: 768px) {
+  .contact-page {
+    padding: 16px;
+  }
+
+  .contact-layout {
+    flex-direction: column;
+  }
+
+  .contact-form-layout {
+    flex-direction: column;
+  }
+
+  .contact-map {
+    width: 100%;
+    margin-top: 20px;
+  }
+}

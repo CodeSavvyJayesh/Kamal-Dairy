@@ -27,8 +27,8 @@ const handleSubmit = (e) => {
     // SIGNUP
     console.log("SIGNUP :", { name, email, password });
 
-    setIsLogin(true);      // switch to login form
-    navigate("/login");    // go to LOGIN page
+    setIsLogin(true);      
+    navigate("/login");    
   }
 };
 

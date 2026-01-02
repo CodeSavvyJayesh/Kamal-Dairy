@@ -1,0 +1,72 @@
+/* RESET SAFETY */
+* {
+  box-sizing: border-box;
+}
+
+.home-page {
+  width: 100%;
+  overflow-x: hidden;
+  background: #fffaf0;
+}
+
+/* -----------------------------
+   MARQUEE STYLING
+------------------------------ */
+.marquee-wrapper {
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  background: #fff3e0;
+  border-bottom: 1px solid #e1d3c3;
+  padding: 10px 0;
+}
+
+.marquee-content {
+  display: inline-block;
+  padding-left: 100%;
+  animation: marqueeMove 18s linear infinite;
+  font-size: 18px;
+  font-weight: 600;
+  color: #8b5e34;
+  letter-spacing: 0.5px;
+}
+
+@keyframes marqueeMove {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+/* -----------------------------
+   MAIN CONTENT CONTAINER
+------------------------------ */
+.home-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+/* SECTION SPACING */
+.home-container > * {
+  margin-bottom: 70px;
+}
+
+/* -----------------------------
+   📱 MOBILE RESPONSIVE
+------------------------------ */
+@media (max-width: 768px) {
+  .marquee-content {
+    font-size: 14px;
+  }
+
+  .home-container {
+    padding: 24px 14px;
+  }
+
+  .home-container > * {
+    margin-bottom: 50px;
+  }
+}

@@ -1,0 +1,44 @@
+/* PAGE */
+.category-page {
+  padding: 24px 16px 80px;
+  background-color: #fffaf0;
+  min-height: 100vh;
+}
+
+/* TITLE */
+.category-title {
+  text-align: center;
+  font-size: 34px;
+  font-weight: 800;
+  margin-bottom: 40px;
+  color: #1d3557;
+  letter-spacing: 1px;
+}
+
+/* GRID */
+.category-grid {
+  max-width: 1300px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 28px;
+}
+
+/* EMPTY STATE */
+.no-products {
+  text-align: center;
+  font-size: 18px;
+  color: #777;
+  margin-top: 60px;
+}
+
+/* MOBILE */
+@media (max-width: 600px) {
+  .category-title {
+    font-size: 26px;
+  }
+
+  .category-grid {
+    gap: 20px;
+  }
+}

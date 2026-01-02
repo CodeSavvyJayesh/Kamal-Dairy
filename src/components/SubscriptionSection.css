@@ -1,0 +1,100 @@
+/* SECTION */
+.subscription-section {
+  background: #fcfcfc;
+  padding: 50px 20px;
+}
+
+/* TITLE */
+.subscription-title {
+  text-align: center;
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 40px;
+  color: #2c2c2c;
+}
+
+/* GRID */
+.subscription-grid {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 25px;
+}
+
+/* CARD */
+.subscription-card {
+  padding: 25px;
+  border-radius: 16px;
+  box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Hover only for non-touch devices */
+@media (hover: hover) {
+  .subscription-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.15);
+  }
+}
+
+.subscription-card h3 {
+  font-size: 22px;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.subscription-card .desc {
+  font-size: 16px;
+  margin-bottom: 10px;
+  color: #555;
+}
+
+.subscription-card .price {
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #2a9d8f;
+}
+
+/* BUTTON */
+.subscribe-btn {
+  width: 100%;
+  padding: 12px;
+  background: #3394c8;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.25s ease;
+}
+
+.subscribe-btn:hover {
+  background: #1d7bb6;
+}
+
+/* -----------------------------
+   📱 TABLET
+------------------------------ */
+@media (max-width: 992px) {
+  .subscription-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* -----------------------------
+   📱 MOBILE
+------------------------------ */
+@media (max-width: 576px) {
+  .subscription-title {
+    font-size: 24px;
+  }
+
+  .subscription-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .subscription-card {
+    padding: 20px;
+  }
+}
