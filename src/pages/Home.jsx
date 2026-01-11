@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import HeroSlider from "../components/HeroSlider";
 import SubscriptionSection from "../components/SubscriptionSection";
 import TrendingProducts from "../components/TrendingProducts";
@@ -6,9 +7,22 @@ import WhyChooseUs from "../components/WhyChooseUs";
 import "./Home.css";
 
 function Home() {
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    fetch("http://localhost:8080/api/products")
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("Products from backend:", data);
+        setProducts(data);
+      })
+      .catch((err) => {
+        console.log("Error fetching products:", err);
+      });
+  }, []);
+
   return (
     <div className="home-page">
-
       {/* 🌟 PREMIUM MARQUEE */}
       <div className="marquee-wrapper">
         <div className="marquee-content">
@@ -26,17 +40,19 @@ function Home() {
         </div>
       </div>
 
-      {/* HERO SLIDER (FULL WIDTH) */}
+      {/* HERO SLIDER */}
       <HeroSlider />
 
       {/* CONTENT SECTIONS */}
       <div className="home-container">
         <TrustedBrands />
         <WhyChooseUs />
-        <TrendingProducts />
+
+        {/* ✅ PASS PRODUCTS HERE */}
+        <TrendingProducts products={products} />
+
         <SubscriptionSection />
       </div>
-
     </div>
   );
 }
