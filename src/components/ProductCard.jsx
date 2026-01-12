@@ -10,7 +10,7 @@ function ProductCard({ product }) {
       {/* IMAGE */}
       <div className="product-image">
         <img
-          src={product.image}
+          src={product.imageUrl}
           alt={product.name}
           onError={(e) => {
             e.target.src =
