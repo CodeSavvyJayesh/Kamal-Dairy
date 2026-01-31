@@ -5,32 +5,56 @@ import "../components/Auth.css";
 function Auth() {
   const [isLogin, setIsLogin] = useState(true);
 
-  // form fields
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
-const handleSubmit = (e) => {
-  e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
 
-  if (isLogin) {
-    // LOGIN
-    console.log("LOGIN :", { email, password });
+    try {
+      const url = isLogin
+        ? "http://localhost:8080/api/auth/login"
+        : "http://localhost:8080/api/auth/signup";
 
-    localStorage.setItem("token", "LOGGED_IN");
+      const payload = isLogin
+        ? { email, password }
+        : { name, email, password };
 
-    
-    navigate("/");         
-  } else {
-    // SIGNUP
-    console.log("SIGNUP :", { name, email, password });
+      const res = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
 
-    setIsLogin(true);      
-    navigate("/login");    
-  }
-};
+      if (!res.ok) {
+        const msg = await res.text();
+        throw new Error(msg || "Request failed");
+      }
+
+      // LOGIN SUCCESS
+      if (isLogin) {
+        const data = await res.json();
+        localStorage.setItem("token", data.token);
+        navigate("/");
+      }
+      // SIGNUP SUCCESS
+      else {
+        alert("Account created successfully. Please login.");
+        setIsLogin(true);
+      }
+    } catch (err) {
+      alert(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="auth-page">
@@ -40,7 +64,6 @@ const handleSubmit = (e) => {
         </h2>
 
         <form onSubmit={handleSubmit}>
-          {/* Name Only for Signup */}
           {!isLogin && (
             <input
               type="text"
@@ -48,7 +71,7 @@ const handleSubmit = (e) => {
               placeholder="Full Name"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              required={!isLogin}
+              required
             />
           )}
 
@@ -70,12 +93,15 @@ const handleSubmit = (e) => {
             required
           />
 
-          <button className="auth-btn" type="submit">
-            {isLogin ? "Login" : "Create Account"}
+          <button className="auth-btn" type="submit" disabled={loading}>
+            {loading
+              ? "Please wait..."
+              : isLogin
+              ? "Login"
+              : "Create Account"}
           </button>
         </form>
 
-        {/* Switch Login <-> Signup */}
         <p className="auth-switch">
           {isLogin ? (
             <>
@@ -94,4 +120,4 @@ const handleSubmit = (e) => {
   );
 }
 
-export default Auth;
+export default Auth;

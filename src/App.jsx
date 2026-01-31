@@ -25,7 +25,7 @@ function App() {
           <Route path="/subscription" element={<Subscription />} />
     
           <Route path="/cart" element={<Cart />}  />
-          <Route path="/Login" element={<Auth />} />
+          <Route path="/login" element={<Auth />} />
 
          
         </Routes>
