@@ -1,239 +1,168 @@
-/* ================================
-   GLOBAL SAFETY (NO ROTATION BUGS)
-================================ */
-.subscription-section,
-.subscription-section * {
-  writing-mode: horizontal-tb;
-  text-orientation: mixed;
-  transform: none;
-}
-
-/* ================================
-   SECTION BACKGROUND (WOW EFFECT)
-================================ */
-.subscription-section {
-  position: relative;
-  padding: 100px 20px;
-  background:
-    linear-gradient(180deg, #ffffff 0%, #f4f8ff 100%);
-  overflow: hidden;
-}
-
-/* glowing blobs */
-.subscription-section::before,
-.subscription-section::after {
-  content: "";
-  position: absolute;
-  width: 420px;
-  height: 420px;
-  border-radius: 50%;
-  filter: blur(120px);
-  z-index: 0;
-}
-
-.subscription-section::before {
-  background: rgba(51, 148, 200, 0.35);
-  top: -120px;
-  left: -120px;
-}
-
-.subscription-section::after {
-  background: rgba(42, 157, 143, 0.35);
-  bottom: -140px;
-  right: -120px;
-}
-
-/* ================================
-   TITLE (STRONG & PREMIUM)
-================================ */
-.subscription-title {
-  position: relative;
-  z-index: 2;
-  text-align: center;
-  font-size: 46px;
-  font-weight: 900;
-  color: #0a2540;
-  margin-bottom: 80px;
-  letter-spacing: 0.8px;
-}
-
-/* ================================
-   GRID
-================================ */
-.subscription-grid {
-  position: relative;
-  z-index: 2;
-  max-width: 1200px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 40px;
-}
-
-/* ================================
-   CARD (🔥 THIS IS THE MAGIC 🔥)
-================================ */
-.subscription-card {
-  position: relative;
-  padding: 42px 32px;
-  border-radius: 30px;
-  background-clip: padding-box;
-  box-shadow:
-    0 30px 80px rgba(0, 0, 0, 0.18);
-  transition: all 0.45s cubic-bezier(0.22,1,0.36,1);
-  overflow: hidden;
-}
-
-/* shiny gradient border */
-.subscription-card::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: 30px;
-  padding: 2px;
-  background: linear-gradient(
-    135deg,
-    #3394c8,
-    #2a9d8f,
-    #3394c8
-  );
-  mask:
-    linear-gradient(#fff 0 0) content-box,
-    linear-gradient(#fff 0 0);
-  mask-composite: exclude;
-  opacity: 0;
-  transition: opacity 0.4s ease;
-}
-
-/* floating light sweep */
-.subscription-card::after {
-  content: "";
-  position: absolute;
-  top: -60%;
-  left: -60%;
-  width: 200%;
-  height: 200%;
-  background: linear-gradient(
-    120deg,
-    transparent 40%,
-    rgba(255,255,255,0.25) 50%,
-    transparent 60%
-  );
-  transform: rotate(25deg);
-  transition: transform 0.8s ease;
-}
-
-/* ================================
-   TEXT
-================================ */
-.subscription-card h3 {
-  font-size: 26px;
-  font-weight: 900;
-  color: #0a2540;
-  margin-bottom: 16px;
-}
-
-.subscription-card .desc {
-  font-size: 16px;
-  line-height: 1.7;
-  color: #444;
-  margin-bottom: 20px;
-}
-
-.subscription-card .price {
-  font-size: 17px;
-  font-weight: 800;
-  color: #2a9d8f;
-  margin-bottom: 30px;
-}
-
-/* ================================
-   BUTTON (ULTRA SEXY)
-================================ */
-.subscribe-btn {
+/* MAIN CONTAINER */
+.sub-container {
   width: 100%;
-  padding: 16px;
-  border-radius: 18px;
-  border: none;
-  font-size: 16px;
-  font-weight: 900;
+  background: radial-gradient(circle at top, #fffdf6, #fff8e9);
+  padding-bottom: 80px;
+}
+
+/* HERO SECTION */
+.sub-hero {
+  text-align: center;
+  padding: 80px 20px;
+  background: linear-gradient(135deg, #fff3d1, #ffe8b6);
+}
+
+.sub-hero h1 {
+  font-size: 44px;
+  color: #4a2e12;
+  font-weight: 800;
+}
+
+.sub-hero p {
+  font-size: 18px;
+  margin-top: 12px;
+  color: #6d5733;
+  max-width: 700px;
+  margin-inline: auto;
+}
+
+/* PLAN SECTION */
+.sub-plans {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  padding: 70px 20px;
+  flex-wrap: wrap;
+}
+
+/* CARD */
+.sub-card {
+  width: 320px;
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(14px);
+  border-radius: 32px;
+  padding: 35px 28px;
+  box-shadow: 0 20px 45px rgba(0,0,0,0.12);
+  border: 1px solid rgba(255,255,255,0.6);
+  transition: all 0.4s ease;
+  position: relative;
+}
+
+/* POPULAR CARD */
+.sub-card.popular {
+  transform: scale(1.06);
+  border: 2px solid #f2c94c;
+  box-shadow: 0 30px 70px rgba(242,201,76,0.35);
+}
+
+.sub-card:hover {
+  transform: translateY(-16px) scale(1.05);
+  box-shadow: 0 35px 80px rgba(0,0,0,0.25);
+}
+
+/* TITLE */
+.sub-card h2 {
+  text-align: center;
+  font-size: 26px;
+  color: #3b2b1a;
+  margin-bottom: 14px;
+}
+
+/* TAG */
+.sub-tag {
+  display: inline-block;
+  background: linear-gradient(135deg, #e3c194, #f5d7a1);
+  color: #573b1f;
+  font-size: 13px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  margin-bottom: 18px;
+  font-weight: 600;
+}
+
+.sub-tag.blue {
+  background: linear-gradient(135deg, #c6e3ff, #a6d4ff);
+  color: #1e6db0;
+}
+
+.sub-tag.green {
+  background: linear-gradient(135deg, #c3f7d0, #9ee6b4);
+  color: #1c7a3e;
+}
+
+/* LIST */
+.sub-card ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sub-card li {
+  margin: 14px 0;
+  font-size: 15px;
+  color: #4d4d4d;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* BUTTON */
+.sub-btn {
+  width: 100%;
+  margin-top: 25px;
+  padding: 15px;
+  background: linear-gradient(135deg, #3394c8, #2e8bc0);
   color: white;
+  border: none;
+  border-radius: 14px;
+  font-size: 17px;
+  font-weight: 700;
   cursor: pointer;
-  background: linear-gradient(
-    135deg,
-    #3394c8,
-    #1d4ed8
-  );
-  box-shadow:
-    0 18px 40px rgba(29, 78, 216, 0.55);
-  transition: all 0.3s ease;
+  transition: all 0.35s ease;
 }
 
-.subscribe-btn:hover {
-  transform: translateY(-4px);
-  box-shadow:
-    0 28px 60px rgba(29, 78, 216, 0.7);
+.sub-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px rgba(46,139,192,0.5);
+  background: linear-gradient(135deg, #2e8bc0, #1a6b97);
 }
 
-/* ================================
-   HOVER EFFECTS (DESKTOP)
-================================ */
-@media (hover: hover) {
-  .subscription-card:hover {
-    transform: translateY(-18px) scale(1.07);
-    box-shadow:
-      0 50px 120px rgba(0, 0, 0, 0.28);
-  }
-
-  .subscription-card:hover::before {
-    opacity: 1;
-  }
-
-  .subscription-card:hover::after {
-    transform: translateX(50%) rotate(25deg);
-  }
+/* FAQ SECTION */
+.sub-faq {
+  padding: 60px 20px;
+  max-width: 900px;
+  margin: 0 auto;
 }
 
-/* ================================
-   📱 TABLET
-================================ */
-@media (max-width: 992px) {
-  .subscription-title {
-    font-size: 34px;
-  }
-
-  .subscription-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
+.sub-faq h2 {
+  text-align: center;
+  font-size: 34px;
+  margin-bottom: 35px;
+  color: #3b2b1a;
 }
 
-/* ================================
-   📱 MOBILE
-================================ */
-@media (max-width: 576px) {
-  .subscription-section {
-    padding: 70px 16px;
-  }
+/* FAQ BOX */
+.faq-box {
+  background: rgba(255,255,255,0.9);
+  border-radius: 18px;
+  padding: 24px;
+  margin: 18px 0;
+  box-shadow: 0 14px 35px rgba(0,0,0,0.12);
+  transition: 0.3s;
+}
 
-  .subscription-title {
-    font-size: 26px;
-    margin-bottom: 50px;
-  }
+.faq-box:hover {
+  transform: translateY(-6px);
+}
 
-  .subscription-grid {
-    grid-template-columns: 1fr;
-  }
+.faq-box h3 {
+  margin: 0;
+  font-size: 20px;
+  color: #573b1f;
+}
 
-  .subscription-card {
-    padding: 28px 22px;
-    border-radius: 26px;
-  }
-
-  .subscription-card h3 {
-    font-size: 22px;
-  }
-
-  .subscribe-btn {
-    font-size: 15px;
-  }
+.faq-box p {
+  margin-top: 10px;
+  font-size: 16px;
+  color: #444;
 }
