@@ -1,91 +1,184 @@
-/* PAGE WRAPPER */
+/* ================================
+   GLOBAL SAFETY RESET
+================================ */
+.auth-page,
+.auth-page * {
+  writing-mode: horizontal-tb;
+  text-orientation: mixed;
+  transform: none;
+}
+
+/* ================================
+   PAGE WRAPPER (PREMIUM BACKDROP)
+================================ */
 .auth-page {
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #fffaf0, #f3f7ff);
+  background:
+    radial-gradient(circle at 20% 10%, rgba(58,134,255,0.25), transparent 55%),
+    radial-gradient(circle at 80% 80%, rgba(42,157,143,0.25), transparent 55%),
+    linear-gradient(135deg, #fffaf0, #f3f7ff);
   padding: 20px;
+  position: relative;
+  overflow: hidden;
 }
 
-/* AUTH BOX */
+/* floating ambient glow */
+.auth-page::before {
+  content: "";
+  position: absolute;
+  width: 520px;
+  height: 520px;
+  border-radius: 50%;
+  background: rgba(58,134,255,0.25);
+  filter: blur(160px);
+  top: -200px;
+  left: -200px;
+}
+
+/* ================================
+   AUTH BOX (GLASSMORPHIC CARD)
+================================ */
 .auth-box {
   width: 100%;
   max-width: 420px;
-  background: #ffffff;
-  padding: 32px 28px;
-  border-radius: 16px;
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(20px);
+  padding: 38px 32px;
+  border-radius: 22px;
+  box-shadow:
+    0 30px 90px rgba(0, 0, 0, 0.22),
+    inset 0 1px 0 rgba(255,255,255,0.6);
+  position: relative;
+  z-index: 2;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
 }
 
-/* TITLE */
+/* subtle gradient border */
+.auth-box::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 22px;
+  padding: 1px;
+  background: linear-gradient(
+    135deg,
+    rgba(58,134,255,0.6),
+    rgba(42,157,143,0.6)
+  );
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+/* ================================
+   TITLE
+================================ */
 .auth-title {
   text-align: center;
-  font-size: 28px;
-  font-weight: 700;
-  margin-bottom: 24px;
-  color: #1d3557;
+  font-size: 30px;
+  font-weight: 900;
+  margin-bottom: 26px;
+  color: #0a2540;
+  letter-spacing: 0.6px;
 }
 
-/* INPUTS */
+/* ================================
+   INPUTS (PREMIUM FIELDS)
+================================ */
 .auth-input {
   width: 100%;
-  padding: 14px 16px;
-  margin-bottom: 14px;
-  border-radius: 10px;
-  border: 1.5px solid #d0d7de;
+  padding: 15px 18px;
+  margin-bottom: 16px;
+  border-radius: 14px;
+  border: 1.8px solid rgba(13, 71, 161, 0.15);
   font-size: 16px;
+  background: rgba(255,255,255,0.85);
   outline: none;
-  transition: border 0.25s ease, box-shadow 0.25s ease;
+  transition:
+    border 0.25s ease,
+    box-shadow 0.25s ease,
+    background 0.25s ease;
+}
+
+.auth-input::placeholder {
+  color: #9aa4b2;
+  font-weight: 500;
 }
 
 .auth-input:focus {
   border-color: #3a86ff;
-  box-shadow: 0 0 0 3px rgba(58, 134, 255, 0.15);
+  background: #ffffff;
+  box-shadow:
+    0 0 0 4px rgba(58, 134, 255, 0.18);
 }
 
-/* BUTTON */
+/* ================================
+   BUTTON (PRO MAX FEEL)
+================================ */
 .auth-btn {
   width: 100%;
-  padding: 14px;
-  margin-top: 10px;
-  border-radius: 12px;
+  padding: 15px;
+  margin-top: 14px;
+  border-radius: 16px;
   border: none;
-  background: #3a86ff;
+  background: linear-gradient(
+    135deg,
+    #3a86ff,
+    #1d4ed8
+  );
   color: #ffffff;
   font-size: 16px;
-  font-weight: 700;
+  font-weight: 900;
+  letter-spacing: 0.4px;
   cursor: pointer;
-  transition: background 0.3s ease;
+  box-shadow:
+    0 18px 45px rgba(29, 78, 216, 0.55);
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
 .auth-btn:hover {
-  background: #1d5ed8;
+  transform: translateY(-3px);
+  box-shadow:
+    0 28px 65px rgba(29, 78, 216, 0.7);
 }
 
-/* SWITCH TEXT */
+/* ================================
+   SWITCH TEXT
+================================ */
 .auth-switch {
   text-align: center;
-  margin-top: 18px;
+  margin-top: 22px;
   font-size: 15px;
-  color: #555;
+  color: #5f6c7b;
 }
 
 .auth-switch span {
   color: #3a86ff;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
+  transition: color 0.25s ease;
 }
 
 .auth-switch span:hover {
+  color: #1d4ed8;
   text-decoration: underline;
 }
 
-/* 📱 MOBILE OPTIMIZATION */
+/* ================================
+   📱 MOBILE OPTIMIZATION
+================================ */
 @media (max-width: 480px) {
   .auth-box {
-    padding: 26px 20px;
-    border-radius: 14px;
+    padding: 28px 22px;
+    border-radius: 18px;
   }
 
   .auth-title {
@@ -94,11 +187,11 @@
 
   .auth-input {
     font-size: 15px;
-    padding: 13px 14px;
+    padding: 14px 16px;
   }
 
   .auth-btn {
     font-size: 15px;
-    padding: 13px;
+    padding: 14px;
   }
 }
