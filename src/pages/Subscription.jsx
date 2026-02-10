@@ -5,73 +5,77 @@ function Subscription() {
     <div className="sub-container">
 
       {/* HERO SECTION */}
-      <div className="sub-hero">
+      <section className="sub-hero">
         <h1>Flexible Milk Delivery Subscription</h1>
         <p>
-          Choose a plan that fits your lifestyle. Fresh milk delivered to your doorstep.
+          Choose a plan that fits your lifestyle. Fresh, farm-pure milk delivered
+          to your doorstep — always on time.
         </p>
-      </div>
+      </section>
 
-      {/* PLAN BOXES */}
-      <div className="sub-plans">
+      {/* PLANS */}
+      <section className="sub-plans">
 
-        {/* DAILY PLAN */}
         <div className="sub-card popular">
+          <span className="badge gold">Most Popular</span>
           <h2>Daily Delivery</h2>
-          <p className="sub-tag">Most Popular</p>
+
           <ul>
-            <li>🥛 Fresh milk delivered every morning</li>
-            <li>⏸ Flexible pause / resume</li>
+            <li>🥛 Fresh milk every morning</li>
+            <li>⏸ Pause / resume anytime</li>
             <li>🚚 No minimum order</li>
           </ul>
+
           <button className="sub-btn">Subscribe Daily</button>
         </div>
 
-        {/* WEEKLY PLAN */}
         <div className="sub-card">
+          <span className="badge blue">Save 8%</span>
           <h2>Weekly Essentials</h2>
-          <p className="sub-tag blue">Save 8% Weekly</p>
+
           <ul>
-            <li>📦 Choose products once per week</li>
-            <li>🗓 Customizable schedule</li>
+            <li>📦 Choose products weekly</li>
+            <li>🗓 Fully customizable</li>
             <li>🔁 Auto-renew every 7 days</li>
           </ul>
+
           <button className="sub-btn">Subscribe Weekly</button>
         </div>
 
-        {/* MONTHLY PLAN */}
         <div className="sub-card">
+          <span className="badge green">Save 10%</span>
           <h2>Monthly Smart Saver</h2>
-          <p className="sub-tag green">Save 10% Monthly</p>
+
           <ul>
-            <li>📆 Automatic delivery every 30 days</li>
+            <li>📆 Auto delivery every 30 days</li>
             <li>⭐ Priority support</li>
-            <li>🎁 Exclusive member benefits</li>
+            <li>🎁 Exclusive member perks</li>
           </ul>
+
           <button className="sub-btn">Subscribe Monthly</button>
         </div>
 
-      </div>
+      </section>
 
-      {/* FAQ SECTION */}
-      <div className="sub-faq">
+      {/* FAQ */}
+      <section className="sub-faq">
         <h2>Frequently Asked Questions</h2>
 
         <div className="faq-box">
           <h3>Can I pause my subscription?</h3>
-          <p>Yes! You can pause or resume your delivery anytime.</p>
+          <p>Yes, you can pause or resume deliveries anytime.</p>
         </div>
 
         <div className="faq-box">
           <h3>Can I change quantity?</h3>
-          <p>You can update quantity or products before 11:00 PM.</p>
+          <p>You can modify products or quantity before 11:00 PM.</p>
         </div>
 
         <div className="faq-box">
           <h3>Is there any cancellation fee?</h3>
-          <p>No. Cancel anytime without extra charges.</p>
+          <p>No cancellation charges. Cancel anytime.</p>
         </div>
-      </div>
+      </section>
 
     </div>
   );
