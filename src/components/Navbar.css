@@ -1,0 +1,124 @@
+:root {
+  --brand-red: #D9181F;
+  --brand-green: #0F3D1E;
+  --brand-green-dark: #0A2A14;
+  --soft-white: #F9F9F9;
+}
+
+/* NAVBAR BASE */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 75px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 60px;
+
+
+
+  background: linear-gradient(
+    145deg,
+    rgba(15, 61, 30, 0.95),
+    rgba(10, 42, 20, 0.95)
+  );
+   backdrop-filter: blur(12px);
+
+  box-shadow: 0 15px 40px rgba(0,0,0,0.35);
+  z-index: 9999;
+}
+
+/* LOGO */
+.logo {
+  width: 145px;
+  height: 120px;
+  position: relative;
+  left: -50px;
+  top: 5px;
+  transition: transform 0.4s ease;
+  filter: drop-shadow(0 5px 10px rgba(0,0,0,0.3));
+}
+
+.logo:hover {
+  transform: scale(1.08);
+}
+
+/* LINKS */
+.nav-links {
+  display: flex;
+  gap: 40px;
+}
+
+.nav-link {
+  position: relative;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--soft-white);
+  text-decoration: none;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+}
+
+/* RED HOVER LINE */
+.nav-link::after {
+  content: "";
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  width: 0%;
+  height: 3px;
+  background: var(--brand-red);
+  transition: width 0.3s ease;
+}
+
+.nav-link:hover {
+  color: var(--brand-red);
+}
+
+.nav-link:hover::after {
+  width: 100%;
+}
+
+/* ACTIVE */
+.nav-link.active {
+  color: var(--brand-red);
+}
+
+.nav-link.active::after {
+  width: 100%;
+}
+
+/* HAMBURGER */
+.menu-icon {
+  display: none;
+  font-size: 30px;
+  color: white;
+  cursor: pointer;
+}
+
+/* MOBILE */
+@media (max-width: 900px) {
+  .menu-icon {
+    display: block;
+  }
+
+  .nav-links {
+    position: absolute;
+    top: 85px;
+    left: 0;
+    width: 100%;
+    background: var(--brand-green-dark);
+    flex-direction: column;
+    align-items: center;
+    gap: 28px;
+    padding: 30px 0;
+    display: none;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+  }
+
+  .nav-links.open {
+    display: flex;
+  }
+}

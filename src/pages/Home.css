@@ -12,23 +12,61 @@
 /* -----------------------------
    MARQUEE STYLING
 ------------------------------ */
+/* 🔥 PREMIUM BRAND MARQUEE */
+
 .marquee-wrapper {
   width: 100%;
   overflow: hidden;
   white-space: nowrap;
-  background: #fff3e0;
-  border-bottom: 1px solid #e1d3c3;
-  padding: 10px 0;
+  padding: 12px 0;
+
+  background: linear-gradient(
+    90deg,
+    #0f3d1e 0%,
+    #145a32 40%,
+    #7a1010 70%,
+    #b71c1c 100%
+  );
+
+  border-bottom: 2px solid rgba(255, 215, 0, 0.3);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4) inset;
+  position: relative;
+}
+
+/* subtle glow overlay */
+.marquee-wrapper::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  border-radius: 0 0 20px 20px;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255,255,255,0.15),
+    transparent
+  );
+  animation: shimmer 6s infinite;
+}
+
+@keyframes shimmer {
+  0% { left: -100%; }
+  100% { left: 100%; }
 }
 
 .marquee-content {
   display: inline-block;
   padding-left: 100%;
   animation: marqueeMove 18s linear infinite;
+
   font-size: 18px;
-  font-weight: 600;
-  color: #8b5e34;
-  letter-spacing: 0.5px;
+  font-weight: 700;
+  letter-spacing: 1px;
+
+  color: #FFD700; /* gold text */
+  text-shadow: 0 0 10px rgba(255,215,0,0.5);
 }
 
 @keyframes marqueeMove {

@@ -14,9 +14,18 @@ function HeroSlider() {
     <div
       style={{
         width: "100%",
-        background: "#fffaf0",
-        paddingTop: "15px",
-        paddingBottom: "30px",
+        paddingTop: "30px",
+        paddingBottom: "50px",
+        background: `
+          linear-gradient(
+            90deg,
+            #0f3d1e 0%,
+            #145a32 35%,
+            #7a1010 70%,
+            #b71c1c 100%
+          )
+        `,
+        boxShadow: "inset 0 0 120px rgba(0,0,0,0.6)",
       }}
     >
       <Swiper
@@ -24,8 +33,8 @@ function HeroSlider() {
         slidesPerView={1}
         centeredSlides={true}
         loop={true}
-        autoplay={{ delay: 1800 }}
-        speed={700}
+        autoplay={{ delay: 2000 }}
+        speed={900}
         pagination={{ clickable: true }}
         style={{
           width: "100%",
@@ -35,11 +44,14 @@ function HeroSlider() {
         {banners.map((img, index) => (
           <SwiperSlide key={index}>
             <div className="slide-container">
-              <img src={img} alt={`banner-${index}`} className="premium-slide" />
+              <img
+                src={img}
+                alt={`banner-${index}`}
+                className="premium-slide"
+              />
 
-              {/* TEXT OVERLAY */}
               <div className="slide-text">
-                <h2 style={{ color: "white" }}>Fresh. Pure. Premium.</h2>
+                <h2>Fresh. Pure. Premium.</h2>
                 <p>Kamal Dairy brings the best of nature to your home.</p>
               </div>
             </div>
@@ -57,43 +69,43 @@ function HeroSlider() {
         }
 
         .premium-slide {
-          width: 100%;
+          width: 150%;
           height: 600px;
           object-fit: contain;
-          border-radius: 45px;
+          border-radius: 55px;
           transition: 0.7s ease-in-out;
-          opacity: 0.35;
+          opacity: 0.4;
           transform: scale(0.9);
-          filter: brightness(0.6) blur(1px);
+          filter: brightness(0.65) blur(1px);
           animation: kenburns 12s ease-in-out infinite;
         }
 
         @keyframes kenburns {
           0% { transform: scale(1); }
-          100% { transform: scale(1.05); }
+          100% { transform: scale(1.06); }
         }
 
         .swiper-slide-active .premium-slide {
           opacity: 1;
-          transform: scale(1.15);
-          filter: brightness(1.15) blur(0px);
+          transform: scale(1.12);
+          filter: brightness(1.1) blur(0px);
           border-radius: 55px;
-          box-shadow: 0px 25px 90px rgba(0,0,0,0.35);
+          box-shadow: 0px 35px 120px rgba(0,0,0,0.5);
         }
 
         .swiper-slide-next .premium-slide,
         .swiper-slide-prev .premium-slide {
           opacity: 0.6;
           transform: scale(0.95);
-          filter: brightness(0.75) blur(0.4px);
+          filter: brightness(0.8) blur(0.3px);
         }
 
         .slide-text {
           position: absolute;
-          bottom: 50px;
-          left: 60px;
+          bottom: 70px;
+          left: 80px;
           color: #ffffff;
-          text-shadow: 0 4px 12px rgba(0,0,0,0.45);
+          text-shadow: 0 6px 20px rgba(0,0,0,0.8);
           opacity: 0;
           transform: translateY(20px);
           transition: 0.7s ease-out;
@@ -105,35 +117,38 @@ function HeroSlider() {
         }
 
         .slide-text h2 {
-          font-size: 44px;
+          font-size: 48px;
           margin: 0;
-          font-weight: 700;
+          font-weight: 800;
+          letter-spacing: 1.5px;
         }
 
         .slide-text p {
-          font-size: 20px;
-          margin-top: 10px;
-          opacity: 0.9;
+          font-size: 21px;
+          margin-top: 14px;
+          opacity: 0.95;
         }
+
+        /* BRAND PAGINATION */
 
         .swiper-pagination-bullet {
           width: 14px;
           height: 14px;
-          background: #d4b27d;
-          opacity: 0.4;
-          transition: 0.3s;
+          background: #0F3D1E;
+          opacity: 0.5;
+          transition: 0.3s ease;
         }
 
         .swiper-pagination-bullet-active {
-          background: #8b6b34;
+          background: #D9181F;
           opacity: 1;
           transform: scale(1.4);
-          box-shadow: 0 0 12px rgba(139, 107, 52, 0.7);
+          box-shadow: 0 0 14px rgba(217,24,31,0.7);
         }
-      `}
+        `}
       </style>
     </div>
   );
 }
 
-export default HeroSlider;
+export default HeroSlider;
