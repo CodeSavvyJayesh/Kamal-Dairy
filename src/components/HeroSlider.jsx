@@ -14,18 +14,9 @@ function HeroSlider() {
     <div
       style={{
         width: "100%",
-        paddingTop: "30px",
-        paddingBottom: "50px",
-        background: `
-          linear-gradient(
-            90deg,
-            #0f3d1e 0%,
-            #145a32 35%,
-            #7a1010 70%,
-            #b71c1c 100%
-          )
-        `,
-        boxShadow: "inset 0 0 120px rgba(0,0,0,0.6)",
+        paddingTop: "50px",
+        paddingBottom: "70px",
+        background: "#ffffff", // Deep brand green (clean, no gradient)
       }}
     >
       <Swiper
@@ -33,8 +24,8 @@ function HeroSlider() {
         slidesPerView={1}
         centeredSlides={true}
         loop={true}
-        autoplay={{ delay: 2000 }}
-        speed={900}
+        autoplay={{ delay: 2500 }}
+        speed={800}
         pagination={{ clickable: true }}
         style={{
           width: "100%",
@@ -69,46 +60,37 @@ function HeroSlider() {
         }
 
         .premium-slide {
-          width: 150%;
+          width: 90%;
           height: 600px;
-          object-fit: contain;
-          border-radius: 55px;
-          transition: 0.7s ease-in-out;
-          opacity: 0.4;
-          transform: scale(0.9);
-          filter: brightness(0.65) blur(1px);
-          animation: kenburns 12s ease-in-out infinite;
-        }
-
-        @keyframes kenburns {
-          0% { transform: scale(1); }
-          100% { transform: scale(1.06); }
+          object-fit: conver;
+          border-radius: 100px;
+          transition: 0.6s ease-in-out;
+          opacity: 0.5;
+          transform: scale(0.95);
+          filter: brightness(0.85);
         }
 
         .swiper-slide-active .premium-slide {
           opacity: 1;
-          transform: scale(1.12);
-          filter: brightness(1.1) blur(0px);
-          border-radius: 55px;
-          box-shadow: 0px 35px 120px rgba(0,0,0,0.5);
+          transform: scale(1.05);
+          filter: brightness(1);
+          box-shadow: 0px 25px 70px rgba(0,0,0,0.4);
         }
 
         .swiper-slide-next .premium-slide,
         .swiper-slide-prev .premium-slide {
           opacity: 0.6;
           transform: scale(0.95);
-          filter: brightness(0.8) blur(0.3px);
         }
 
         .slide-text {
           position: absolute;
-          bottom: 70px;
+          bottom: 60px;
           left: 80px;
-          color: #ffffff;
-          text-shadow: 0 6px 20px rgba(0,0,0,0.8);
+          color: #FFFFFF;
           opacity: 0;
           transform: translateY(20px);
-          transition: 0.7s ease-out;
+          transition: 0.6s ease-out;
         }
 
         .swiper-slide-active .slide-text {
@@ -117,33 +99,32 @@ function HeroSlider() {
         }
 
         .slide-text h2 {
-          font-size: 48px;
+          font-size: 44px;
           margin: 0;
-          font-weight: 800;
-          letter-spacing: 1.5px;
+          font-weight: 700;
+          letter-spacing: 1px;
         }
 
         .slide-text p {
-          font-size: 21px;
-          margin-top: 14px;
-          opacity: 0.95;
+          font-size: 19px;
+          margin-top: 10px;
+          opacity: 0.9;
         }
 
-        /* BRAND PAGINATION */
+        /* Clean Brand Pagination */
 
         .swiper-pagination-bullet {
-          width: 14px;
-          height: 14px;
-          background: #0F3D1E;
-          opacity: 0.5;
+          width: 12px;
+          height: 12px;
+          background: #ffffff;
+          opacity: 0.4;
           transition: 0.3s ease;
         }
 
         .swiper-pagination-bullet-active {
-          background: #D9181F;
+          background: #D9181F; /* Lotus red */
           opacity: 1;
-          transform: scale(1.4);
-          box-shadow: 0 0 14px rgba(217,24,31,0.7);
+          transform: scale(1.3);
         }
         `}
       </style>
