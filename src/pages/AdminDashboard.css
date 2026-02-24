@@ -1,0 +1,130 @@
+.admin-container {
+  padding: 120px 40px;
+  background: linear-gradient(135deg, #f0f4f8, #e6f0ff);
+  min-height: 100vh;
+}
+
+.admin-title {
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 30px;
+  color: #0a2540;
+}
+
+/* FORM CARD */
+.admin-form-card {
+  background: white;
+  padding: 25px;
+  border-radius: 16px;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.08);
+  margin-bottom: 50px;
+}
+
+.admin-form {
+  display: grid;
+  gap: 15px;
+}
+
+.admin-form input {
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  font-size: 14px;
+  transition: 0.2s ease;
+}
+
+.admin-form input:focus {
+  border-color: #3394c8;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(51, 148, 200, 0.1);
+}
+
+.admin-form button {
+  background: #0a2540;
+  color: white;
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.3s ease;
+}
+
+.admin-form button:hover {
+  background: #163a63;
+  transform: translateY(-2px);
+}
+
+/* PRODUCT GRID */
+.admin-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 25px;
+}
+
+.admin-card {
+  background: white;
+  padding: 15px;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  transition: 0.3s ease;
+}
+
+.admin-card:hover {
+  transform: translateY(-6px);
+}
+
+.admin-card img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.admin-card h3 {
+  margin: 10px 0 5px;
+  font-size: 18px;
+}
+
+.admin-card p {
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.admin-card span {
+  font-size: 13px;
+  color: #777;
+}
+
+/* BUTTON GROUP */
+.admin-btn-group {
+  margin-top: 10px;
+  display: flex;
+  gap: 10px;
+}
+
+.edit-btn {
+  background: #3498db;
+  border: none;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.delete-btn {
+  background: #e74c3c;
+  border: none;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.edit-btn:hover {
+  background: #217dbb;
+}
+
+.delete-btn:hover {
+  background: #c0392b;
+}

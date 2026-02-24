@@ -8,6 +8,7 @@ import Footer from "./components/Footer";
 import Auth from "./pages/Auth";
 import Subscription from "./pages/Subscription";
 import Cart from "./pages/Cart";
+import AdminDashboard from "./pages/AdminDashboard";
 
 
 function App() {
@@ -26,6 +27,8 @@ function App() {
     
           <Route path="/cart" element={<Cart />}  />
           <Route path="/login" element={<Auth />} />
+          
+          <Route path="/admin" element={<AdminDashboard />} />
 
          
         </Routes>
