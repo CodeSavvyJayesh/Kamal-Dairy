@@ -8,7 +8,7 @@
   font-size: 32px;
   font-weight: 700;
   margin-bottom: 30px;
-  color: #0a2540;
+  color: #0F3D1E;
 }
 
 /* FORM CARD */
@@ -40,7 +40,7 @@
 }
 
 .admin-form button {
-  background: #0a2540;
+  background: #0F3D1E;
   color: white;
   padding: 12px;
   border-radius: 8px;
