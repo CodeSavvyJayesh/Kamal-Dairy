@@ -14,8 +14,8 @@ function HeroSlider() {
     <div
       style={{
         width: "100%",
-        paddingTop: "50px",
-        paddingBottom: "70px",
+        paddingTop: "10px",
+        paddingBottom: "0px",
         background: "#ffffff", // Deep brand green (clean, no gradient)
       }}
     >
@@ -85,9 +85,9 @@ function HeroSlider() {
 
         .slide-text {
           position: absolute;
-          bottom: 60px;
+          bottom: 10px;
           left: 80px;
-          color: #FFFFFF;
+          color: white;
           opacity: 0;
           transform: translateY(20px);
           transition: 0.6s ease-out;
@@ -101,7 +101,8 @@ function HeroSlider() {
         .slide-text h2 {
           font-size: 44px;
           margin: 0;
-          font-weight: 700;
+      
+          font-weight: 650;
           letter-spacing: 1px;
         }
 

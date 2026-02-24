@@ -57,7 +57,8 @@ function Footer() {
         ================================= */
         .footer {
           background: #0b2e16; /* Darker brand green */
-          padding: 80px 20px 30px;
+          padding: 40px 10px 20px;
+          height: 500px;
           color: #ffffff;
           border-top: 4px solid #0F3D1E;
         }
