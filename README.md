@@ -1,214 +1,256 @@
-🥛 Overview
+# 🥛 Kamal Dairy — Premium Dairy E-Commerce Platform
 
-Kamal Dairy is a premium dairy e-commerce platform that allows customers to browse and shop high-quality dairy products from top trusted brands like Amul, Mother Dairy, Milk Mist, Heritage, and more.
-
-This project focuses on creating a professional, beautiful, and highly responsive frontend, delivering a smooth shopping experience with animations, sliders, category browsing, UI effects, and modern design elements.
-
+> A full-stack, production-ready dairy e-commerce platform built with modern web technologies, secure authentication, role-based access control, and a beautiful responsive UI.
 
 ---
 
-🚀 Tech Stack
+## 🌟 Project Vision
 
-Frontend:
+Kamal Dairy is designed to deliver a **premium online dairy shopping experience**.
 
-⚛ React.js (Vite)
+Customers can browse and shop high-quality dairy products from trusted brands like:
 
-🎨 CSS + Custom UI Components
+- 🥛 Amul  
+- 🐄 Mother Dairy  
+- 🧀 Milk Mist  
+- 🧈 Heritage  
+- 🧊 And more...
 
-🔄 Swiper.js (Hero Banners + Brand Slider)
+The platform focuses on:
 
-📦 React Icons
-
-
-Tools & Setup:
-
-Git & GitHub
-
-VS Code
-
-Vite Development Server
-
-
+✔ Clean Architecture  
+✔ Secure Authentication (JWT)  
+✔ Role-Based Authorization  
+✔ Modern UI/UX  
+✔ Fully Responsive Design  
+✔ Scalable Backend Structure  
 
 ---
 
-✨ Key Features
+# 🏗️ Architecture Overview
 
-🔹 1. Premium Hero Banner Slider
+This project follows a clean layered architecture:
 
-Auto-scrolling
+Frontend (React + Vite)  
+↓  
+REST APIs (Spring Boot)  
+↓  
+Service Layer (Business Logic)  
+↓  
+Repository Layer (Spring Data JPA)  
+↓  
+MySQL Database  
 
-Center-focused enlarging effect
+Security Layer:
 
-Background blur + brightness transitions
+JWT Authentication  
+↓  
+JWT Validation Filter  
+↓  
+Role-Based Authorization (USER / ADMIN)  
+↓  
+Global Exception Handling (RFC 7807 Standard)
 
-Smooth animations
+---
 
-Inspirational text overlay
+# 🚀 Tech Stack
 
+## 🎨 Frontend
 
-🔹 2. Smart Product Category System
+- ⚛ React.js (Vite)
+- 🎨 CSS (Custom styling)
+- 🎞 Swiper.js (Hero + Brand sliders)
+- 📦 React Icons
+- 🌐 Fetch API
+- 🔐 JWT Token Storage
 
-12 dairy categories:
+---
 
-Milk, Paneer, Butter, Ghee, Ice Cream, Buttermilk, Yoghurt, Cheese, Lassi, Powdered Milk, Shrikhand, Chaas
+## 🔐 Backend
 
+- ☕ Spring Boot 3 (3.5.9)
+- 🔐 Spring Security
+- 🗄 Spring Data JPA
+- 🐬 MySQL
+- 🔑 JWT (JSON Web Token)
+- 🛡 BCrypt Password Encryption
+- 📦 Global Exception Handling (RFC 7807)
 
-Clean grid layout
+---
 
-Category-specific dynamic product listing
+## 🛠 Tools
 
+- VS Code
+- IntelliJ IDEA
+- Postman
+- Git & GitHub
+- Maven
+- Vite Development Server
 
-🔹 3. Sexy & Modern Product Cards
+---
 
-Hover animations
+# ✨ Frontend Features
 
-Glow effects
+## 🎯 1. Premium Hero Banner Slider
 
-Zoom-on-hover images
+- Auto-scrolling
+- Center-focused zoom animation
+- Background blur transitions
+- Smooth animation effects
+- Inspirational overlay text
 
-Add to Cart & Know More buttons
+---
 
-Smooth shadow transitions
+## 🧀 2. Smart Category System
 
+12 Dairy Categories:
 
-🔹 4. Trusted Brands Slider
+- Milk
+- Paneer
+- Butter
+- Ghee
+- Ice Cream
+- Buttermilk
+- Yoghurt
+- Cheese
+- Lassi
+- Powdered Milk
+- Shrikhand
+- Chaas
 
-Infinite autoplay slider
+✔ Clean grid layout  
+✔ Dynamic category-based listing  
+✔ Fully responsive  
 
-Grayscale → full-color hover effect
+---
 
-Responsive across all device sizes
+## 🛍 3. Modern Product Cards
 
+- Hover glow effects
+- Image zoom on hover
+- Add to Cart button
+- Know More button
+- Smooth shadow transitions
+- Clean typography
 
-🔹 5. Subscription Plans Section
+---
 
-Clean, modern UI
+## 🏷 4. Trusted Brands Slider
 
-Basic subscription options for customers
+- Infinite autoplay
+- Grayscale → Color hover effect
+- Smooth transitions
+- Mobile responsive
 
+---
 
-🔹 6. Contact Us Page
+## 📦 5. Subscription Section
 
-Premium layout
+- Clean UI design
+- Basic subscription system
+- Ready for backend integration
 
-Icons: Location, Phone, WhatsApp, Working Hours
+---
 
-Professional color theme
+## 📞 6. Contact Page
 
+- Location
+- Phone
+- WhatsApp
+- Working Hours
+- Professional layout
+- Premium color theme
 
-🔹 7. Fully Responsive Design
+---
+
+## 📱 Fully Responsive Design
 
 Works beautifully on:
 
-📱 Mobile
-
-💻 Laptop
-
-🖥 Desktop
-
-📺 Large Screens
-
-
-
+📱 Mobile  
+💻 Laptop  
+🖥 Desktop  
+📺 Large screens  
 
 ---
 
-📁 Project Structure
+# 🔐 Backend Features
 
-Kamal-Dairy/
-│
-├── public/
-│   └── images/
-│        ├── banners/
-│        ├── brands/
-│        └── products/
-│
-├── src/
-│   ├── components/
-│   │   ├── Navbar.jsx
-│   │   ├── HeroSlider.jsx
-│   │   ├── TrendingProducts.jsx
-│   │   ├── TrustedBrands.jsx
-│   │   ├── WhyChooseUs.jsx
-│   │   └── ProductCard.jsx
-│   │
-│   ├── pages/
-│   │   ├── Home.jsx
-│   │   ├── Products.jsx
-│   │   ├── CategoryProducts.jsx
-│   │   └── Contact.jsx
-│   │
-│   ├── data/
-│   │   └── products.js
-│   │
-│   ├── App.jsx
-│   └── main.jsx
-│
-└── README.md
+## 👤 Authentication System
 
+✔ User Signup  
+✔ Secure Login  
+✔ BCrypt password encryption  
+✔ JWT Token generation  
+✔ JWT validation filter  
 
 ---
 
-🛠 Installation & Setup
+## 🛡 Role-Based Authorization
 
-⿡ Clone the repository
+Two roles implemented:
 
-git clone https://github.com/your-username/Kamal-Dairy.git
-cd Kamal-Dairy
+### 👤 USER
+- Browse products
+- Place orders
+- View personal orders
 
-⿢ Install dependencies
+### 👑 ADMIN
+- Add products
+- Update products
+- Delete products
+- Full stock management access
 
-npm install
-
-⿣ Run the development server
-
-npm run dev
-
-⿤ Open in browser
-
-http://localhost:5173/
-
+Role is embedded inside JWT and validated via Spring Security.
 
 ---
+
+## ⚙ Security Implementation
+
+- Custom JWT Utility
+- OncePerRequestFilter for token validation
+- SecurityFilterChain configuration
+- Method-level security using @PreAuthorize
+- Stateless authentication (no session storage)
+
+---
+
+## 🚨 Global Exception Handling
+
+Implemented using:
+
+- @RestControllerAdvice
+- Custom business exceptions
+- RFC 7807 ProblemDetail standard
+
 
 🧩 Upcoming Features
-
-🔐 Login & Signup (Frontend UI)
-
-🧾 Product Detail Pages
-
-🛒 Add To Cart System
-
+🔐 OTP Email Verification
+🛒 Complete Cart System
+🔔 Notification System
 💳 Payment Gateway Integration
+📦 Order Tracking
+⭐ Product Reviews
+📊 Admin Analytics Dashboard
+📦 Advanced Stock Management
 
-🗄 Backend (Spring Boot)
+📈 Learning Outcomes
+Through this project, I implemented:
+JWT-based authentication
+Role-based authorization
+Spring Security configuration
+Global exception handling (RFC 7807)
+Clean layered architecture
+Secure password encryption
+RESTful API best practices
+Professional frontend UI/UX design
 
-🧑‍💼 Admin Panel for stock management
-
-⭐ User reviews
-
-
-
----
-
-🤝 Contributions
-
-This is a learning + internship project.
-Suggestions, ideas, and improvements are always welcome.
-
-
----
+🤝 Contribution
+This project is part of my:
+💼 Internship 
+🚀 Placement Preparation
+Suggestions and improvements are always welcome.
 
 📬 Contact
-
-For queries or collaboration:
-📧 Email : jayeshdhamal03@gmail.com
-📱 Phone :  9970469894 
-
-
----
-
-⭐ If you like this project, please star the repository!
-
-It motivates me to build more amazing projects 😊
+📧 Email: jayeshdhamal03@gmail.com
+📱 Phone: 9970469894
