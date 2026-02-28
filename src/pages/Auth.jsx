@@ -42,6 +42,7 @@ function Auth() {
       if (isLogin) {
         const data = await res.json();
         localStorage.setItem("token", data.token);
+        localStorage.setItem("role", data.role);
         navigate("/");
       }
       // SIGNUP SUCCESS
