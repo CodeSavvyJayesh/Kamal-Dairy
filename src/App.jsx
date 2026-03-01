@@ -9,6 +9,7 @@ import Auth from "./pages/Auth";
 import Subscription from "./pages/Subscription";
 import Cart from "./pages/Cart";
 import AdminDashboard from "./pages/AdminDashboard";
+import VerifyOtp from "./pages/VerifyOtp";
 
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
     
           <Route path="/cart" element={<Cart />}  />
           <Route path="/login" element={<Auth />} />
+          <Route path="/verify-otp" element={<VerifyOtp />} />
           
           <Route path="/admin" element={<AdminDashboard />} />
 

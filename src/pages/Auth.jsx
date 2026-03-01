@@ -48,7 +48,7 @@ function Auth() {
       // SIGNUP SUCCESS
       else {
         alert("Account created successfully. Please login.");
-        setIsLogin(true);
+        navigate("/verify-otp", { state: { email } });
       }
     } catch (err) {
       alert(err.message);
