@@ -1,12 +1,48 @@
-import { useContext } from "react";
-import { CartContext } from "../context/CartContext";
 import "./ProductCard.css";
 
 function ProductCard({ product }) {
-  const { addToCart } = useContext(CartContext);
+
+  const addToCart = async () => {
+
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      alert("Please login first");
+      return;
+    }
+
+    try {
+
+      const params = new URLSearchParams({
+        productId: product.id,
+        productName: product.name,
+        price: product.price
+      });
+
+      const res = await fetch(
+        `http://localhost:8080/api/cart/add?${params}`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      );
+
+      if (!res.ok) {
+        throw new Error("Failed to add item to cart");
+      }
+
+      alert("Added to cart 🛒");
+
+    } catch (err) {
+      alert(err.message);
+    }
+  };
 
   return (
     <div className="product-card">
+
       {/* IMAGE */}
       <div className="product-image">
         <img
@@ -27,9 +63,10 @@ function ProductCard({ product }) {
 
       {/* ACTIONS */}
       <div className="product-actions">
+
         <button
           className="btn-outline"
-          onClick={() => addToCart(product)}
+          onClick={addToCart}
         >
           ADD TO CART
         </button>
@@ -37,7 +74,9 @@ function ProductCard({ product }) {
         <button className="btn-solid">
           KNOW MORE
         </button>
+
       </div>
+
     </div>
   );
 }
