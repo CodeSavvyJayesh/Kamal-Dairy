@@ -8,6 +8,8 @@ import Footer from "./components/Footer";
 import Auth from "./pages/Auth";
 import Subscription from "./pages/Subscription";
 import Cart from "./pages/Cart";
+import Checkout from "./pages/Checkout";
+import Payment from "./pages/Payment";
 import AdminDashboard from "./pages/AdminDashboard";
 import VerifyOtp from "./pages/VerifyOtp";
 
@@ -27,6 +29,8 @@ function App() {
           <Route path="/subscription" element={<Subscription />} />
     
           <Route path="/cart" element={<Cart />}  />
+          <Route path="/checkout" element={<Checkout />} />
+          <Route path="/payment" element={<Payment />} />
           <Route path="/login" element={<Auth />} />
           <Route path="/verify-otp" element={<VerifyOtp />} />
           

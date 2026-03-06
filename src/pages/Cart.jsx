@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./Cart.css";
 
 function Cart() {
 
   const [cartItems, setCartItems] = useState([]);
+  const navigate = useNavigate();
 
   const token = localStorage.getItem("token");
 
-  // load cart
+  // Load cart
   const loadCart = async () => {
 
     try {
@@ -28,26 +30,59 @@ function Cart() {
     } catch (err) {
       console.error(err);
     }
+
   };
 
   useEffect(() => {
     loadCart();
   }, []);
 
-  // remove item
+  // Remove item
   const removeItem = async (id) => {
 
-    await fetch(
-      `http://localhost:8080/api/cart/remove/${id}`,
-      {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      }
-    );
+    try {
 
-    loadCart();
+      await fetch(
+        `http://localhost:8080/api/cart/remove/${id}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      );
+
+      loadCart();
+
+    } catch (err) {
+      console.error(err);
+    }
+
+  };
+
+  // Update quantity
+  const updateQuantity = async (id, qty) => {
+
+    if (qty < 1) return;
+
+    try {
+
+      await fetch(
+        `http://localhost:8080/api/cart/update?cartItemId=${id}&quantity=${qty}`,
+        {
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      );
+
+      loadCart();
+
+    } catch (err) {
+      console.error(err);
+    }
+
   };
 
   const total = cartItems.reduce(
@@ -56,6 +91,7 @@ function Cart() {
   );
 
   return (
+
     <section className="cart-page">
 
       <h1 className="cart-title">🛒 Your Shopping Cart</h1>
@@ -63,8 +99,10 @@ function Cart() {
       {cartItems.length === 0 ? (
 
         <div className="empty-cart">
+
           <h2>Your cart is empty</h2>
           <p>Add some fresh dairy products 🥛</p>
+
         </div>
 
       ) : (
@@ -76,19 +114,59 @@ function Cart() {
 
               <div className="cart-card" key={item.id}>
 
-                <div className="cart-info">
-                  <h3>{item.productName}</h3>
-                  <p>
-                    ₹{item.price} × <strong>{item.quantity}</strong>
-                  </p>
+                <div className="cart-img-wrapper">
+
+                  <img
+                    src={item.image || "/milk.png"}
+                    alt={item.productName}
+                  />
+
                 </div>
 
-                <button
-                  className="remove-btn"
-                  onClick={() => removeItem(item.id)}
-                >
-                  ✖ Remove
-                </button>
+                <div className="cart-info">
+
+                  <h3>{item.productName}</h3>
+
+                  <p className="price">₹{item.price}</p>
+
+                  <div className="qty-control">
+
+                    <button
+                      onClick={() =>
+                        updateQuantity(item.id, item.quantity - 1)
+                      }
+                    >
+                      -
+                    </button>
+
+                    <span>{item.quantity}</span>
+
+                    <button
+                      onClick={() =>
+                        updateQuantity(item.id, item.quantity + 1)
+                      }
+                    >
+                      +
+                    </button>
+
+                  </div>
+
+                </div>
+
+                <div className="cart-actions">
+
+                  <h3>
+                    ₹{item.price * item.quantity}
+                  </h3>
+
+                  <button
+                    className="remove-btn"
+                    onClick={() => removeItem(item.id)}
+                  >
+                    Remove
+                  </button>
+
+                </div>
 
               </div>
 
@@ -98,12 +176,18 @@ function Cart() {
 
           <div className="cart-total">
 
-            <div>
+            <div className="total-info">
+
               <h2>Total Amount</h2>
+
               <h1>₹{total}</h1>
+
             </div>
 
-            <button className="checkout-btn">
+            <button
+              className="checkout-btn"
+              onClick={() => navigate("/checkout")}
+            >
               Proceed to Checkout →
             </button>
 
@@ -114,7 +198,9 @@ function Cart() {
       )}
 
     </section>
+
   );
+
 }
 
 export default Cart;
