@@ -1,101 +1,141 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import "./Checkout.css";
 
-function Checkout() {
+function Checkout(){
 
-  const navigate = useNavigate();
+const navigate = useNavigate();
+const location = useLocation();
 
-  const [form, setForm] = useState({
-    name: "",
-    phone: "",
-    address: "",
-    city: "",
-    pincode: ""
-  });
+const cartItems = location.state?.cartItems || [];
+const total = location.state?.total || 0;
 
-  const handleChange = (e) => {
+const [form,setForm]=useState({
+name:"",
+phone:"",
+address:"",
+city:"",
+pincode:""
+});
 
-    setForm({
-      ...form,
-      [e.target.name]: e.target.value
-    });
+const handleChange=(e)=>{
 
-  };
+setForm({
+...form,
+[e.target.name]:e.target.value
+});
 
-  const handleSubmit = (e) => {
+};
 
-    e.preventDefault();
+const handleSubmit=(e)=>{
 
-    console.log("Shipping details:", form);
+e.preventDefault();
 
-    navigate("/payment");
+navigate("/payment",{
+state:{
+cartItems,
+total,
+shipping:form
+}
+});
 
-  };
+};
 
-  return (
+return(
 
-    <section className="checkout-page">
+<section className="checkout-page">
 
-      <h1>Shipping Details</h1>
+<h1 className="checkout-title">
+Shipping Details
+</h1>
 
-      <form
-        className="checkout-form"
-        onSubmit={handleSubmit}
-      >
+<div className="checkout-container">
 
-        <input
-          type="text"
-          name="name"
-          placeholder="Full Name"
-          onChange={handleChange}
-          required
-        />
+<form
+className="checkout-form"
+onSubmit={handleSubmit}
+>
 
-        <input
-          type="text"
-          name="phone"
-          placeholder="Phone Number"
-          onChange={handleChange}
-          required
-        />
+<input
+name="name"
+placeholder="Full Name"
+onChange={handleChange}
+required
+/>
 
-        <input
-          type="text"
-          name="address"
-          placeholder="Address"
-          onChange={handleChange}
-          required
-        />
+<input
+name="phone"
+placeholder="Phone Number"
+onChange={handleChange}
+required
+/>
 
-        <input
-          type="text"
-          name="city"
-          placeholder="City"
-          onChange={handleChange}
-          required
-        />
+<input
+name="address"
+placeholder="Address"
+onChange={handleChange}
+required
+/>
 
-        <input
-          type="text"
-          name="pincode"
-          placeholder="Pincode"
-          onChange={handleChange}
-          required
-        />
+<input
+name="city"
+placeholder="City"
+onChange={handleChange}
+required
+/>
 
-        <button
-          type="submit"
-          className="checkout-btn"
-        >
-          Continue to Payment →
-        </button>
+<input
+name="pincode"
+placeholder="Pincode"
+onChange={handleChange}
+required
+/>
 
-      </form>
+<button className="checkout-btn">
+Continue to Payment →
+</button>
 
-    </section>
+</form>
 
-  );
+<div className="order-summary">
+
+<h2>Order Summary</h2>
+
+{cartItems.map(item=>(
+
+<div
+key={item.id}
+className="summary-item"
+>
+
+<span>
+{item.productName} × {item.quantity}
+</span>
+
+<span>
+₹{item.price*item.quantity}
+</span>
+
+</div>
+
+))}
+
+<hr/>
+
+<div className="summary-total">
+
+<span>Total</span>
+<span>₹{total}</span>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+);
 
 }
 

@@ -1,234 +1,161 @@
-/* ===============================
-   GLOBAL PAGE STYLING
-================================ */
-.contact-page {
-  background: radial-gradient(
-      circle at top,
-      rgba(255, 255, 255, 0.9),
-      #fffaf0
-    ),
-    linear-gradient(180deg, #fffaf0, #fdf1d6);
-  padding: 60px 40px;
-  min-height: 100vh;
-  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont;
+.checkout-page{
+
+min-height:100vh;
+
+padding:70px 20px;
+
+background:
+linear-gradient(
+135deg,
+#f4fff4,
+#e6f7e6
+);
+
 }
 
-/* ===============================
-   TITLES
-================================ */
-.contact-title,
-.query-title {
-  text-align: center;
-  font-size: 42px;
-  font-weight: 800;
-  margin-bottom: 50px;
-  color: #0a2540;
-  letter-spacing: 0.5px;
+.checkout-title{
+
+text-align:center;
+
+font-size:38px;
+
+font-weight:800;
+
+color:#1b5e20;
+
+margin-bottom:40px;
+
 }
 
-.contact-title span,
-.query-title span {
-  color: #e63946;
-  margin: 0 6px;
+.checkout-container{
+
+max-width:1100px;
+
+margin:auto;
+
+display:grid;
+
+grid-template-columns:2fr 1fr;
+
+gap:30px;
+
 }
 
-/* ===============================
-   TOP LAYOUT (LOCATIONS + MAP)
-================================ */
-.contact-layout {
-  display: flex;
-  gap: 50px;
-  align-items: flex-start;
-  max-width: 1300px;
-  margin: 0 auto 70px;
+.checkout-form{
+
+background:white;
+
+padding:35px;
+
+border-radius:20px;
+
+box-shadow:
+0 10px 30px rgba(0,0,0,0.1);
+
+display:flex;
+
+flex-direction:column;
+
+gap:18px;
+
 }
 
-/* ===============================
-   LOCATION LIST
-================================ */
-.contact-locations {
-  flex: 1;
+.checkout-form input{
+
+padding:14px;
+
+border-radius:10px;
+
+border:1px solid #ccc;
+
+font-size:15px;
+
 }
 
-/* LOCATION CARD */
-.location-card {
-  background: rgba(255, 255, 255, 0.75);
-  backdrop-filter: blur(16px);
-  border-radius: 20px;
-  padding: 24px 26px;
-  margin-bottom: 26px;
-  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.12);
-  transition: transform 0.35s ease, box-shadow 0.35s ease;
+.checkout-form input:focus{
+
+outline:none;
+
+border-color:#2e7d32;
+
+box-shadow:
+0 0 6px rgba(46,125,50,0.3);
+
 }
 
-.location-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.18);
+.checkout-btn{
+
+background:#2e7d32;
+
+color:white;
+
+border:none;
+
+padding:16px;
+
+border-radius:10px;
+
+font-size:16px;
+
+font-weight:600;
+
+cursor:pointer;
+
+transition:0.3s;
+
 }
 
-.location-card h3 {
-  color: #005f73;
-  font-size: 20px;
-  font-weight: 700;
-  margin-bottom: 10px;
-  letter-spacing: 0.6px;
+.checkout-btn:hover{
+
+background:#1b5e20;
+
 }
 
-.location-card p {
-  margin: 6px 0;
-  font-size: 15px;
-  color: #333;
-  line-height: 1.6;
-  display: flex;
-  align-items: center;
-  gap: 8px;
+.order-summary{
+
+background:white;
+
+padding:30px;
+
+border-radius:20px;
+
+box-shadow:
+0 10px 25px rgba(0,0,0,0.1);
+
 }
 
-/* ICON COLOR ACCENT */
-.location-card svg {
-  color: #e76f51;
-  min-width: 16px;
+.order-summary h2{
+
+margin-bottom:20px;
+
+color:#1b5e20;
+
 }
 
-/* ===============================
-   MAP
-================================ */
-.contact-map {
-  width: 700px;
-  max-width: 100%;
-  border-radius: 26px;
-  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.25);
-  transition: transform 0.4s ease;
+.summary-item{
+
+display:flex;
+
+justify-content:space-between;
+
+margin-bottom:12px;
+
+font-size:16px;
+
 }
 
-.contact-map:hover {
-  transform: scale(1.02);
-}
+.summary-total{
 
-/* ===============================
-   QUERY SECTION
-================================ */
-.query-title {
-  margin-top: 80px;
-}
+display:flex;
 
-/* ===============================
-   FORM + INFO LAYOUT
-================================ */
-.contact-form-layout {
-  display: flex;
-  gap: 60px;
-  max-width: 1200px;
-  margin: 0 auto;
-}
+justify-content:space-between;
 
-/* ===============================
-   FORM
-================================ */
-.contact-form {
-  flex: 2;
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(18px);
-  padding: 36px;
-  border-radius: 26px;
-  box-shadow: 0 25px 70px rgba(0, 0, 0, 0.15);
-}
+font-weight:700;
 
-.contact-form input,
-.contact-form textarea {
-  width: 100%;
-  padding: 14px 16px;
-  margin-bottom: 14px;
-  border-radius: 12px;
-  border: 1.8px solid #d0d7de;
-  font-size: 15px;
-  outline: none;
-  transition: border 0.25s ease, box-shadow 0.25s ease;
-}
+font-size:20px;
 
-.contact-form input:focus,
-.contact-form textarea:focus {
-  border-color: #3a86ff;
-  box-shadow: 0 0 0 4px rgba(58, 134, 255, 0.15);
-}
+margin-top:10px;
 
-.contact-form textarea {
-  height: 130px;
-  resize: none;
-}
+color:#2e7d32;
 
-/* SUBMIT BUTTON */
-.contact-form button {
-  margin-top: 10px;
-  background: linear-gradient(135deg, #0077b6, #1d3557);
-  color: white;
-  border: none;
-  padding: 14px 34px;
-  font-size: 16px;
-  font-weight: 700;
-  border-radius: 14px;
-  cursor: pointer;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.contact-form button:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.35);
-}
-
-/* ===============================
-   CONTACT INFO BOX
-================================ */
-.contact-info {
-  flex: 1;
-  background: linear-gradient(135deg, #fdf1d6, #fffaf0);
-  padding: 32px;
-  border-radius: 26px;
-  box-shadow: 0 20px 55px rgba(0, 0, 0, 0.14);
-}
-
-.contact-info h3 {
-  margin-top: 26px;
-  margin-bottom: 6px;
-  color: #005f73;
-  font-size: 18px;
-  font-weight: 700;
-}
-
-.contact-info p {
-  font-size: 15px;
-  color: #333;
-  margin: 4px 0;
-}
-
-/* ===============================
-   MOBILE RESPONSIVE (UNCHANGED LOGIC)
-================================ */
-@media (max-width: 768px) {
-  .contact-page {
-    padding: 30px 16px;
-  }
-
-  .contact-title,
-  .query-title {
-    font-size: 28px;
-    margin-bottom: 32px;
-  }
-
-  .contact-layout {
-    flex-direction: column;
-  }
-
-  .contact-form-layout {
-    flex-direction: column;
-  }
-
-  .contact-map {
-    width: 100%;
-    margin-top: 30px;
-  }
-
-  .contact-form {
-    padding: 26px;
-  }
 }

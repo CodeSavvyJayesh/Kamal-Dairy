@@ -1,65 +1,148 @@
 .checkout-page {
 
   min-height: 100vh;
+  padding: 50px 20px;
 
-  display: flex;
-
-  flex-direction: column;
-
-  align-items: center;
-
-  justify-content: center;
-
-  background: linear-gradient(
-    135deg,
-    #fff7ed,
-    #fdecc8
-  );
+  background: #f5fff5;
+  font-family: Arial, Helvetica, sans-serif;
 
 }
+
+.checkout-title {
+
+  text-align: center;
+  margin-bottom: 40px;
+  color: #2e7d32;
+
+}
+
+.checkout-container {
+
+  max-width: 1000px;
+  margin: auto;
+
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 30px;
+
+}
+
+/* FORM */
 
 .checkout-form {
 
-  display: flex;
-
-  flex-direction: column;
-
-  gap: 15px;
-
-  width: 350px;
-
+  background: white;
   padding: 30px;
 
-  background: white;
+  border-radius: 12px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.08);
 
-  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 
-  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
 }
 
-.checkout-form input {
+.checkout-form h2 {
+
+  margin-bottom: 10px;
+  color: #2e7d32;
+
+}
+
+.checkout-form input,
+.checkout-form textarea {
 
   padding: 12px;
-
   border-radius: 8px;
-
   border: 1px solid #ddd;
+
+  font-size: 14px;
 
 }
 
-.checkout-form button {
+.checkout-form textarea {
 
+  resize: none;
+  height: 80px;
+
+}
+
+.row {
+
+  display: flex;
+  gap: 10px;
+
+}
+
+.checkout-btn {
+
+  margin-top: 10px;
   padding: 14px;
 
-  border: none;
-
-  border-radius: 10px;
-
-  background: #1d3557;
-
+  background: #2e7d32;
   color: white;
 
-  font-size: 16px;
+  border: none;
+  border-radius: 8px;
 
+  font-size: 16px;
   cursor: pointer;
+
+  transition: 0.3s;
+
+}
+
+.checkout-btn:hover {
+
+  background: #1b5e20;
+
+}
+
+/* ORDER SUMMARY */
+
+.order-summary {
+
+  background: white;
+  padding: 25px;
+
+  border-radius: 12px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+
+  height: fit-content;
+
+}
+
+.order-summary h2 {
+
+  margin-bottom: 20px;
+  color: #2e7d32;
+
+}
+
+.summary-item {
+
+  display: flex;
+  justify-content: space-between;
+
+  margin-bottom: 10px;
+
+}
+
+.summary-total {
+
+  display: flex;
+  justify-content: space-between;
+
+  font-weight: bold;
+  font-size: 18px;
+
+}
+
+.delivery-note {
+
+  margin-top: 20px;
+  font-size: 14px;
+  color: #555;
+
 }

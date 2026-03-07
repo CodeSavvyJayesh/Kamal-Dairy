@@ -1,84 +1,90 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import "./Payment.css";
 
-function Payment() {
+function Payment(){
 
-  const navigate = useNavigate();
+const navigate = useNavigate();
+const location = useLocation();
 
-  const [method, setMethod] = useState("");
+const total = location.state?.total || 0;
 
-  const handlePayment = () => {
+const [method,setMethod]=useState("");
 
-    if (!method) {
+const handlePayment=()=>{
 
-      alert("Please select a payment method");
-      return;
+if(!method){
+alert("Please select payment method");
+return;
+}
 
-    }
+alert("Payment Successful 🎉");
 
-    alert("Payment Successful 🎉");
+navigate("/success");
 
-    navigate("/success");
+};
 
-  };
+return(
 
-  return (
+<section className="payment-page">
 
-    <section className="payment-page">
+<h1>Payment</h1>
 
-      <h1>Choose Payment Method</h1>
+<h2 className="pay-total">
+Total: ₹{total}
+</h2>
 
-      <div className="payment-box">
+<div className="payment-box">
 
-        <label>
+<label>
 
-          <input
-            type="radio"
-            name="payment"
-            value="upi"
-            onChange={(e) => setMethod(e.target.value)}
-          />
+<input
+type="radio"
+value="upi"
+onChange={(e)=>setMethod(e.target.value)}
+/>
 
-          UPI Payment
+UPI Payment
 
-        </label>
+</label>
 
-        <label>
+<label>
 
-          <input
-            type="radio"
-            name="payment"
-            value="card"
-            onChange={(e) => setMethod(e.target.value)}
-          />
+<input
+type="radio"
+value="card"
+onChange={(e)=>setMethod(e.target.value)}
+/>
 
-          Credit / Debit Card
+Credit / Debit Card
 
-        </label>
+</label>
 
-        <label>
+<label>
 
-          <input
-            type="radio"
-            name="payment"
-            value="cod"
-            onChange={(e) => setMethod(e.target.value)}
-          />
+<input
+type="radio"
+value="cod"
+onChange={(e)=>setMethod(e.target.value)}
+/>
 
-          Cash on Delivery
+Cash on Delivery
 
-        </label>
+</label>
 
-        <button onClick={handlePayment}>
-          Pay Now
-        </button>
+<button
+onClick={handlePayment}
+>
 
-      </div>
+Pay ₹{total}
 
-    </section>
+</button>
 
-  );
+</div>
+
+</section>
+
+);
 
 }
 

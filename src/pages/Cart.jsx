@@ -6,10 +6,8 @@ function Cart() {
 
   const [cartItems, setCartItems] = useState([]);
   const navigate = useNavigate();
-
   const token = localStorage.getItem("token");
 
-  // Load cart
   const loadCart = async () => {
 
     try {
@@ -17,104 +15,84 @@ function Cart() {
       const res = await fetch(
         "http://localhost:8080/api/cart",
         {
-          headers: {
-            Authorization: `Bearer ${token}`
+          headers:{
+            Authorization:`Bearer ${token}`
           }
         }
       );
 
       const data = await res.json();
-
       setCartItems(data);
 
-    } catch (err) {
+    } catch(err){
       console.error(err);
     }
 
   };
 
-  useEffect(() => {
+  useEffect(()=>{
     loadCart();
-  }, []);
+  },[]);
 
-  // Remove item
-  const removeItem = async (id) => {
+  const removeItem = async(id)=>{
 
-    try {
+    await fetch(
+      `http://localhost:8080/api/cart/remove/${id}`,
+      {
+        method:"DELETE",
+        headers:{Authorization:`Bearer ${token}`}
+      }
+    );
 
-      await fetch(
-        `http://localhost:8080/api/cart/remove/${id}`,
-        {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        }
-      );
-
-      loadCart();
-
-    } catch (err) {
-      console.error(err);
-    }
+    loadCart();
 
   };
 
-  // Update quantity
-  const updateQuantity = async (id, qty) => {
+  const updateQuantity = async(id,qty)=>{
 
-    if (qty < 1) return;
+    if(qty < 1) return;
 
-    try {
+    await fetch(
+      `http://localhost:8080/api/cart/update?cartItemId=${id}&quantity=${qty}`,
+      {
+        method:"PUT",
+        headers:{Authorization:`Bearer ${token}`}
+      }
+    );
 
-      await fetch(
-        `http://localhost:8080/api/cart/update?cartItemId=${id}&quantity=${qty}`,
-        {
-          method: "PUT",
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        }
-      );
-
-      loadCart();
-
-    } catch (err) {
-      console.error(err);
-    }
+    loadCart();
 
   };
 
   const total = cartItems.reduce(
-    (sum, item) => sum + item.price * item.quantity,
-    0
+    (sum,item)=>sum + item.price * item.quantity,0
   );
 
-  return (
+  return(
 
     <section className="cart-page">
 
-      <h1 className="cart-title">🛒 Your Shopping Cart</h1>
+      <h1 className="cart-title">Fresh Dairy Cart 🥛</h1>
 
-      {cartItems.length === 0 ? (
+      {cartItems.length === 0 ?(
 
         <div className="empty-cart">
 
           <h2>Your cart is empty</h2>
-          <p>Add some fresh dairy products 🥛</p>
+          <p>Add some fresh dairy products</p>
 
         </div>
 
-      ) : (
+      ):(
 
         <>
           <div className="cart-list">
 
-            {cartItems.map((item) => (
+            {cartItems.map(item=>(
 
               <div className="cart-card" key={item.id}>
 
-                <div className="cart-img-wrapper">
+                <div className="cart-image">
 
                   <img
                     src={item.image || "/milk.png"}
@@ -126,24 +104,23 @@ function Cart() {
                 <div className="cart-info">
 
                   <h3>{item.productName}</h3>
-
                   <p className="price">₹{item.price}</p>
 
                   <div className="qty-control">
 
                     <button
                       onClick={() =>
-                        updateQuantity(item.id, item.quantity - 1)
+                        updateQuantity(item.id,item.quantity-1)
                       }
                     >
-                      -
+                      −
                     </button>
 
                     <span>{item.quantity}</span>
 
                     <button
                       onClick={() =>
-                        updateQuantity(item.id, item.quantity + 1)
+                        updateQuantity(item.id,item.quantity+1)
                       }
                     >
                       +
@@ -155,13 +132,11 @@ function Cart() {
 
                 <div className="cart-actions">
 
-                  <h3>
-                    ₹{item.price * item.quantity}
-                  </h3>
+                  <h2>₹{item.price * item.quantity}</h2>
 
                   <button
                     className="remove-btn"
-                    onClick={() => removeItem(item.id)}
+                    onClick={()=>removeItem(item.id)}
                   >
                     Remove
                   </button>
@@ -176,17 +151,19 @@ function Cart() {
 
           <div className="cart-total">
 
-            <div className="total-info">
+            <div className="total-left">
 
               <h2>Total Amount</h2>
-
               <h1>₹{total}</h1>
 
             </div>
 
             <button
               className="checkout-btn"
-              onClick={() => navigate("/checkout")}
+              onClick={()=>navigate(
+                "/checkout",
+                {state:{cartItems,total}}
+              )}
             >
               Proceed to Checkout →
             </button>
