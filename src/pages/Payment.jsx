@@ -2,89 +2,127 @@ import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import "./Payment.css";
 
-function Payment(){
+function Payment() {
 
-const navigate = useNavigate();
-const location = useLocation();
+  const navigate = useNavigate();
+  const location = useLocation();
 
-const total = location.state?.total || 0;
+  const total = location.state?.total || 0;
 
-const [method,setMethod]=useState("");
+  const [method, setMethod] = useState("");
 
-const handlePayment=()=>{
+  const handlePayment = async () => {
 
-if(!method){
-alert("Please select payment method");
-return;
-}
+    if (!method) {
+      alert("Please select payment method");
+      return;
+    }
 
-alert("Payment Successful 🎉");
+    try {
 
-navigate("/success");
+      const token = localStorage.getItem("token");
 
-};
+      if (!token) {
+        alert("User not logged in");
+        return;
+      }
 
-return(
+      const res = await fetch(
+        "http://localhost:8080/api/orders/place",
+        {
+          method: "POST",
+          headers: {
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/json"
+          }
+        }
+      );
 
-<section className="payment-page">
+      console.log("HTTP STATUS:", res.status);
 
-<h1>Payment</h1>
+      if (res.status === 200) {
 
-<h2 className="pay-total">
-Total: ₹{total}
-</h2>
+        // sometimes backend returns empty body → avoid crash
+        let data = null;
 
-<div className="payment-box">
+        try {
+          data = await res.json();
+        } catch {
+          console.log("No JSON returned");
+        }
 
-<label>
+        console.log("Order response:", data);
 
-<input
-type="radio"
-value="upi"
-onChange={(e)=>setMethod(e.target.value)}
-/>
+        alert("Payment Successful 🎉");
 
-UPI Payment
+        navigate("/success");
 
-</label>
+      } else {
 
-<label>
+        const text = await res.text();
+        console.error("Backend error:", text);
 
-<input
-type="radio"
-value="card"
-onChange={(e)=>setMethod(e.target.value)}
-/>
+        alert("Failed to place order");
 
-Credit / Debit Card
+      }
 
-</label>
+    } catch (err) {
 
-<label>
+      console.error("Fetch error:", err);
+      alert("Failed to place order");
 
-<input
-type="radio"
-value="cod"
-onChange={(e)=>setMethod(e.target.value)}
-/>
+    }
 
-Cash on Delivery
+  };
 
-</label>
+  return (
 
-<button
-onClick={handlePayment}
->
+    <section className="payment-page">
 
-Pay ₹{total}
+      <h1>Payment</h1>
 
-</button>
+      <h2 className="pay-total">
+        Total: ₹{total}
+      </h2>
 
-</div>
+      <div className="payment-box">
 
-</section>
+        <label>
+          <input
+            type="radio"
+            value="upi"
+            onChange={(e) => setMethod(e.target.value)}
+          />
+          UPI Payment
+        </label>
 
-);
+        <label>
+          <input
+            type="radio"
+            value="card"
+            onChange={(e) => setMethod(e.target.value)}
+          />
+          Credit / Debit Card
+        </label>
+
+        <label>
+          <input
+            type="radio"
+            value="cod"
+            onChange={(e) => setMethod(e.target.value)}
+          />
+          Cash on Delivery
+        </label>
+
+        <button onClick={handlePayment}>
+          Pay ₹{total}
+        </button>
+
+      </div>
+
+    </section>
+
+  );
 
 }
 
