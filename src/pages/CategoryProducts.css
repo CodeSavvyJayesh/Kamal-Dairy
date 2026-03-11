@@ -1,44 +1,213 @@
-/* PAGE */
-.category-page {
-  padding: 24px 16px 80px;
-  background-color: #fffaf0;
-  min-height: 100vh;
+/* ========================================
+   PAGE
+======================================== */
+
+.category-page{
+
+min-height:100vh;
+
+padding:40px 20px 100px;
+
+background:
+linear-gradient(
+135deg,
+#f5fff5,
+#e8f8ea
+);
+
+font-family:"Segoe UI", Arial, sans-serif;
+
 }
 
-/* TITLE */
-.category-title {
-  text-align: center;
-  font-size: 34px;
-  font-weight: 800;
-  margin-bottom: 40px;
-  color: #1d3557;
-  letter-spacing: 1px;
+
+/* ========================================
+   TITLE
+======================================== */
+
+.category-title{
+
+text-align:center;
+
+font-size:40px;
+
+font-weight:900;
+
+margin-bottom:50px;
+
+color:#064e3b;
+
+letter-spacing:1px;
+
+position:relative;
+
 }
 
-/* GRID */
-.category-grid {
-  max-width: 1300px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 28px;
+/* decorative underline */
+
+.category-title::after{
+
+content:"";
+
+width:90px;
+
+height:4px;
+
+background:
+linear-gradient(
+90deg,
+#16a34a,
+#22c55e
+);
+
+display:block;
+
+margin:14px auto 0;
+
+border-radius:999px;
+
 }
 
-/* EMPTY STATE */
-.no-products {
-  text-align: center;
-  font-size: 18px;
-  color: #777;
-  margin-top: 60px;
+
+/* ========================================
+   GRID
+======================================== */
+
+.category-grid{
+
+max-width:1300px;
+
+margin:0 auto;
+
+display:grid;
+
+grid-template-columns:
+repeat(auto-fit,minmax(260px,1fr));
+
+gap:34px;
+
 }
 
-/* MOBILE */
-@media (max-width: 600px) {
-  .category-title {
-    font-size: 26px;
-  }
 
-  .category-grid {
-    gap: 20px;
-  }
+/* ========================================
+   CARD ENHANCEMENT (if product card used)
+======================================== */
+
+.category-grid > *{
+
+transition:all .35s ease;
+
+}
+
+/* hover elevation */
+
+.category-grid > *:hover{
+
+transform:translateY(-10px);
+
+}
+
+
+/* ========================================
+   EMPTY STATE
+======================================== */
+
+.no-products{
+
+text-align:center;
+
+margin-top:80px;
+
+font-size:20px;
+
+color:#4b5563;
+
+padding:40px;
+
+background:white;
+
+border-radius:20px;
+
+box-shadow:
+0 15px 40px rgba(0,0,0,0.08);
+
+max-width:420px;
+
+margin-left:auto;
+
+margin-right:auto;
+
+}
+
+
+/* ========================================
+   SECTION GLOW
+======================================== */
+
+.category-page::before{
+
+content:"";
+
+position:absolute;
+
+top:0;
+
+left:0;
+
+right:0;
+
+height:220px;
+
+background:
+radial-gradient(
+circle at center,
+rgba(34,197,94,0.15),
+transparent 70%
+);
+
+pointer-events:none;
+
+}
+
+
+/* ========================================
+   MOBILE
+======================================== */
+
+@media (max-width:768px){
+
+.category-title{
+
+font-size:30px;
+
+}
+
+.category-grid{
+
+gap:24px;
+
+}
+
+}
+
+
+@media (max-width:480px){
+
+.category-page{
+
+padding:30px 16px 80px;
+
+}
+
+.category-title{
+
+font-size:26px;
+
+}
+
+.category-grid{
+
+gap:18px;
+
+}
+
 }

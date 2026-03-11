@@ -2,7 +2,12 @@
 .products-page {
   min-height: 100vh;
   padding: 60px 16px;
-  background: radial-gradient(circle at top, #f2f3cdff, #fffaf0);
+  background:
+linear-gradient(
+135deg,
+#f2fff2,
+#e6f7e6
+);
 }
 
 /* HEADER */
@@ -15,7 +20,7 @@
 .products-header h1 {
   font-size: 44px;
   font-weight: 800;
-  color: #0a2540;
+  color: #1b5e20;
   margin-bottom: 12px;
 }
 
