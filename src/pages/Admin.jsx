@@ -16,7 +16,7 @@ function Admin() {
 
   // 🔐 Protect route
   useEffect(() => {
-    if (role !== "ROLE_ADMIN") {
+    if (role !== "ROLE_USER") {
       navigate("/");
     }
   }, [role, navigate]);

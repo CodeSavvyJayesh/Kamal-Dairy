@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   FaMapMarkerAlt,
   FaPhoneAlt,
@@ -39,6 +40,50 @@ function Contact() {
       phone: "+91 9970469894",
     },
   ];
+
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    message: "",
+  });
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await fetch("http://localhost:8080/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        alert("Query sent successfully!");
+
+        setFormData({
+          name: "",
+          email: "",
+          phone: "",
+          message: "",
+        });
+      } else {
+        alert("Failed to send query");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      alert("Server error");
+    }
+  };
 
   return (
     <div className="contact-page">
@@ -84,11 +129,40 @@ function Contact() {
       </h2>
 
       <div className="contact-form-layout">
-        <form className="contact-form">
-          <input placeholder="Name" />
-          <input placeholder="Email" />
-          <input placeholder="Phone number" />
-          <textarea placeholder="Comments" />
+        <form className="contact-form" onSubmit={handleSubmit}>
+          <input
+            name="name"
+            placeholder="Name"
+            value={formData.name}
+            onChange={handleChange}
+            required
+          />
+
+          <input
+            name="email"
+            type="email"
+            placeholder="Email"
+            value={formData.email}
+            onChange={handleChange}
+            required
+          />
+
+          <input
+            name="phone"
+            placeholder="Phone number"
+            value={formData.phone}
+            onChange={handleChange}
+            required
+          />
+
+          <textarea
+            name="message"
+            placeholder="Comments"
+            value={formData.message}
+            onChange={handleChange}
+            required
+          />
+
           <button type="submit">SUBMIT</button>
         </form>
 
