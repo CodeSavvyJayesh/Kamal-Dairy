@@ -63,7 +63,7 @@ function Payment() {
           );
 
           alert("Payment Successful 🎉");
-          navigate("/success");
+          navigate("/Orders");
         }
       };
 

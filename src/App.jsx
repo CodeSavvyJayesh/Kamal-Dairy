@@ -10,6 +10,7 @@ import Subscription from "./pages/Subscription";
 import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
 import Payment from "./pages/Payment";
+import Orders from "./pages/Orders";
 import AdminDashboard from "./pages/AdminDashboard";
 import VerifyOtp from "./pages/VerifyOtp";
 
@@ -31,6 +32,7 @@ function App() {
           <Route path="/cart" element={<Cart />}  />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/payment" element={<Payment />} />
+          <Route path="/orders" element={<Orders />} />
           <Route path="/login" element={<Auth />} />
           <Route path="/verify-otp" element={<VerifyOtp />} />
           
