@@ -27,50 +27,52 @@ function Payment() {
         return;
       }
 
+      // ✅ 1. Create Razorpay order
       const res = await fetch(
-        "http://localhost:8080/api/orders/place",
+        `http://localhost:8080/api/payment/create-order?amount=${total}`,
         {
           method: "POST",
           headers: {
-            "Authorization": `Bearer ${token}`,
-            "Content-Type": "application/json"
+            Authorization: `Bearer ${token}`
           }
         }
       );
 
-      console.log("HTTP STATUS:", res.status);
+      const order = await res.json();
 
-      if (res.status === 200) {
+      // ✅ 2. Open Razorpay popup
+      const options = {
+        key: "rzp_test_SSiGpE2ckiAYod",
+        amount: order.amount,
+        currency: "INR",
+        name: "Kamal Dairy",
+        description: "Dairy Payment",
+        order_id: order.id,
 
-        // sometimes backend returns empty body → avoid crash
-        let data = null;
+        handler: async function (response) {
 
-        try {
-          data = await res.json();
-        } catch {
-          console.log("No JSON returned");
+          // ✅ 3. After successful payment → place order
+          await fetch(
+            "http://localhost:8080/api/orders/place",
+            {
+              method: "POST",
+              headers: {
+                Authorization: `Bearer ${token}`
+              }
+            }
+          );
+
+          alert("Payment Successful 🎉");
+          navigate("/success");
         }
+      };
 
-        console.log("Order response:", data);
-
-        alert("Payment Successful 🎉");
-
-        navigate("/success");
-
-      } else {
-
-        const text = await res.text();
-        console.error("Backend error:", text);
-
-        alert("Failed to place order");
-
-      }
+      const rzp = new window.Razorpay(options);
+      rzp.open();
 
     } catch (err) {
-
-      console.error("Fetch error:", err);
-      alert("Failed to place order");
-
+      console.error(err);
+      alert("Payment failed");
     }
 
   };
