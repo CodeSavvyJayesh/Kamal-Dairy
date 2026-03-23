@@ -16,10 +16,10 @@ function Admin() {
 
   // 🔐 Protect route
   useEffect(() => {
-    if (role !== "ROLE_USER") {
+    if (!token || role !== "ROLE_ADMIN") {
       navigate("/");
     }
-  }, [role, navigate]);
+  }, [role, token, navigate]);
 
   // 📦 Load products
   useEffect(() => {
@@ -58,7 +58,6 @@ function Admin() {
     <div style={{ padding: "40px" }}>
       <h2>Admin Dashboard</h2>
 
-      {/* ADD PRODUCT FORM */}
       <div style={{ marginBottom: "30px" }}>
         <h3>Add Product</h3>
         <input
@@ -80,7 +79,6 @@ function Admin() {
         <button onClick={handleAdd}>Add Product</button>
       </div>
 
-      {/* PRODUCT LIST */}
       <h3>All Products</h3>
       {products.map((p) => (
         <div key={p.id} style={{ marginBottom: "10px" }}>
