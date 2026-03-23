@@ -8,7 +8,6 @@ function Payment() {
   const location = useLocation();
 
   const total = location.state?.total || 0;
-
   const [method, setMethod] = useState("");
 
   const handlePayment = async () => {
@@ -27,7 +26,7 @@ function Payment() {
         return;
       }
 
-      // ✅ 1. Create Razorpay order
+      // ✅ Create Razorpay order
       const res = await fetch(
         `http://localhost:8080/api/payment/create-order?amount=${total}`,
         {
@@ -40,7 +39,6 @@ function Payment() {
 
       const order = await res.json();
 
-      // ✅ 2. Open Razorpay popup
       const options = {
         key: "rzp_test_SSiGpE2ckiAYod",
         amount: order.amount,
@@ -49,21 +47,34 @@ function Payment() {
         description: "Dairy Payment",
         order_id: order.id,
 
-        handler: async function (response) {
+        handler: async function () {
 
-          // ✅ 3. After successful payment → place order
-          await fetch(
-            "http://localhost:8080/api/orders/place",
-            {
-              method: "POST",
-              headers: {
-                Authorization: `Bearer ${token}`
+          try {
+
+            // ✅ Place order AFTER payment
+            const orderRes = await fetch(
+              "http://localhost:8080/api/orders/place",
+              {
+                method: "POST",
+                headers: {
+                  Authorization: `Bearer ${token}`
+                }
               }
-            }
-          );
+            );
 
-          alert("Payment Successful 🎉");
-          navigate("/Orders");
+            if (!orderRes.ok) {
+              alert("Order creation failed ❌");
+              return;
+            }
+
+            alert("Payment Successful 🎉");
+
+            // ✅ Navigate AFTER order created
+            navigate("/orders");
+
+          } catch (err) {
+            console.error(err);
+          }
         }
       };
 
@@ -72,13 +83,11 @@ function Payment() {
 
     } catch (err) {
       console.error(err);
-      alert("Payment failed");
+      alert("Payment failed ❌");
     }
-
   };
 
   return (
-
     <section className="payment-page">
 
       <h1>Payment</h1>
@@ -123,9 +132,7 @@ function Payment() {
       </div>
 
     </section>
-
   );
-
 }
 
 export default Payment;
