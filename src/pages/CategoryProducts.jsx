@@ -14,7 +14,7 @@ function CategoryProducts() {
     setLoading(true);
     setError(null);
 
-    fetch(`http://localhost:8080/api/products/${category}`)
+    fetch(`/api/products/${category}`)
       .then((res) => {
         if (!res.ok) {
           throw new Error("Failed to fetch products");

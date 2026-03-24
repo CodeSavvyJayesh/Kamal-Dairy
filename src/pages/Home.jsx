@@ -10,7 +10,7 @@ function Home() {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:8080/api/products")
+    fetch("/api/products")
       .then((res) => res.json())
       .then((data) => {
         console.log("Products from backend:", data);

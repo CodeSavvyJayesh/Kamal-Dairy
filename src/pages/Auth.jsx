@@ -18,8 +18,8 @@ function Auth() {
 
     try {
       const url = isLogin
-        ? "http://localhost:8080/api/auth/login"
-        : "http://localhost:8080/api/auth/signup";
+        ? "/api/auth/login"
+        : "/api/auth/signup";
 
       const payload = isLogin
         ? { email, password }
