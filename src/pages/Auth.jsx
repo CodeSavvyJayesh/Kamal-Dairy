@@ -18,8 +18,8 @@ function Auth() {
 
     try {
       const url = isLogin
-        ? "/api/auth/login"
-        : "/api/auth/signup";
+        ? "http://13.201.4.201/api/auth/login"
+        : "http://13.201.4.201/api/auth/signup";
 
       const payload = isLogin
         ? { email, password }

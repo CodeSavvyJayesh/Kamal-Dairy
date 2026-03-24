@@ -14,7 +14,7 @@ function AdminDashboard() {
   const token = localStorage.getItem("token");
 
   const fetchProducts = async () => {
-    const res = await fetch("http://13.201.4.201:8080/api/products");
+    const res = await fetch("/api/products");
     const data = await res.json();
     setProducts(data);
   };

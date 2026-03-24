@@ -20,7 +20,7 @@ function ProductCard({ product }) {
       });
 
       const res = await fetch(
-        `http:///api/cart/add?${params}`,
+        `/api/cart/add?${params}`,
         {
           method: "POST",
           headers: {
