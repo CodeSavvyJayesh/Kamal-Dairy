@@ -10,7 +10,7 @@ function Home() {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    fetch("/api/products")
+    fetch("http://15.207.98.62:8080/api/products")
       .then((res) => res.json())
       .then((data) => {
         console.log("Products from backend:", data);

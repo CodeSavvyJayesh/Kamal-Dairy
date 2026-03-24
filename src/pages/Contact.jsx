@@ -59,7 +59,7 @@ function Contact() {
     e.preventDefault();
 
     try {
-      const response = await fetch("/api/contact", {
+      const response = await fetch("http://15.207.98.62:8080/api/contact", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

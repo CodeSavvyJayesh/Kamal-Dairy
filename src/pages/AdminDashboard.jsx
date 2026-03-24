@@ -14,7 +14,7 @@ function AdminDashboard() {
   const token = localStorage.getItem("token");
 
   const fetchProducts = async () => {
-    const res = await fetch("/api/products");
+    const res = await fetch("http://15.207.98.62:8080/api/products");
     const data = await res.json();
     setProducts(data);
   };
@@ -32,8 +32,8 @@ function AdminDashboard() {
 
     const method = editingId ? "PUT" : "POST";
     const url = editingId
-      ? `/api/products/${editingId}`
-      : "/api/products";
+      ? `http://15.207.98.62:8080/api/products/${editingId}`
+      : "http://15.207.98.62:8080/api/products";
 
     await fetch(url, {
       method,
@@ -50,7 +50,7 @@ function AdminDashboard() {
   };
 
   const handleDelete = async (id) => {
-    await fetch(`/api/products/${id}`, {
+    await fetch(`http://15.207.98.62:8080/api/products/${id}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${token}`

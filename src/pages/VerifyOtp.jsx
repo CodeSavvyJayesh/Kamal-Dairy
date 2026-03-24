@@ -16,7 +16,7 @@ function VerifyOtp() {
     setLoading(true);
 
     try {
-      const res = await fetch("/api/auth/verify", {
+      const res = await fetch("http://15.207.98.62:8080/api/auth/verify", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

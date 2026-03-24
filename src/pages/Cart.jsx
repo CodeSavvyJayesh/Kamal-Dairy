@@ -13,7 +13,7 @@ function Cart() {
     try {
 
       const res = await fetch(
-        "http://13.201.4.201/api/cart",
+        "http://15.207.98.62:8080/api/cart",
         {
           headers:{
             Authorization:`Bearer ${token}`
@@ -37,7 +37,7 @@ function Cart() {
   const removeItem = async(id)=>{
 
     await fetch(
-      `http://13.201.4.201/api/cart/remove/${id}`,
+      `http://15.207.98.62:8080/api/cart/remove/${id}`,
       {
         method:"DELETE",
         headers:{Authorization:`Bearer ${token}`}
@@ -53,7 +53,7 @@ function Cart() {
     if(qty < 1) return;
 
     await fetch(
-      `http://13.201.4.201/api/cart/update?cartItemId=${id}&quantity=${qty}`,
+      `http://15.207.98.62:8080/api/cart/update?cartItemId=${id}&quantity=${qty}`,
       {
         method:"PUT",
         headers:{Authorization:`Bearer ${token}`}

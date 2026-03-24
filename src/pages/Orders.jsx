@@ -16,7 +16,7 @@ function Orders() {
     try {
 
       const res = await fetch(
-        "/api/orders/my-orders",
+        "http://15.207.98.62:8080/api/orders/my-orders",
         {
           headers: {
             Authorization: `Bearer ${token}`,

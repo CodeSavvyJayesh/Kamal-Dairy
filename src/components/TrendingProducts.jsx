@@ -7,7 +7,7 @@ function TrendingProducts() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch("/api/trending-products")
+    fetch("http://15.207.98.62:8080/api/trending-products")
       .then((res) => {
         if (!res.ok) {
           throw new Error("Failed to fetch trending products");
