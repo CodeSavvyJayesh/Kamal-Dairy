@@ -1,256 +1,205 @@
-# 🥛 Kamal Dairy — Premium Dairy E-Commerce Platform
+🥛 Kamal Dairy - Frontend
 
-> A full-stack, production-ready dairy e-commerce platform built with modern web technologies, secure authentication, role-based access control, and a beautiful responsive UI.
+🚀 This project was developed as part of my Internship Project, where I built and deployed a full-stack dairy management application.
 
----
-
-## 🌟 Project Vision
-
-Kamal Dairy is designed to deliver a **premium online dairy shopping experience**.
-
-Customers can browse and shop high-quality dairy products from trusted brands like:
-
-- 🥛 Amul  
-- 🐄 Mother Dairy  
-- 🧀 Milk Mist  
-- 🧈 Heritage  
-- 🧊 And more...
-
-The platform focuses on:
-
-✔ Clean Architecture  
-✔ Secure Authentication (JWT)  
-✔ Role-Based Authorization  
-✔ Modern UI/UX  
-✔ Fully Responsive Design  
-✔ Scalable Backend Structure  
+A modern, scalable, and responsive React-based web application designed to manage dairy product subscriptions, customer interactions, and online ordering.
 
 ---
 
-# 🏗️ Architecture Overview
+📌 Project Overview
 
-This project follows a clean layered architecture:
+Kamal Dairy is a full-stack application where the frontend is built using React and communicates with a Spring Boot backend via REST APIs. The application is deployed on AWS EC2 and served using Nginx.
 
-Frontend (React + Vite)  
-↓  
-REST APIs (Spring Boot)  
-↓  
-Service Layer (Business Logic)  
-↓  
-Repository Layer (Spring Data JPA)  
-↓  
-MySQL Database  
+This project demonstrates real-world concepts such as:
 
-Security Layer:
-
-JWT Authentication  
-↓  
-JWT Validation Filter  
-↓  
-Role-Based Authorization (USER / ADMIN)  
-↓  
-Global Exception Handling (RFC 7807 Standard)
+- Full-stack development during internship
+- Frontend-backend integration
+- Cloud deployment (AWS EC2)
+- REST API communication
+- Authentication handling
+- Production-level hosting
 
 ---
 
-# 🚀 Tech Stack
+🚀 Features
 
-## 🎨 Frontend
+🛒 Product Management
 
-- ⚛ React.js (Vite)
-- 🎨 CSS (Custom styling)
-- 🎞 Swiper.js (Hero + Brand sliders)
-- 📦 React Icons
-- 🌐 Fetch API
-- 🔐 JWT Token Storage
+- Browse dairy products (milk, curd, paneer, etc.)
+- View detailed product information
+- Explore trending products
 
----
+🔐 Authentication
 
-## 🔐 Backend
+- User signup and login functionality
+- Secure authentication flow
 
-- ☕ Spring Boot 3 (3.5.9)
-- 🔐 Spring Security
-- 🗄 Spring Data JPA
-- 🐬 MySQL
-- 🔑 JWT (JSON Web Token)
-- 🛡 BCrypt Password Encryption
-- 📦 Global Exception Handling (RFC 7807)
+🛍️ Cart System
 
----
+- Add items to cart
+- Remove items from cart
+- View cart summary
 
-## 🛠 Tools
+📦 Subscription System
 
-- VS Code
-- IntelliJ IDEA
-- Postman
-- Git & GitHub
-- Maven
-- Vite Development Server
+- Daily / Weekly / Monthly subscriptions
 
----
+💳 Order Processing
 
-# ✨ Frontend Features
+- Checkout functionality
+- Order placement
 
-## 🎯 1. Premium Hero Banner Slider
+📞 Contact System
 
-- Auto-scrolling
-- Center-focused zoom animation
-- Background blur transitions
-- Smooth animation effects
-- Inspirational overlay text
+- Contact form for user queries
+
+🧑‍💼 Admin Features
+
+- Admin dashboard (if implemented)
+- Product management
+
+📱 Responsive Design
+
+- Mobile-friendly UI
+- Optimized for all screen sizes
 
 ---
 
-## 🧀 2. Smart Category System
+🛠️ Tech Stack
 
-12 Dairy Categories:
+Frontend
 
-- Milk
-- Paneer
-- Butter
-- Ghee
-- Ice Cream
-- Buttermilk
-- Yoghurt
-- Cheese
-- Lassi
-- Powdered Milk
-- Shrikhand
-- Chaas
+- React.js
+- JavaScript (ES6+)
+- HTML5 & CSS3
 
-✔ Clean grid layout  
-✔ Dynamic category-based listing  
-✔ Fully responsive  
+Tools & Libraries
 
----
+- Vite
+- Fetch API
 
-## 🛍 3. Modern Product Cards
+Deployment
 
-- Hover glow effects
-- Image zoom on hover
-- Add to Cart button
-- Know More button
-- Smooth shadow transitions
-- Clean typography
+- AWS EC2
+- Nginx
+- WinSCP
+- PuTTY
 
 ---
 
-## 🏷 4. Trusted Brands Slider
+📂 Project Structure
 
-- Infinite autoplay
-- Grayscale → Color hover effect
-- Smooth transitions
-- Mobile responsive
-
----
-
-## 📦 5. Subscription Section
-
-- Clean UI design
-- Basic subscription system
-- Ready for backend integration
-
----
-
-## 📞 6. Contact Page
-
-- Location
-- Phone
-- WhatsApp
-- Working Hours
-- Professional layout
-- Premium color theme
+kamal-dairy-frontend/
+│
+├── src/
+│   ├── components/
+│   ├── pages/
+│   ├── assets/
+│   ├── App.jsx
+│
+├── public/
+├── package.json
+└── README.md
 
 ---
 
-## 📱 Fully Responsive Design
+⚙️ Setup Instructions
 
-Works beautifully on:
-
-📱 Mobile  
-💻 Laptop  
-🖥 Desktop  
-📺 Large screens  
+git clone <your-frontend-repo>
+cd kamal-dairy-frontend
+npm install
+npm run dev
 
 ---
 
-# 🔐 Backend Features
+🌐 API Integration
 
-## 👤 Authentication System
+The frontend communicates with backend APIs hosted on AWS EC2.
 
-✔ User Signup  
-✔ Secure Login  
-✔ BCrypt password encryption  
-✔ JWT Token generation  
-✔ JWT validation filter  
 
 ---
 
-## 🛡 Role-Based Authorization
+🏗️ Build for Production
 
-Two roles implemented:
-
-### 👤 USER
-- Browse products
-- Place orders
-- View personal orders
-
-### 👑 ADMIN
-- Add products
-- Update products
-- Delete products
-- Full stock management access
-
-Role is embedded inside JWT and validated via Spring Security.
+npm run build (for frontend)
 
 ---
 
-## ⚙ Security Implementation
+☁️ Deployment (AWS EC2 + Nginx)
 
-- Custom JWT Utility
-- OncePerRequestFilter for token validation
-- SecurityFilterChain configuration
-- Method-level security using @PreAuthorize
-- Stateless authentication (no session storage)
+1. Build project using "npm run build"
+2. Upload "dist" folder using WinSCP
+3. Move files to "/var/www/html"
+4. Start Nginx:
+   sudo systemctl start nginx
+5. Access:
+   http://15.207.98.62
 
 ---
 
-## 🚨 Global Exception Handling
+🌐 Live Demo
 
-Implemented using:
-
-- @RestControllerAdvice
-- Custom business exceptions
-- RFC 7807 ProblemDetail standard
+http://15.207.98.62
 
 
-🧩 Upcoming Features
-🔐 OTP Email Verification
-🛒 Complete Cart System
-🔔 Notification System
-💳 Payment Gateway Integration
-📦 Order Tracking
-⭐ Product Reviews
-📊 Admin Analytics Dashboard
-📦 Advanced Stock Management
+---
 
-📈 Learning Outcomes
-Through this project, I implemented:
-JWT-based authentication
-Role-based authorization
-Spring Security configuration
-Global exception handling (RFC 7807)
-Clean layered architecture
-Secure password encryption
-RESTful API best practices
-Professional frontend UI/UX design
+## 📸 Screenshots
 
-🤝 Contribution
-This project is part of my:
-💼 Internship 
-🚀 Placement Preparation
-Suggestions and improvements are always welcome.
+### 🏠 Home Page
+![Home](screenshot/home.png)
+![Home](screenshot/home2.png)
 
-📬 Contact
-📧 Email: jayeshdhamal03@gmail.com
-📱 Phone: 9970469894
+### 🛒 Products Page
+![Products](screenshot/products.png)
+![Products](screenshot/products2.png)
+
+### 🛍️ Cart Page
+![Cart](screenshot/cart.png)
+![Cart](screenshot/RazorPay(paymentgateway).png)
+
+### 📞 Contact Page
+![Contact](screenshot/contact.png)
+
+### 🧑‍💼 Admin Dashboard
+![Admin](screenshot/AdminDashboard.png)
+
+
+
+
+---
+
+💡 Key Highlights
+
+- Developed during internship with real-world deployment
+- Full-stack integration using React and Spring Boot
+- Deployed on AWS EC2 using Nginx
+- Handled CORS and API communication issues
+- Optimized backend using swap memory
+
+
+---
+
+🧠 Learnings
+
+- Real-world full-stack development experience
+- AWS EC2 deployment and server management
+- Debugging production-level issues
+- Understanding system performance and memory optimization
+
+---
+
+🚀 Future Improvements
+
+- Add HTTPS (SSL)
+- Use custom domain
+- Add payment gateway
+- Improve UI/UX
+
+---
+
+👨‍💻 Author
+
+Name : Jayesh Dhamal
+Email : jayeshdhamal03@gmail.com
+Phone : 9970469894
