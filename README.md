@@ -133,13 +133,13 @@ npm run build (for frontend)
 4. Start Nginx:
    sudo systemctl start nginx
 5. Access:
-   http://15.207.98.62
+   https://kamaldairy.online
 
 ---
 
 🌐 Live Demo
 
-http://15.207.98.62
+https://kamaldairy.online
 
 
 ---
