@@ -18,8 +18,8 @@ function Auth() {
 
     try {
       const url = isLogin
-        ? "http://15.207.98.62:8080/api/auth/login"
-        : "http://15.207.98.62:8080/api/auth/signup";
+        ? "https://kamaldairy.online/api/auth/login"
+        : "https://kamaldairy.online/api/auth/signup";
 
       const payload = isLogin
         ? { email, password }

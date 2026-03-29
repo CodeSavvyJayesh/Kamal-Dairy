@@ -13,7 +13,7 @@ function Cart() {
     try {
 
       const res = await fetch(
-        "http://15.207.98.62:8080/api/cart",
+        "https://kamaldairy.online/api/cart",
         {
           headers:{
             Authorization:`Bearer ${token}`
@@ -37,7 +37,7 @@ function Cart() {
   const removeItem = async(id)=>{
 
     await fetch(
-      `http://15.207.98.62:8080/api/cart/remove/${id}`,
+      `https://kamaldairy.online/api/cart/remove/${id}`,
       {
         method:"DELETE",
         headers:{Authorization:`Bearer ${token}`}
