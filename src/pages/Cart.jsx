@@ -53,7 +53,7 @@ function Cart() {
     if(qty < 1) return;
 
     await fetch(
-      `http://15.207.98.62:8080/api/cart/update?cartItemId=${id}&quantity=${qty}`,
+      `https://kamaldairy.online/api/cart/update?cartItemId=${id}&quantity=${qty}`,
       {
         method:"PUT",
         headers:{Authorization:`Bearer ${token}`}

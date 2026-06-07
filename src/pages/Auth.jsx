@@ -18,8 +18,8 @@ function Auth() {
 
     try {
       const url = isLogin
-        ? "https://kamaldairy.online/api/auth/login"
-        : "https://kamaldairy.online/api/auth/signup";
+        ? "http://localhost:8080/api/auth/login"
+        : "http://localhost:8080/api/auth/signup";
 
       const payload = isLogin
         ? { email, password }

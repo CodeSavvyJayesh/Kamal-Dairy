@@ -44,7 +44,7 @@ function Admin() {
 
   // ❌ Delete Product
   const handleDelete = async (id) => {
-    await fetch(`http://15.207.98.62:8080/api/products/${id}`, {
+    await fetch(`https://kamaldairy.online/api/products/${id}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${token}`,
