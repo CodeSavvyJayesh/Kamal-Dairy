@@ -20,7 +20,7 @@ function ProductCard({ product }) {
       });
 
       const res = await fetch(
-        `https://kamaldairy.online/api/cart/add?${params}`,
+        `http://localhost:8080/api/cart/add?${params}`,
         {
           method: "POST",
           headers: {
