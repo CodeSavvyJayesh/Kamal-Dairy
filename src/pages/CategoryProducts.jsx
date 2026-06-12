@@ -14,7 +14,7 @@ function CategoryProducts() {
     setLoading(true);
     setError(null);
 
-    fetch(`https://kamaldairy.online/api/products/${category}`)
+    fetch(`http://localhost:8080/api/products/${category}`)
       .then((res) => {
         if (!res.ok) {
           throw new Error("Failed to fetch products");

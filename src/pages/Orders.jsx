@@ -16,7 +16,7 @@ function Orders() {
     try {
 
       const res = await fetch(
-        "https://kamaldairy.online/api/orders/my-orders",
+        "http://localhost:8080/api/orders/my-orders",
         {
           headers: {
             Authorization: `Bearer ${token}`,

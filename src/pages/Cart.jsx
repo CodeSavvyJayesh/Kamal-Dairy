@@ -13,7 +13,7 @@ function Cart() {
     try {
 
       const res = await fetch(
-        "https://kamaldairy.online/api/cart",
+        "http://localhost:8080.online/api/cart",
         {
           headers:{
             Authorization:`Bearer ${token}`
@@ -37,7 +37,7 @@ function Cart() {
   const removeItem = async(id)=>{
 
     await fetch(
-      `https://kamaldairy.online/api/cart/remove/${id}`,
+      `http://localhost:8080/api/cart/remove/${id}`,
       {
         method:"DELETE",
         headers:{Authorization:`Bearer ${token}`}
@@ -53,7 +53,7 @@ function Cart() {
     if(qty < 1) return;
 
     await fetch(
-      `https://kamaldairy.online/api/cart/update?cartItemId=${id}&quantity=${qty}`,
+      `http://localhost:8080/api/cart/update?cartItemId=${id}&quantity=${qty}`,
       {
         method:"PUT",
         headers:{Authorization:`Bearer ${token}`}

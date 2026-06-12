@@ -23,14 +23,14 @@ function Admin() {
 
   // 📦 Load products
   useEffect(() => {
-    fetch("https://kamaldairy.online/api/products")
+    fetch("http://localhost:8080/api/products")
       .then((res) => res.json())
       .then((data) => setProducts(data));
   }, []);
 
   // ➕ Add Product
   const handleAdd = async () => {
-    await fetch("https://kamaldairy.online/api/products", {
+    await fetch("http://localhost:8080/api/products", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -44,7 +44,7 @@ function Admin() {
 
   // ❌ Delete Product
   const handleDelete = async (id) => {
-    await fetch(`https://kamaldairy.online/api/products/${id}`, {
+    await fetch(`http://localhost:8080/api/products/${id}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${token}`,

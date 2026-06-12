@@ -28,7 +28,7 @@ function Payment() {
 
       // ✅ Create Razorpay order
       const res = await fetch(
-        `https://kamaldairy.online/api/payment/create-order?amount=${total}`,
+        `http://localhost:8080/api/payment/create-order?amount=${total}`,
         {
           method: "POST",
           headers: {
@@ -53,7 +53,7 @@ function Payment() {
 
             // ✅ Place order AFTER payment
             const orderRes = await fetch(
-              "https://kamaldairy.online/api/orders/place",
+              "http://localhost:8080/api/orders/place",
               {
                 method: "POST",
                 headers: {
