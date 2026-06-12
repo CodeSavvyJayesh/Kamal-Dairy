@@ -13,7 +13,7 @@ function Cart() {
     try {
 
       const res = await fetch(
-        "http://localhost:8080.online/api/cart",
+        "http://localhost:8080/api/cart",
         {
           headers:{
             Authorization:`Bearer ${token}`
