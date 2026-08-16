@@ -1,6 +1,8 @@
+import { useNavigate } from "react-router-dom";
 import "./SubscriptionSection.css";
 
 function SubscriptionSection() {
+   const navigate = useNavigate();
   const plans = [
     {
       id: 1,
@@ -42,7 +44,8 @@ function SubscriptionSection() {
             <p className="desc">{plan.desc}</p>
             <p className="price">{plan.price}</p>
 
-            <button className="subscribe-btn">
+            <button className="subscribe-btn"
+            onClick={() => navigate("/Subscription")}>
               Subscribe Now
             </button>
           </div>
