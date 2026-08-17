@@ -2,13 +2,13 @@ import { useEffect, useState } from "react";
 import "./AdminDashboard.css";
 
 function AdminDashboard() {
-
   const [products, setProducts] = useState([]);
+
   const [form, setForm] = useState({
     name: "",
     price: "",
     category: "",
-    imageUrl: ""
+    imageUrl: "",
   });
 
   const [editingId, setEditingId] = useState(null);
@@ -22,7 +22,7 @@ function AdminDashboard() {
   // Fetch Products
   const fetchProducts = async () => {
     const res = await fetch(
-      `http://localhost:8080/api/products?page=${page}&size=20`
+      `${import.meta.env.VITE_API_URL}/api/products?page=${page}&size=20`
     );
 
     const data = await res.json();
@@ -38,7 +38,7 @@ function AdminDashboard() {
   const handleChange = (e) => {
     setForm({
       ...form,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
@@ -48,23 +48,23 @@ function AdminDashboard() {
     const method = editingId ? "PUT" : "POST";
 
     const url = editingId
-      ? `http://localhost:8080/api/products/${editingId}`
-      : "http://localhost:8080/api/products";
+      ? `${import.meta.env.VITE_API_URL}/api/products/${editingId}`
+      : `${import.meta.env.VITE_API_URL}/api/products`;
 
     await fetch(url, {
       method,
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify(form)
+      body: JSON.stringify(form),
     });
 
     setForm({
       name: "",
       price: "",
       category: "",
-      imageUrl: ""
+      imageUrl: "",
     });
 
     setEditingId(null);
@@ -73,11 +73,11 @@ function AdminDashboard() {
   };
 
   const handleDelete = async (id) => {
-    await fetch(`http://localhost:8080/api/products/${id}`, {
+    await fetch(`${import.meta.env.VITE_API_URL}/api/products/${id}`, {
       method: "DELETE",
       headers: {
-        Authorization: `Bearer ${token}`
-      }
+        Authorization: `Bearer ${token}`,
+      },
     });
 
     fetchProducts();

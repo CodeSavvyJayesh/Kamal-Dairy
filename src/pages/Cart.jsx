@@ -13,10 +13,10 @@ function Cart() {
     try {
 
       const res = await fetch(
-        "http://localhost:8080/api/cart",
+        `${import.meta.env.VITE_API_URL}/api/cart`,
         {
-          headers:{
-            Authorization:`Bearer ${token}`
+          headers: {
+            Authorization: `Bearer ${token}`
           }
         }
       );
@@ -24,23 +24,25 @@ function Cart() {
       const data = await res.json();
       setCartItems(data);
 
-    } catch(err){
+    } catch (err) {
       console.error(err);
     }
 
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     loadCart();
-  },[]);
+  }, []);
 
-  const removeItem = async(id)=>{
+  const removeItem = async (id) => {
 
     await fetch(
-      `http://localhost:8080/api/cart/remove/${id}`,
+      `${import.meta.env.VITE_API_URL}/api/cart/remove/${id}`,
       {
-        method:"DELETE",
-        headers:{Authorization:`Bearer ${token}`}
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       }
     );
 
@@ -48,15 +50,17 @@ function Cart() {
 
   };
 
-  const updateQuantity = async(id,qty)=>{
+  const updateQuantity = async (id, qty) => {
 
-    if(qty < 1) return;
+    if (qty < 1) return;
 
     await fetch(
-      `http://localhost:8080/api/cart/update?cartItemId=${id}&quantity=${qty}`,
+      `${import.meta.env.VITE_API_URL}/api/cart/update?cartItemId=${id}&quantity=${qty}`,
       {
-        method:"PUT",
-        headers:{Authorization:`Bearer ${token}`}
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       }
     );
 
@@ -65,16 +69,17 @@ function Cart() {
   };
 
   const total = cartItems.reduce(
-    (sum,item)=>sum + item.price * item.quantity,0
+    (sum, item) => sum + item.price * item.quantity,
+    0
   );
 
-  return(
+  return (
 
     <section className="cart-page">
 
       <h1 className="cart-title">Fresh Dairy Cart 🥛</h1>
 
-      {cartItems.length === 0 ?(
+      {cartItems.length === 0 ? (
 
         <div className="empty-cart">
 
@@ -83,12 +88,13 @@ function Cart() {
 
         </div>
 
-      ):(
+      ) : (
 
         <>
+
           <div className="cart-list">
 
-            {cartItems.map(item=>(
+            {cartItems.map(item => (
 
               <div className="cart-card" key={item.id}>
 
@@ -110,7 +116,7 @@ function Cart() {
 
                     <button
                       onClick={() =>
-                        updateQuantity(item.id,item.quantity-1)
+                        updateQuantity(item.id, item.quantity - 1)
                       }
                     >
                       −
@@ -120,7 +126,7 @@ function Cart() {
 
                     <button
                       onClick={() =>
-                        updateQuantity(item.id,item.quantity+1)
+                        updateQuantity(item.id, item.quantity + 1)
                       }
                     >
                       +
@@ -136,7 +142,7 @@ function Cart() {
 
                   <button
                     className="remove-btn"
-                    onClick={()=>removeItem(item.id)}
+                    onClick={() => removeItem(item.id)}
                   >
                     Remove
                   </button>
@@ -160,10 +166,12 @@ function Cart() {
 
             <button
               className="checkout-btn"
-              onClick={()=>navigate(
-                "/checkout",
-                {state:{cartItems,total}}
-              )}
+              onClick={() =>
+                navigate(
+                  "/checkout",
+                  { state: { cartItems, total } }
+                )
+              }
             >
               Proceed to Checkout →
             </button>

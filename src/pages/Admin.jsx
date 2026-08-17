@@ -3,7 +3,9 @@ import { useNavigate } from "react-router-dom";
 
 function Admin() {
   const navigate = useNavigate();
+
   const [products, setProducts] = useState([]);
+
   const [form, setForm] = useState({
     name: "",
     price: "",
@@ -23,14 +25,14 @@ function Admin() {
 
   // 📦 Load products
   useEffect(() => {
-    fetch("http://localhost:8080/api/products")
+    fetch(`${import.meta.env.VITE_API_URL}/api/products`)
       .then((res) => res.json())
       .then((data) => setProducts(data));
   }, []);
 
   // ➕ Add Product
   const handleAdd = async () => {
-    await fetch("http://localhost:8080/api/products", {
+    await fetch(`${import.meta.env.VITE_API_URL}/api/products`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -44,7 +46,7 @@ function Admin() {
 
   // ❌ Delete Product
   const handleDelete = async (id) => {
-    await fetch(`http://localhost:8080/api/products/${id}`, {
+    await fetch(`${import.meta.env.VITE_API_URL}/api/products/${id}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -60,29 +62,44 @@ function Admin() {
 
       <div style={{ marginBottom: "30px" }}>
         <h3>Add Product</h3>
+
         <input
           placeholder="Name"
-          onChange={(e) => setForm({ ...form, name: e.target.value })}
+          onChange={(e) =>
+            setForm({ ...form, name: e.target.value })
+          }
         />
+
         <input
           placeholder="Price"
-          onChange={(e) => setForm({ ...form, price: e.target.value })}
+          onChange={(e) =>
+            setForm({ ...form, price: e.target.value })
+          }
         />
+
         <input
           placeholder="Category"
-          onChange={(e) => setForm({ ...form, category: e.target.value })}
+          onChange={(e) =>
+            setForm({ ...form, category: e.target.value })
+          }
         />
+
         <input
           placeholder="Image URL"
-          onChange={(e) => setForm({ ...form, imageUrl: e.target.value })}
+          onChange={(e) =>
+            setForm({ ...form, imageUrl: e.target.value })
+          }
         />
+
         <button onClick={handleAdd}>Add Product</button>
       </div>
 
       <h3>All Products</h3>
+
       {products.map((p) => (
         <div key={p.id} style={{ marginBottom: "10px" }}>
           {p.name} - ₹{p.price}
+
           <button
             style={{ marginLeft: "15px", color: "red" }}
             onClick={() => handleDelete(p.id)}

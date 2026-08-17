@@ -28,7 +28,7 @@ function Payment() {
 
       // ✅ Create Razorpay order
       const res = await fetch(
-        `http://localhost:8080/api/payment/create-order?amount=${total}`,
+        `${import.meta.env.VITE_API_URL}/api/payment/create-order?amount=${total}`,
         {
           method: "POST",
           headers: {
@@ -53,7 +53,7 @@ function Payment() {
 
             // ✅ Place order AFTER payment
             const orderRes = await fetch(
-              "http://localhost:8080/api/orders/place",
+              `${import.meta.env.VITE_API_URL}/api/orders/place`,
               {
                 method: "POST",
                 headers: {

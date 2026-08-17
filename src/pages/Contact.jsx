@@ -59,13 +59,16 @@ function Contact() {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:8080/api/contact", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/contact`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
 
       if (response.ok) {
         alert("Query sent successfully!");
@@ -87,6 +90,7 @@ function Contact() {
 
   return (
     <div className="contact-page">
+
       {/* HEADER */}
       <h1 className="contact-title">
         <span>•</span> Hold the Line, Please! <span>•</span>
@@ -94,26 +98,35 @@ function Contact() {
 
       {/* LOCATIONS + MAP */}
       <div className="contact-layout">
+
         <div className="contact-locations">
+
           {locations.map((item) => (
             <div className="location-card" key={item.title}>
+
               <h3>{item.title}</h3>
+
               <p>
                 <FaMapMarkerAlt /> {item.addr}
               </p>
+
               <p>
                 <FaClock /> {item.time}
               </p>
+
               <p>
                 <FaPhoneAlt /> {item.phone}
               </p>
+
               {item.whatsapp && (
                 <p>
                   <FaWhatsapp /> {item.whatsapp}
                 </p>
               )}
+
             </div>
           ))}
+
         </div>
 
         <img
@@ -121,6 +134,7 @@ function Contact() {
           alt="Delivery locations map"
           className="contact-map"
         />
+
       </div>
 
       {/* QUERY SECTION */}
@@ -129,7 +143,9 @@ function Contact() {
       </h2>
 
       <div className="contact-form-layout">
+
         <form className="contact-form" onSubmit={handleSubmit}>
+
           <input
             name="name"
             placeholder="Name"
@@ -163,10 +179,14 @@ function Contact() {
             required
           />
 
-          <button type="submit">SUBMIT</button>
+          <button type="submit">
+            SUBMIT
+          </button>
+
         </form>
 
         <div className="contact-info">
+
           <h3>For Exports</h3>
           <p>📞 +91 9970469894</p>
           <p>✉ exports@kamalfarm.com</p>
@@ -177,8 +197,11 @@ function Contact() {
 
           <h3>For Jobs</h3>
           <p>✉ hr@kamalfarm.com</p>
+
         </div>
+
       </div>
+
     </div>
   );
 }

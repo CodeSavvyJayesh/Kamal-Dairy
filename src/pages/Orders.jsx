@@ -16,7 +16,7 @@ function Orders() {
     try {
 
       const res = await fetch(
-        "http://localhost:8080/api/orders/my-orders",
+        `${import.meta.env.VITE_API_URL}/api/orders/my-orders`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -26,7 +26,7 @@ function Orders() {
 
       const data = await res.json();
 
-      console.log("ORDERS DATA:", data); // debug
+      console.log("ORDERS DATA:", data);
 
       setOrders(data);
 
@@ -41,14 +41,18 @@ function Orders() {
       <h1 className="orders-title">🧾 My Orders</h1>
 
       {orders.length === 0 ? (
+
         <div className="no-orders">
           <h2>No Orders Yet</h2>
           <p>Start shopping fresh dairy products 🥛</p>
         </div>
+
       ) : (
+
         <div className="orders-container">
 
           {orders.map(order => (
+
             <div className="order-card" key={order.id}>
 
               <div className="order-header">
@@ -60,10 +64,14 @@ function Orders() {
 
                 {/* ✅ Safe rendering */}
                 {order.items && order.items.map(item => (
+
                   <div className="order-item" key={item.id}>
                     <span>{item.productName}</span>
-                    <span>{item.quantity} × ₹{item.price}</span>
+                    <span>
+                      {item.quantity} × ₹{item.price}
+                    </span>
                   </div>
+
                 ))}
 
               </div>
@@ -73,9 +81,11 @@ function Orders() {
               </div>
 
             </div>
+
           ))}
 
         </div>
+
       )}
 
     </section>

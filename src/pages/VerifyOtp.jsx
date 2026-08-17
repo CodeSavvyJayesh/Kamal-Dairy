@@ -16,16 +16,19 @@ function VerifyOtp() {
     setLoading(true);
 
     try {
-      const res = await fetch("http://localhost:8080/api/auth/verify", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email,
-          otp,
-        }),
-      });
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/auth/verify`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email,
+            otp,
+          }),
+        }
+      );
 
       if (!res.ok) {
         const msg = await res.text();
@@ -34,8 +37,10 @@ function VerifyOtp() {
 
       alert("Email verified successfully! Now login.");
       navigate("/login");
+
     } catch (err) {
       alert(err.message);
+
     } finally {
       setLoading(false);
     }
@@ -43,14 +48,19 @@ function VerifyOtp() {
 
   return (
     <div className="auth-page">
+
       <div className="auth-box">
-        <h2 className="auth-title">Verify OTP</h2>
+
+        <h2 className="auth-title">
+          Verify OTP
+        </h2>
 
         <p style={{ textAlign: "center", marginBottom: "10px" }}>
           OTP sent to: <b>{email}</b>
         </p>
 
         <form onSubmit={handleVerify}>
+
           <input
             type="text"
             className="auth-input"
@@ -60,11 +70,18 @@ function VerifyOtp() {
             required
           />
 
-          <button className="auth-btn" type="submit" disabled={loading}>
+          <button
+            className="auth-btn"
+            type="submit"
+            disabled={loading}
+          >
             {loading ? "Verifying..." : "Verify OTP"}
           </button>
+
         </form>
+
       </div>
+
     </div>
   );
 }

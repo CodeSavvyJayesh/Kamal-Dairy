@@ -18,8 +18,8 @@ function Auth() {
 
     try {
       const url = isLogin
-        ? "http://localhost:8080/api/auth/login"
-        : "http://localhost:8080/api/auth/signup";
+        ? `${import.meta.env.VITE_API_URL}/api/auth/login`
+        : `${import.meta.env.VITE_API_URL}/api/auth/signup`;
 
       const payload = isLogin
         ? { email, password }
@@ -41,15 +41,19 @@ function Auth() {
       // LOGIN SUCCESS
       if (isLogin) {
         const data = await res.json();
+
         localStorage.setItem("token", data.token);
         localStorage.setItem("role", data.role);
+
         navigate("/");
       }
+
       // SIGNUP SUCCESS
       else {
         alert("Account created successfully. Please login.");
         navigate("/verify-otp", { state: { email } });
       }
+
     } catch (err) {
       alert(err.message);
     } finally {
@@ -59,12 +63,15 @@ function Auth() {
 
   return (
     <div className="auth-page">
+
       <div className="auth-box">
+
         <h2 className="auth-title">
           {isLogin ? "Welcome Back" : "Create Account"}
         </h2>
 
         <form onSubmit={handleSubmit}>
+
           {!isLogin && (
             <input
               type="text"
@@ -94,29 +101,42 @@ function Auth() {
             required
           />
 
-          <button className="auth-btn" type="submit" disabled={loading}>
+          <button
+            className="auth-btn"
+            type="submit"
+            disabled={loading}
+          >
             {loading
               ? "Please wait..."
               : isLogin
               ? "Login"
               : "Create Account"}
           </button>
+
         </form>
 
         <p className="auth-switch">
+
           {isLogin ? (
             <>
               Don’t have an account?{" "}
-              <span onClick={() => setIsLogin(false)}>Sign Up</span>
+              <span onClick={() => setIsLogin(false)}>
+                Sign Up
+              </span>
             </>
           ) : (
             <>
               Already have an account?{" "}
-              <span onClick={() => setIsLogin(true)}>Login</span>
+              <span onClick={() => setIsLogin(true)}>
+                Login
+              </span>
             </>
           )}
+
         </p>
+
       </div>
+
     </div>
   );
 }

@@ -20,7 +20,7 @@ function ProductCard({ product }) {
       });
 
       const res = await fetch(
-        `http://localhost:8080/api/cart/add?${params}`,
+        `${import.meta.env.VITE_API_URL}/api/cart/add?${params}`,
         {
           method: "POST",
           headers: {

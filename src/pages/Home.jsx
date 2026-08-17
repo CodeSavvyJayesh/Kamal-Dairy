@@ -10,7 +10,7 @@ function Home() {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:8080/api/products")
+    fetch(`${import.meta.env.VITE_API_URL}/api/products`)
       .then((res) => res.json())
       .then((data) => {
         console.log("Products from backend:", data);
@@ -23,8 +23,10 @@ function Home() {
 
   return (
     <div className="home-page">
+
       {/* 🌟 PREMIUM MARQUEE */}
       <div className="marquee-wrapper">
+
         <div className="marquee-content">
           🌟 Fresh • Pure • Premium • Kamal Dairy brings nature’s best to your home |
           🚚 Same-Day Delivery | 🎉 Orders Above ₹1000 → FLAT 10% OFF |
@@ -38,6 +40,7 @@ function Home() {
           📍 Now Delivering in Marine Lines • Borivali • Ghatkopar • Chembur |
           🧈 100% Farm Fresh Dairy | ❄ Hygienic Packaging | 🥛 Trusted Since 1980
         </div>
+
       </div>
 
       {/* HERO SLIDER */}
@@ -45,14 +48,18 @@ function Home() {
 
       {/* CONTENT SECTIONS */}
       <div className="home-container">
+
         <TrustedBrands />
+
         <WhyChooseUs />
 
         {/* ✅ PASS PRODUCTS HERE */}
         <TrendingProducts products={products} />
 
         <SubscriptionSection />
+
       </div>
+
     </div>
   );
 }
