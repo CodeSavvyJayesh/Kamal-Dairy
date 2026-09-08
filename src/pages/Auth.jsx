@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { api, clearSession } from "../api/client";
 import "./Auth.css";
 
 function Auth() {
@@ -9,53 +10,46 @@ function Auth() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError(null);
+
+    if (!isLogin && password.length < 8) {
+      setError("Password must be at least 8 characters.");
+      return;
+    }
+
     setLoading(true);
 
     try {
-      const url = isLogin
-        ? `${import.meta.env.VITE_API_URL}/api/auth/login`
-        : `${import.meta.env.VITE_API_URL}/api/auth/signup`;
-
-      const payload = isLogin
-        ? { email, password }
-        : { name, email, password };
-
-      const res = await fetch(url, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      });
-
-      if (!res.ok) {
-        const msg = await res.text();
-        throw new Error(msg || "Request failed");
-      }
-
-      // LOGIN SUCCESS
       if (isLogin) {
-        const data = await res.json();
+        const data = await api("/api/auth/login", {
+          method: "POST",
+          body: { email, password },
+        });
 
+        clearSession();
         localStorage.setItem("token", data.token);
         localStorage.setItem("role", data.role);
 
         navigate("/");
-      }
 
-      // SIGNUP SUCCESS
-      else {
-        alert("Account created successfully. Please login.");
+      } else {
+        await api("/api/auth/signup", {
+          method: "POST",
+          body: { name, email, password },
+        });
+
         navigate("/verify-otp", { state: { email } });
       }
 
     } catch (err) {
-      alert(err.message);
+      setError(err.message);
+
     } finally {
       setLoading(false);
     }
@@ -89,50 +83,49 @@ function Auth() {
             placeholder="Your Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            autoComplete="email"
             required
           />
 
           <input
             type="password"
             className="auth-input"
-            placeholder="Password"
+            placeholder={isLogin ? "Password" : "Password (min 8 characters)"}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            autoComplete={isLogin ? "current-password" : "new-password"}
+            minLength={isLogin ? undefined : 8}
             required
           />
 
-          <button
-            className="auth-btn"
-            type="submit"
-            disabled={loading}
-          >
-            {loading
-              ? "Please wait..."
-              : isLogin
-              ? "Login"
-              : "Create Account"}
+          {error && (
+            <p style={{ color: "#c0392b", fontSize: "0.9rem", margin: "8px 0" }}>
+              {error}
+            </p>
+          )}
+
+          <button className="auth-btn" type="submit" disabled={loading}>
+            {loading ? "Please wait..." : isLogin ? "Login" : "Create Account"}
           </button>
 
         </form>
 
         <p className="auth-switch">
-
           {isLogin ? (
             <>
-              Don’t have an account?{" "}
-              <span onClick={() => setIsLogin(false)}>
+              Don&apos;t have an account?{" "}
+              <span onClick={() => { setIsLogin(false); setError(null); }}>
                 Sign Up
               </span>
             </>
           ) : (
             <>
               Already have an account?{" "}
-              <span onClick={() => setIsLogin(true)}>
+              <span onClick={() => { setIsLogin(true); setError(null); }}>
                 Login
               </span>
             </>
           )}
-
         </p>
 
       </div>

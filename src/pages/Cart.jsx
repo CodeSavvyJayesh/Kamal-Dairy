@@ -1,71 +1,68 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { api } from "../api/client";
 import "./Cart.css";
 
 function Cart() {
 
   const [cartItems, setCartItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [busy, setBusy] = useState(false);
+
   const navigate = useNavigate();
-  const token = localStorage.getItem("token");
 
-  const loadCart = async () => {
-
-    try {
-
-      const res = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/cart`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        }
-      );
-
-      const data = await res.json();
-      setCartItems(data);
-
-    } catch (err) {
-      console.error(err);
+  const handleError = useCallback((err) => {
+    if (err.status === 401) {
+      navigate("/login");
+      return;
     }
+    setError(err.message);
+  }, [navigate]);
 
-  };
+  const loadCart = useCallback(async () => {
+    try {
+      setError(null);
+      const data = await api("/api/cart", { auth: true });
+      setCartItems(Array.isArray(data) ? data : []);
+    } catch (err) {
+      handleError(err);
+    } finally {
+      setLoading(false);
+    }
+  }, [handleError]);
 
   useEffect(() => {
     loadCart();
-  }, []);
+  }, [loadCart]);
 
   const removeItem = async (id) => {
-
-    await fetch(
-      `${import.meta.env.VITE_API_URL}/api/cart/remove/${id}`,
-      {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      }
-    );
-
-    loadCart();
-
+    setBusy(true);
+    try {
+      await api(`/api/cart/remove/${id}`, { method: "DELETE", auth: true });
+      await loadCart();
+    } catch (err) {
+      handleError(err);
+    } finally {
+      setBusy(false);
+    }
   };
 
   const updateQuantity = async (id, qty) => {
+    if (qty < 1 || qty > 99) return;
 
-    if (qty < 1) return;
-
-    await fetch(
-      `${import.meta.env.VITE_API_URL}/api/cart/update?cartItemId=${id}&quantity=${qty}`,
-      {
+    setBusy(true);
+    try {
+      await api(`/api/cart/update?cartItemId=${id}&quantity=${qty}`, {
         method: "PUT",
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      }
-    );
-
-    loadCart();
-
+        auth: true,
+      });
+      await loadCart();
+    } catch (err) {
+      handleError(err);
+    } finally {
+      setBusy(false);
+    }
   };
 
   const total = cartItems.reduce(
@@ -73,80 +70,84 @@ function Cart() {
     0
   );
 
-  return (
+  if (loading) {
+    return (
+      <section className="cart-page">
+        <h1 className="cart-title">Fresh Dairy Cart</h1>
+        <p style={{ textAlign: "center" }}>Loading your cart...</p>
+      </section>
+    );
+  }
 
+  return (
     <section className="cart-page">
 
-      <h1 className="cart-title">Fresh Dairy Cart 🥛</h1>
+      <h1 className="cart-title">Fresh Dairy Cart</h1>
+
+      {error && (
+        <p style={{ textAlign: "center", color: "#c0392b" }}>{error}</p>
+      )}
 
       {cartItems.length === 0 ? (
 
         <div className="empty-cart">
-
           <h2>Your cart is empty</h2>
           <p>Add some fresh dairy products</p>
-
         </div>
 
       ) : (
 
         <>
-
           <div className="cart-list">
 
-            {cartItems.map(item => (
+            {cartItems.map((item) => (
 
               <div className="cart-card" key={item.id}>
 
                 <div className="cart-image">
-
                   <img
                     src={item.image || "/milk.png"}
                     alt={item.productName}
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src = "/milk.png";
+                    }}
                   />
-
                 </div>
 
                 <div className="cart-info">
-
                   <h3>{item.productName}</h3>
-                  <p className="price">₹{item.price}</p>
+                  <p className="price">Rs {item.price}</p>
 
                   <div className="qty-control">
-
                     <button
-                      onClick={() =>
-                        updateQuantity(item.id, item.quantity - 1)
-                      }
+                      disabled={busy || item.quantity <= 1}
+                      onClick={() => updateQuantity(item.id, item.quantity - 1)}
                     >
-                      −
+                      -
                     </button>
 
                     <span>{item.quantity}</span>
 
                     <button
-                      onClick={() =>
-                        updateQuantity(item.id, item.quantity + 1)
-                      }
+                      disabled={busy || item.quantity >= 99}
+                      onClick={() => updateQuantity(item.id, item.quantity + 1)}
                     >
                       +
                     </button>
-
                   </div>
-
                 </div>
 
                 <div className="cart-actions">
-
-                  <h2>₹{item.price * item.quantity}</h2>
+                  <h2>Rs {item.price * item.quantity}</h2>
 
                   <button
                     className="remove-btn"
+                    disabled={busy}
                     onClick={() => removeItem(item.id)}
                   >
                     Remove
                   </button>
-
                 </div>
 
               </div>
@@ -158,34 +159,25 @@ function Cart() {
           <div className="cart-total">
 
             <div className="total-left">
-
               <h2>Total Amount</h2>
-              <h1>₹{total}</h1>
-
+              <h1>Rs {total}</h1>
             </div>
 
             <button
               className="checkout-btn"
-              onClick={() =>
-                navigate(
-                  "/checkout",
-                  { state: { cartItems, total } }
-                )
-              }
+              disabled={busy}
+              onClick={() => navigate("/checkout")}
             >
-              Proceed to Checkout →
+              Proceed to Checkout
             </button>
 
           </div>
-
         </>
 
       )}
 
     </section>
-
   );
-
 }
 
 export default Cart;

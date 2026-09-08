@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import ProductCard from "../components/ProductCard";
+import { api } from "../api/client";
 import "./CategoryProducts.css";
 
 function CategoryProducts() {
@@ -10,40 +11,34 @@ function CategoryProducts() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
+  const load = useCallback(async () => {
     setLoading(true);
     setError(null);
 
-    fetch(`${import.meta.env.VITE_API_URL}/api/products/${category}`)
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error("Failed to fetch products");
-        }
-        return res.json();
-      })
-      .then((data) => {
-        setProducts(data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        setError(err.message);
-        setLoading(false);
-      });
+    try {
+      const data = await api(`/api/products/${encodeURIComponent(category)}`);
+      setProducts(Array.isArray(data) ? data : []);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
   }, [category]);
+
+  useEffect(() => {
+    load();
+  }, [load]);
 
   return (
     <section className="category-page">
+
       <h1 className="category-title">
-        {category.toUpperCase()} PRODUCTS
+        {String(category).toUpperCase()} PRODUCTS
       </h1>
 
-      {loading && (
-        <p className="no-products">Loading products...</p>
-      )}
+      {loading && <p className="no-products">Loading products...</p>}
 
-      {error && (
-        <p className="no-products">{error}</p>
-      )}
+      {error && <p className="no-products">{error}</p>}
 
       {!loading && !error && products.length === 0 && (
         <p className="no-products">No products found.</p>
@@ -56,6 +51,7 @@ function CategoryProducts() {
           ))}
         </div>
       )}
+
     </section>
   );
 }

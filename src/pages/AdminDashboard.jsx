@@ -1,107 +1,137 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { api } from "../api/client";
 import "./AdminDashboard.css";
 
+const EMPTY_FORM = { name: "", price: "", category: "", imageUrl: "" };
+
 function AdminDashboard() {
+
+  const navigate = useNavigate();
+
   const [products, setProducts] = useState([]);
-
-  const [form, setForm] = useState({
-    name: "",
-    price: "",
-    category: "",
-    imageUrl: "",
-  });
-
+  const [form, setForm] = useState(EMPTY_FORM);
   const [editingId, setEditingId] = useState(null);
 
-  // Pagination States
   const [page, setPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
 
-  const token = localStorage.getItem("token");
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState(null);
 
-  // Fetch Products
-  const fetchProducts = async () => {
-    const res = await fetch(
-      `${import.meta.env.VITE_API_URL}/api/products?page=${page}&size=20`
-    );
+  const handleError = useCallback((err) => {
+    if (err.status === 401) {
+      navigate("/login");
+      return;
+    }
+    if (err.status === 403) {
+      setError("Your account is not an admin, so this action was rejected by the server.");
+      return;
+    }
+    setError(err.message);
+  }, [navigate]);
 
-    const data = await res.json();
-
-    setProducts(data.content);
-    setTotalPages(data.totalPages);
-  };
+  const fetchProducts = useCallback(async () => {
+    setLoading(true);
+    try {
+      setError(null);
+      const data = await api(`/api/products?page=${page}&size=20`);
+      setProducts(data?.content ?? []);
+      setTotalPages(data?.totalPages ?? 0);
+    } catch (err) {
+      handleError(err);
+    } finally {
+      setLoading(false);
+    }
+  }, [page, handleError]);
 
   useEffect(() => {
     fetchProducts();
-  }, [page]);
+  }, [fetchProducts]);
 
   const handleChange = (e) => {
-    setForm({
-      ...form,
-      [e.target.name]: e.target.value,
-    });
+    setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setSaving(true);
+    setError(null);
 
-    const method = editingId ? "PUT" : "POST";
+    try {
+      const payload = {
+        name: form.name,
+        price: Number(form.price),
+        category: form.category,
+        imageUrl: form.imageUrl,
+      };
 
-    const url = editingId
-      ? `${import.meta.env.VITE_API_URL}/api/products/${editingId}`
-      : `${import.meta.env.VITE_API_URL}/api/products`;
+      if (editingId) {
+        await api(`/api/products/${editingId}`, {
+          method: "PUT",
+          auth: true,
+          body: payload,
+        });
+      } else {
+        await api("/api/products", {
+          method: "POST",
+          auth: true,
+          body: payload,
+        });
+      }
 
-    await fetch(url, {
-      method,
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(form),
-    });
+      setForm(EMPTY_FORM);
+      setEditingId(null);
+      await fetchProducts();
 
-    setForm({
-      name: "",
-      price: "",
-      category: "",
-      imageUrl: "",
-    });
-
-    setEditingId(null);
-
-    fetchProducts();
+    } catch (err) {
+      handleError(err);
+    } finally {
+      setSaving(false);
+    }
   };
 
   const handleDelete = async (id) => {
-    await fetch(`${import.meta.env.VITE_API_URL}/api/products/${id}`, {
-      method: "DELETE",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    if (!window.confirm("Delete this product?")) return;
 
-    fetchProducts();
+    setError(null);
+    try {
+      await api(`/api/products/${id}`, { method: "DELETE", auth: true });
+      await fetchProducts();
+    } catch (err) {
+      handleError(err);
+    }
   };
 
   const handleEdit = (product) => {
-    setForm(product);
+    setForm({
+      name: product.name ?? "",
+      price: product.price ?? "",
+      category: product.category ?? "",
+      imageUrl: product.imageUrl ?? "",
+    });
     setEditingId(product.id);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const cancelEdit = () => {
+    setForm(EMPTY_FORM);
+    setEditingId(null);
   };
 
   return (
     <div className="admin-container">
 
-      <h1 className="admin-title">
-        Admin Dashboard
-      </h1>
+      <h1 className="admin-title">Admin Dashboard</h1>
 
-      {/* Form */}
+      {error && (
+        <p style={{ textAlign: "center", color: "#c0392b" }}>{error}</p>
+      )}
 
       <div className="admin-form-card">
 
-        <h2>
-          {editingId ? "Update Product" : "Add New Product"}
-        </h2>
+        <h2>{editingId ? "Update Product" : "Add New Product"}</h2>
 
         <form onSubmit={handleSubmit} className="admin-form">
 
@@ -116,6 +146,8 @@ function AdminDashboard() {
           <input
             name="price"
             type="number"
+            min="0"
+            step="0.01"
             placeholder="Price"
             value={form.price}
             onChange={handleChange}
@@ -138,74 +170,72 @@ function AdminDashboard() {
             required
           />
 
-          <button type="submit">
-            {editingId ? "Update Product" : "Add Product"}
+          <button type="submit" disabled={saving}>
+            {saving
+              ? "Saving..."
+              : editingId
+              ? "Update Product"
+              : "Add Product"}
           </button>
+
+          {editingId && (
+            <button type="button" onClick={cancelEdit} disabled={saving}>
+              Cancel
+            </button>
+          )}
 
         </form>
 
       </div>
 
-      {/* Products */}
+      {loading ? (
+        <p style={{ textAlign: "center" }}>Loading products...</p>
+      ) : (
+        <div className="admin-grid">
+          {products.map((p) => (
+            <div key={p.id} className="admin-card">
 
-      <div className="admin-grid">
+              <img
+                src={p.imageUrl}
+                alt={p.name}
+                loading="lazy"
+                onError={(e) => {
+                  e.target.onerror = null;
+                  e.target.src = "https://via.placeholder.com/300x300?text=No+Image";
+                }}
+              />
 
-        {products.map((p) => (
+              <h3>{p.name}</h3>
+              <p>Rs {p.price}</p>
+              <span>{p.category}</span>
 
-          <div key={p.id} className="admin-card">
-
-            <img src={p.imageUrl} alt={p.name} />
-
-            <h3>{p.name}</h3>
-
-            <p>₹ {p.price}</p>
-
-            <span>{p.category}</span>
-
-            <div className="admin-btn-group">
-
-              <button
-                className="edit-btn"
-                onClick={() => handleEdit(p)}
-              >
-                Edit
-              </button>
-
-              <button
-                className="delete-btn"
-                onClick={() => handleDelete(p.id)}
-              >
-                Delete
-              </button>
+              <div className="admin-btn-group">
+                <button className="edit-btn" onClick={() => handleEdit(p)}>
+                  Edit
+                </button>
+                <button className="delete-btn" onClick={() => handleDelete(p.id)}>
+                  Delete
+                </button>
+              </div>
 
             </div>
-
-          </div>
-
-        ))}
-
-      </div>
-
-      {/* Pagination */}
+          ))}
+        </div>
+      )}
 
       <div className="pagination">
 
-        <button
-          onClick={() => setPage(page - 1)}
-          disabled={page === 0}
-        >
-          ◀ Previous
+        <button onClick={() => setPage(page - 1)} disabled={page === 0}>
+          Previous
         </button>
 
-        <span>
-          Page {page + 1} of {totalPages}
-        </span>
+        <span>Page {totalPages === 0 ? 0 : page + 1} of {totalPages}</span>
 
         <button
           onClick={() => setPage(page + 1)}
-          disabled={page === totalPages - 1}
+          disabled={totalPages === 0 || page >= totalPages - 1}
         >
-          Next ▶
+          Next
         </button>
 
       </div>

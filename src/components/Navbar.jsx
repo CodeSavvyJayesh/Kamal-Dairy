@@ -1,5 +1,6 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { clearSession, isAdmin, isLoggedIn } from "../api/client";
 import "./Navbar.css";
 
 function Navbar() {
@@ -7,14 +8,16 @@ function Navbar() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const token = localStorage.getItem("token");
-  const role = localStorage.getItem("role");
+  // Re-evaluated on every render, and every route change re-renders this
+  // component, so an expired token stops showing logged-in UI without the
+  // full-page reload the old version needed.
+  const loggedIn = isLoggedIn();
+  const admin = isAdmin();
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("role");
-    navigate("/");
-    window.location.reload(); // refresh navbar state
+    clearSession();
+    setOpen(false);
+    navigate("/", { replace: true });
   };
 
   return (
@@ -28,7 +31,7 @@ function Navbar() {
       </Link>
 
       <div className="menu-icon" onClick={() => setOpen(!open)}>
-        ☰
+        &#9776;
       </div>
 
       <div className={`nav-links ${open ? "open" : ""}`}>
@@ -38,24 +41,16 @@ function Navbar() {
         <NavItem to="/contact" label="Contact" location={location} onClick={() => setOpen(false)} />
         <NavItem to="/cart" label="Cart" location={location} onClick={() => setOpen(false)} />
 
-        {/* 👑 ADMIN DASHBOARD */}
-        {role === "ROLE_ADMIN" && (
-          <NavItem
-            to="/admin"
-            label="Admin Dashboard"
-            location={location}
-            onClick={() => setOpen(false)}
-          />
+        {loggedIn && (
+          <NavItem to="/orders" label="My Orders" location={location} onClick={() => setOpen(false)} />
         )}
 
-        {/* 🔐 LOGIN / LOGOUT */}
-        {!token ? (
-          <NavItem
-            to="/login"
-            label="Login"
-            location={location}
-            onClick={() => setOpen(false)}
-          />
+        {admin && (
+          <NavItem to="/admin" label="Admin Dashboard" location={location} onClick={() => setOpen(false)} />
+        )}
+
+        {!loggedIn ? (
+          <NavItem to="/login" label="Login" location={location} onClick={() => setOpen(false)} />
         ) : (
           <span className="nav-link logout-btn" onClick={handleLogout}>
             Logout
@@ -70,11 +65,7 @@ function NavItem({ to, label, location, onClick }) {
   const active = location.pathname === to;
 
   return (
-    <Link
-      to={to}
-      className={`nav-link ${active ? "active" : ""}`}
-      onClick={onClick}
-    >
+    <Link to={to} className={`nav-link ${active ? "active" : ""}`} onClick={onClick}>
       {label}
     </Link>
   );

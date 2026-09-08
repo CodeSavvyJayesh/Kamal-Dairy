@@ -19,7 +19,6 @@ function Subscription() {
         <div className="sub-card popular">
           <span className="badge gold">Most Popular</span>
           <h2>Daily Delivery</h2>
-
           <ul>
             <li>🥛 Fresh milk every morning</li>
             <li>⏸ Pause / resume anytime</li>

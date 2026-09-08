@@ -1,142 +1,160 @@
-import { useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { api } from "../api/client";
 import "./Checkout.css";
 
-function Checkout(){
+function Checkout() {
 
-const navigate = useNavigate();
-const location = useLocation();
+  const navigate = useNavigate();
 
-const cartItems = location.state?.cartItems || [];
-const total = location.state?.total || 0;
+  // The summary is loaded from the server rather than carried in router state,
+  // so a page refresh no longer empties it and the figures always match what
+  // the backend will actually charge.
+  const [cartItems, setCartItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-const [form,setForm]=useState({
-name:"",
-phone:"",
-address:"",
-city:"",
-pincode:""
-});
+  const [form, setForm] = useState({
+    name: "",
+    phone: "",
+    address: "",
+    city: "",
+    pincode: "",
+  });
 
-const handleChange=(e)=>{
+  useEffect(() => {
+    (async () => {
+      try {
+        const data = await api("/api/cart", { auth: true });
+        setCartItems(Array.isArray(data) ? data : []);
+      } catch (err) {
+        if (err.status === 401) {
+          navigate("/login");
+          return;
+        }
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    })();
+  }, [navigate]);
 
-setForm({
-...form,
-[e.target.name]:e.target.value
-});
+  const total = cartItems.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0
+  );
 
-};
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
 
-const handleSubmit=(e)=>{
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
-e.preventDefault();
+    if (cartItems.length === 0) {
+      setError("Your cart is empty.");
+      return;
+    }
 
-navigate("/payment",{
-state:{
-cartItems,
-total,
-shipping:form
-}
-});
+    navigate("/payment", { state: { shipping: form } });
+  };
 
-};
+  if (loading) {
+    return (
+      <section className="checkout-page">
+        <h1 className="checkout-title">Shipping Details</h1>
+        <p style={{ textAlign: "center" }}>Loading...</p>
+      </section>
+    );
+  }
 
-return(
+  return (
+    <section className="checkout-page">
 
-<section className="checkout-page">
+      <h1 className="checkout-title">Shipping Details</h1>
 
-<h1 className="checkout-title">
-Shipping Details
-</h1>
+      {error && (
+        <p style={{ textAlign: "center", color: "#c0392b" }}>{error}</p>
+      )}
 
-<div className="checkout-container">
+      <div className="checkout-container">
 
-<form
-className="checkout-form"
-onSubmit={handleSubmit}
->
+        <form className="checkout-form" onSubmit={handleSubmit}>
 
-<input
-name="name"
-placeholder="Full Name"
-onChange={handleChange}
-required
-/>
+          <input
+            name="name"
+            placeholder="Full Name"
+            value={form.name}
+            onChange={handleChange}
+            required
+          />
 
-<input
-name="phone"
-placeholder="Phone Number"
-onChange={handleChange}
-required
-/>
+          <input
+            name="phone"
+            placeholder="Phone Number"
+            value={form.phone}
+            onChange={handleChange}
+            pattern="[0-9]{10}"
+            title="10 digit phone number"
+            required
+          />
 
-<input
-name="address"
-placeholder="Address"
-onChange={handleChange}
-required
-/>
+          <input
+            name="address"
+            placeholder="Address"
+            value={form.address}
+            onChange={handleChange}
+            required
+          />
 
-<input
-name="city"
-placeholder="City"
-onChange={handleChange}
-required
-/>
+          <input
+            name="city"
+            placeholder="City"
+            value={form.city}
+            onChange={handleChange}
+            required
+          />
 
-<input
-name="pincode"
-placeholder="Pincode"
-onChange={handleChange}
-required
-/>
+          <input
+            name="pincode"
+            placeholder="Pincode"
+            value={form.pincode}
+            onChange={handleChange}
+            pattern="[0-9]{6}"
+            title="6 digit pincode"
+            required
+          />
 
-<button className="checkout-btn">
-Continue to Payment →
-</button>
+          <button className="checkout-btn" disabled={cartItems.length === 0}>
+            Continue to Payment
+          </button>
 
-</form>
+        </form>
 
-<div className="order-summary">
+        <div className="order-summary">
 
-<h2>Order Summary</h2>
+          <h2>Order Summary</h2>
 
-{cartItems.map(item=>(
+          {cartItems.map((item) => (
+            <div key={item.id} className="summary-item">
+              <span>{item.productName} x {item.quantity}</span>
+              <span>Rs {item.price * item.quantity}</span>
+            </div>
+          ))}
 
-<div
-key={item.id}
-className="summary-item"
->
+          <hr />
 
-<span>
-{item.productName} × {item.quantity}
-</span>
+          <div className="summary-total">
+            <span>Total</span>
+            <span>Rs {total}</span>
+          </div>
 
-<span>
-₹{item.price*item.quantity}
-</span>
+        </div>
 
-</div>
+      </div>
 
-))}
-
-<hr/>
-
-<div className="summary-total">
-
-<span>Total</span>
-<span>₹{total}</span>
-
-</div>
-
-</div>
-
-</div>
-
-</section>
-
-);
-
+    </section>
+  );
 }
 
 export default Checkout;
