@@ -1,504 +1,191 @@
-/* =====================================
-   MAIN CONTAINER
-===================================== */
-
-.sub-container{
-
-width:100%;
-min-height:100vh;
-
-background:
-linear-gradient(
-135deg,
-#f0fff4,
-#e3f9e5
-);
-
-font-family:"Segoe UI",Arial,sans-serif;
-
-padding-bottom:120px;
-
+.plans {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+  gap: var(--sp-5);
+  align-items: stretch;
+  margin-bottom: var(--sp-9);
 }
 
-
-/* =====================================
-   HERO
-===================================== */
-
-.sub-hero{
-
-text-align:center;
-
-padding:110px 20px 90px;
-
-background:
-linear-gradient(
-180deg,
-#ffffff,
-#f1fff1
-);
-
-border-bottom:1px solid #e6f5e6;
-
+.plan {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  padding: var(--sp-6) var(--sp-5);
+  transition: transform var(--t), box-shadow var(--t);
 }
 
-.sub-hero h1{
-
-font-size:54px;
-
-font-weight:900;
-
-color:#064e3b;
-
-letter-spacing:1px;
-
+.plan:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--sh-2);
 }
 
-.sub-hero p{
-
-font-size:19px;
-
-color:#355c4d;
-
-max-width:720px;
-
-margin:16px auto 0;
-
-line-height:1.7;
-
+.plan.is-featured {
+  border-color: var(--green-800);
+  border-width: 2px;
+  box-shadow: var(--sh-2);
 }
 
-
-/* =====================================
-   PLANS LAYOUT
-===================================== */
-
-.sub-plans{
-
-display:flex;
-
-justify-content:center;
-
-align-items:stretch;
-
-gap:46px;
-
-padding:90px 20px;
-
-flex-wrap:wrap;
-
+.plan__ribbon {
+  position: absolute;
+  top: -13px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 6px 16px;
+  border-radius: var(--r-full);
+  background: var(--green-800);
+  color: var(--gold-400);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
 }
 
-
-/* =====================================
-   SUBSCRIPTION CARD
-===================================== */
-
-.sub-card{
-
-width:330px;
-
-background:rgba(255,255,255,0.95);
-
-backdrop-filter:blur(14px);
-
-border-radius:28px;
-
-padding:40px 32px;
-
-position:relative;
-
-box-shadow:
-0 20px 60px rgba(0,0,0,0.1);
-
-transition:all .4s ease;
-
-border-top:6px solid #16a34a;
-
+.plan h2 {
+  font-family: var(--font-body);
+  font-size: var(--step-1);
+  font-weight: 800;
+  margin: 0;
 }
 
-
-/* GREEN GLOW BORDER */
-
-.sub-card::before{
-
-content:"";
-
-position:absolute;
-
-inset:0;
-
-border-radius:28px;
-
-padding:2px;
-
-background:
-linear-gradient(
-135deg,
-#16a34a,
-#22c55e,
-#4ade80
-);
-
-mask:
-linear-gradient(#fff 0 0) content-box,
-linear-gradient(#fff 0 0);
-
-mask-composite:exclude;
-
-opacity:.7;
-
-pointer-events:none;
-
+.plan__tagline {
+  color: var(--text-muted);
+  margin: 0;
+  font-size: var(--step-0);
 }
 
-
-/* HOVER */
-
-.sub-card:hover{
-
-transform:translateY(-18px);
-
-box-shadow:
-0 40px 90px rgba(22,163,74,.35);
-
+.plan__price {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: var(--sp-4) 0;
+  margin: var(--sp-2) 0;
+  border-block: 1px dashed var(--line);
 }
 
-
-/* =====================================
-   POPULAR PLAN
-===================================== */
-
-.sub-card.popular{
-
-transform:scale(1.08);
-
-border-top:6px solid #e53935;
-
-box-shadow:
-0 45px 100px rgba(22,163,74,.4);
-
+.plan__price strong {
+  font-family: var(--font-display);
+  font-size: var(--step-2);
+  color: var(--green-800);
+  letter-spacing: -0.02em;
 }
 
-.sub-card.popular:hover{
-
-transform:scale(1.12) translateY(-12px);
-
+.plan__price span {
+  font-size: var(--step--1);
+  font-weight: 700;
+  color: var(--gold-600);
 }
 
-
-/* =====================================
-   BADGES
-===================================== */
-
-.badge{
-
-position:absolute;
-
-top:20px;
-
-right:20px;
-
-padding:7px 16px;
-
-font-size:12px;
-
-font-weight:800;
-
-border-radius:999px;
-
-letter-spacing:.5px;
-
+.plan__features {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  flex: 1;
+  margin-bottom: var(--sp-4);
 }
 
-.badge.gold{
-
-background:#e53935;
-
-color:white;
-
+.plan__features li {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-3);
+  font-size: var(--step-0);
+  color: var(--ink-700);
+  line-height: 1.5;
 }
 
-.badge.blue{
-
-background:black;
-
-color:white;
-
+.plan__features svg {
+  flex: none;
+  margin-top: 3px;
+  padding: 2px;
+  width: 19px;
+  height: 19px;
+  border-radius: 50%;
+  background: var(--green-50);
+  color: var(--green-600);
 }
 
-.badge.green{
+/* ---------- FAQ ---------- */
 
-background:#16a34a;
-
-color:white;
-
+.faq {
+  max-width: 760px;
+  margin-inline: auto;
 }
 
-
-/* =====================================
-   PLAN TEXT
-===================================== */
-
-.sub-card h2{
-
-text-align:center;
-
-font-size:30px;
-
-font-weight:900;
-
-color:#064e3b;
-
-margin-bottom:20px;
-
+.faq__title {
+  text-align: center;
+  margin-bottom: var(--sp-6);
 }
 
-.sub-card ul{
-
-list-style:none;
-
-padding:0;
-
-margin:0;
-
+.faq__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
 }
 
-.sub-card li{
-
-font-size:16px;
-
-margin:14px 0;
-
-color:#374151;
-
-display:flex;
-
-align-items:center;
-
-gap:10px;
-
+.faq__item {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  overflow: hidden;
+  transition: border-color var(--t), box-shadow var(--t);
 }
 
-
-/* =====================================
-   PRICE
-===================================== */
-
-.sub-price{
-
-font-size:36px;
-
-font-weight:900;
-
-text-align:center;
-
-color:#16a34a;
-
-margin-bottom:14px;
-
+.faq__item.is-open {
+  border-color: var(--green-300);
+  box-shadow: var(--sh-1);
 }
 
-
-/* =====================================
-   BUTTON
-===================================== */
-
-.sub-btn{
-
-width:100%;
-
-margin-top:32px;
-
-padding:16px;
-
-font-size:17px;
-
-font-weight:800;
-
-border-radius:16px;
-
-border:none;
-
-cursor:pointer;
-
-background:
-linear-gradient(
-135deg,
-#16a34a,
-#22c55e
-);
-
-color:white;
-
-letter-spacing:.6px;
-
-transition:.3s;
-
+.faq__q {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-4);
+  width: 100%;
+  padding: var(--sp-4) var(--sp-5);
+  border: 0;
+  background: none;
+  text-align: left;
+  font-family: var(--font-body);
+  font-size: var(--step-0);
+  font-weight: 700;
+  color: var(--ink-900);
 }
 
-.sub-btn:hover{
-
-transform:translateY(-4px);
-
-box-shadow:
-0 20px 50px rgba(22,163,74,.5);
-
+.faq__chev {
+  flex: none;
+  width: 11px;
+  height: 11px;
+  border-right: 2.5px solid var(--green-700);
+  border-bottom: 2.5px solid var(--green-700);
+  transform: rotate(45deg) translate(-2px, -2px);
+  transition: transform var(--t);
 }
 
-
-/* =====================================
-   FAQ SECTION
-===================================== */
-
-.sub-faq{
-
-max-width:950px;
-
-margin:0 auto;
-
-padding:90px 20px;
-
+.faq__item.is-open .faq__chev {
+  transform: rotate(225deg) translate(-3px, -3px);
 }
 
-.sub-faq h2{
-
-text-align:center;
-
-font-size:42px;
-
-font-weight:900;
-
-margin-bottom:42px;
-
-color:#064e3b;
-
+.faq__a {
+  padding: 0 var(--sp-5) var(--sp-5);
+  animation: kd-fade-up 260ms var(--ease) both;
 }
 
-
-/* =====================================
-   FAQ CARD
-===================================== */
-
-.faq-box{
-
-background:white;
-
-padding:28px;
-
-border-radius:18px;
-
-margin:20px 0;
-
-box-shadow:
-0 20px 45px rgba(0,0,0,0.1);
-
-border-left:6px solid #16a34a;
-
-transition:.3s;
-
+.faq__a p {
+  margin: 0;
+  color: var(--text-muted);
+  line-height: 1.7;
 }
 
-.faq-box:hover{
-
-transform:translateY(-6px);
-
-box-shadow:
-0 30px 70px rgba(22,163,74,.25);
-
+.faq__more {
+  text-align: center;
+  margin-top: var(--sp-6);
+  color: var(--text-muted);
 }
 
-.faq-box h3{
-
-font-size:20px;
-
-color:#064e3b;
-
-}
-
-.faq-box p{
-
-margin-top:10px;
-
-font-size:16px;
-
-color:#4b5563;
-
-line-height:1.6;
-
-}
-
-
-/* =====================================
-   RESPONSIVE
-===================================== */
-
-@media(max-width:900px){
-
-.sub-plans{
-
-gap:32px;
-
-}
-
-}
-
-
-@media(max-width:768px){
-
-.sub-hero h1{
-
-font-size:36px;
-
-}
-
-.sub-hero p{
-
-font-size:16px;
-
-}
-
-.sub-card{
-
-width:100%;
-
-max-width:380px;
-
-}
-
-.sub-card.popular{
-
-transform:none;
-
-}
-
-}
-
-
-@media(max-width:480px){
-
-.sub-hero{
-
-padding:80px 20px 70px;
-
-}
-
-.sub-hero h1{
-
-font-size:30px;
-
-}
-
-.sub-plans{
-
-padding:60px 20px;
-
-}
-
-.sub-faq h2{
-
-font-size:30px;
-
-}
-
+.faq__more a {
+  color: var(--green-800);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }

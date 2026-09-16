@@ -1,213 +1,46 @@
-/* ========================================
-   PAGE
-======================================== */
-
-.category-page{
-
-min-height:100vh;
-
-padding:40px 20px 100px;
-
-background:
-linear-gradient(
-135deg,
-#f5fff5,
-#e8f8ea
-);
-
-font-family:"Segoe UI", Arial, sans-serif;
-
+.crumbs {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+  margin-bottom: var(--sp-4);
+  font-size: var(--step--1);
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.6);
+  position: relative;
 }
 
-
-/* ========================================
-   TITLE
-======================================== */
-
-.category-title{
-
-text-align:center;
-
-font-size:40px;
-
-font-weight:900;
-
-margin-bottom:50px;
-
-color:#064e3b;
-
-letter-spacing:1px;
-
-position:relative;
-
+.crumbs a:hover {
+  color: var(--gold-400);
 }
 
-/* decorative underline */
-
-.category-title::after{
-
-content:"";
-
-width:90px;
-
-height:4px;
-
-background:
-linear-gradient(
-90deg,
-#16a34a,
-#22c55e
-);
-
-display:block;
-
-margin:14px auto 0;
-
-border-radius:999px;
-
+.crumbs [aria-current="page"] {
+  color: var(--white);
+  text-transform: capitalize;
 }
 
-
-/* ========================================
-   GRID
-======================================== */
-
-.category-grid{
-
-max-width:1300px;
-
-margin:0 auto;
-
-display:grid;
-
-grid-template-columns:
-repeat(auto-fit,minmax(260px,1fr));
-
-gap:34px;
-
+.cat-page__title {
+  text-transform: capitalize;
 }
 
-
-/* ========================================
-   CARD ENHANCEMENT (if product card used)
-======================================== */
-
-.category-grid > *{
-
-transition:all .35s ease;
-
+.cat-page__toolbar {
+  display: flex;
+  gap: var(--sp-3);
+  align-items: center;
+  margin-bottom: var(--sp-6);
+  flex-wrap: wrap;
 }
 
-/* hover elevation */
-
-.category-grid > *:hover{
-
-transform:translateY(-10px);
-
+.cat-page__search {
+  flex: 1 1 260px;
+  min-width: 0;
 }
 
-
-/* ========================================
-   EMPTY STATE
-======================================== */
-
-.no-products{
-
-text-align:center;
-
-margin-top:80px;
-
-font-size:20px;
-
-color:#4b5563;
-
-padding:40px;
-
-background:white;
-
-border-radius:20px;
-
-box-shadow:
-0 15px 40px rgba(0,0,0,0.08);
-
-max-width:420px;
-
-margin-left:auto;
-
-margin-right:auto;
-
+.cat-page__sort {
+  flex: 0 0 auto;
 }
 
-
-/* ========================================
-   SECTION GLOW
-======================================== */
-
-.category-page::before{
-
-content:"";
-
-position:absolute;
-
-top:0;
-
-left:0;
-
-right:0;
-
-height:220px;
-
-background:
-radial-gradient(
-circle at center,
-rgba(34,197,94,0.15),
-transparent 70%
-);
-
-pointer-events:none;
-
-}
-
-
-/* ========================================
-   MOBILE
-======================================== */
-
-@media (max-width:768px){
-
-.category-title{
-
-font-size:30px;
-
-}
-
-.category-grid{
-
-gap:24px;
-
-}
-
-}
-
-
-@media (max-width:480px){
-
-.category-page{
-
-padding:30px 16px 80px;
-
-}
-
-.category-title{
-
-font-size:26px;
-
-}
-
-.category-grid{
-
-gap:18px;
-
-}
-
+.cat-page__sort .kd-select {
+  min-width: 190px;
+  cursor: pointer;
 }

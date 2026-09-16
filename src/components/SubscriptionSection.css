@@ -1,134 +1,102 @@
-/* ================================
-   SECTION BACKGROUND
-================================ */
-.subscription-section {
- 
-  background: linear-gradient(
-    to bottom,
-    #ffffff 0%,
-    #ffffff 100%
-  );
-  padding: 30px 20px;
-
-}
-
-/* ================================
-   TITLE
-================================ */
-.subscription-title {
-  text-align: center;
-  font-size: 36px;
-  font-weight: 700;
-  margin-bottom: 40px;
-  color: black;
-  position: relative;
-}
-
-.subscription-title::after {
-  content: "";
-  width: 70px;
-  height: 4px;
-  background: #D9181F;
-  display: block;
-  margin: 14px auto 0;
-  border-radius: 2px;
-}
-
-/* ================================
-   GRID
-================================ */
-.subscription-grid {
-  max-width: 1200px;
-  margin: 0 auto;
+.subs__grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 35px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--sp-5);
+  align-items: stretch;
 }
 
-/* ================================
-   CARD
-================================ */
-.subscription-card {
-  background: #ffffff;
-  padding: 40px 30px;
-  border-radius: 20px;
-  border-top: 5px solid #0F3D1E;
-  box-shadow: 0 15px 35px rgba(15, 61, 30, 0.08);
-  transition: all 0.3s ease;
-  text-align: center;
+.subs__card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  padding: var(--sp-6) var(--sp-5);
+  overflow: hidden;
 }
 
-.subscription-card h3 {
-  font-size: 22px;
-  margin-bottom: 15px;
-  color: #0F3D1E;
+.subs__card::after {
+  content: "";
+  position: absolute;
+  top: -70px;
+  right: -70px;
+  width: 170px;
+  height: 170px;
+  border-radius: 50%;
+  opacity: 0.5;
+  pointer-events: none;
+  transition: transform var(--t-slow);
 }
 
-.subscription-card .desc {
-  font-size: 16px;
-  margin-bottom: 0px;
-  color: #555;
-  line-height: 1.6;
+.subs__card:hover::after {
+  transform: scale(1.25);
 }
 
-.subscription-card .price {
-  font-weight: 700;
-  font-size: 18px;
-  margin-bottom: 25px;
-  color: #D9181F;
+.subs__card--gold::after {
+  background: var(--gold-100);
+}
+.subs__card--blue::after {
+  background: #e4f2fb;
+}
+.subs__card--green::after {
+  background: var(--green-50);
 }
 
-/* Hover */
-@media (hover: hover) {
-  .subscription-card:hover {
-    transform: translateY(-10px);
-    border-top: 5px solid #D9181F;
-    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.12);
-  }
+.subs__card.is-featured {
+  border-color: var(--green-800);
+  box-shadow: var(--sh-2);
 }
 
-/* ================================
-   BUTTON
-================================ */
-.subscribe-btn {
-  width: 100%;
-  padding: 14px;
-  background: #0F3D1E;
-  color: #ffffff;
-  border: none;
-  border-radius: 10px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
+.subs__ribbon {
+  position: absolute;
+  top: var(--sp-4);
+  right: var(--sp-4);
+  padding: 5px 12px;
+  border-radius: var(--r-full);
+  background: var(--green-800);
+  color: var(--gold-400);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
 }
 
-.subscribe-btn:hover {
-  background: #D9181F;
+.subs__card h3 {
+  position: relative;
+  font-family: var(--font-body);
+  font-weight: 800;
+  font-size: var(--step-1);
+  margin: 0;
 }
 
-/* ================================
-   TABLET
-================================ */
-@media (max-width: 992px) {
-  .subscription-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
+.subs__desc {
+  position: relative;
+  color: var(--text-muted);
+  margin: 0;
+  flex: 1;
 }
 
-/* ================================
-   MOBILE
-================================ */
-@media (max-width: 576px) {
-  .subscription-title {
-    font-size: 26px;
-    margin-bottom: 50px;
-  }
+.subs__price {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: var(--sp-3) 0;
+  border-top: 1px dashed var(--line);
+  margin-top: var(--sp-2);
+}
 
-  .subscription-grid {
-    grid-template-columns: 1fr;
-  }
+.subs__price strong {
+  font-family: var(--font-display);
+  font-size: var(--step-2);
+  color: var(--green-800);
+  letter-spacing: -0.02em;
+}
 
-  .subscription-card {
-    padding: 30px 20px;
-  }
+.subs__price span {
+  font-size: var(--step--1);
+  color: var(--text-muted);
+}
+
+.subs__card .kd-btn {
+  position: relative;
 }

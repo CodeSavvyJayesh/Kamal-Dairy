@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import HeroSlider from "../components/HeroSlider";
 import SubscriptionSection from "../components/SubscriptionSection";
 import TrendingProducts from "../components/TrendingProducts";
@@ -6,60 +6,67 @@ import TrustedBrands from "../components/TrustedBrands";
 import WhyChooseUs from "../components/WhyChooseUs";
 import "./Home.css";
 
+const TICKER = [
+  "Same-day delivery across Mumbai",
+  "Orders above ₹1000 — flat 10% off",
+  "Marine Lines • Borivali • Ghatkopar • Chembur",
+  "100% farm fresh dairy",
+  "Hygienic, tamper-evident packaging",
+  "Trusted since 1980",
+];
+
+/**
+ * The old version fetched /api/products here and passed the result to
+ * <TrendingProducts>, which ignored the prop and refetched anyway. Worse, that
+ * endpoint returns a paginated Page object, not an array, so the state was the
+ * wrong shape from the start. The fetch is gone - each section owns its data.
+ */
 function Home() {
-  const [products, setProducts] = useState([]);
-
-  useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}/api/products`)
-      .then((res) => res.json())
-      .then((data) => {
-        console.log("Products from backend:", data);
-        setProducts(data);
-      })
-      .catch((err) => {
-        console.log("Error fetching products:", err);
-      });
-  }, []);
-
   return (
-    <div className="home-page">
-
-      {/* 🌟 PREMIUM MARQUEE */}
-      <div className="marquee-wrapper">
-
-        <div className="marquee-content">
-          🌟 Fresh • Pure • Premium • Kamal Dairy brings nature’s best to your home |
-          🚚 Same-Day Delivery | 🎉 Orders Above ₹1000 → FLAT 10% OFF |
-          📍 Now Delivering in Marine Lines • Borivali • Ghatkopar • Chembur |
-          🧈 100% Farm Fresh Dairy | ❄ Hygienic Packaging | 🥛 Trusted Since 1980
-        </div>
-
-        <div className="marquee-content">
-          🌟 Fresh • Pure • Premium • Kamal Dairy brings nature’s best to your home |
-          🚚 Same-Day Delivery | 🎉 Orders Above ₹1000 → FLAT 10% OFF |
-          📍 Now Delivering in Marine Lines • Borivali • Ghatkopar • Chembur |
-          🧈 100% Farm Fresh Dairy | ❄ Hygienic Packaging | 🥛 Trusted Since 1980
-        </div>
-
-      </div>
-
-      {/* HERO SLIDER */}
+    <div className="home">
       <HeroSlider />
 
-      {/* CONTENT SECTIONS */}
-      <div className="home-container">
-
-        <TrustedBrands />
-
-        <WhyChooseUs />
-
-        {/* ✅ PASS PRODUCTS HERE */}
-        <TrendingProducts products={products} />
-
-        <SubscriptionSection />
-
+      <div className="ticker" aria-hidden="true">
+        <div className="ticker__track">
+          {[0, 1].map((copy) => (
+            <div className="ticker__group" key={copy}>
+              {TICKER.map((item) => (
+                <span className="ticker__item" key={item}>
+                  {item}
+                </span>
+              ))}
+            </div>
+          ))}
+        </div>
       </div>
 
+      <div className="kd-container">
+        <TrustedBrands />
+        <WhyChooseUs />
+        <TrendingProducts />
+        <SubscriptionSection />
+      </div>
+
+      <section className="cta">
+        <div className="kd-container cta__inner">
+          <div>
+            <h2>Tomorrow&apos;s milk, sorted tonight.</h2>
+            <p>
+              Set up a delivery in under two minutes. Pause it any time you are
+              out of town.
+            </p>
+          </div>
+
+          <div className="cta__actions">
+            <Link to="/products" className="kd-btn kd-btn--gold kd-btn--lg">
+              Start shopping
+            </Link>
+            <Link to="/subscription" className="kd-btn kd-btn--lg cta__ghost">
+              Set up a subscription
+            </Link>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }

@@ -1,189 +1,82 @@
+import { Link } from "react-router-dom";
+import {
+  FiFacebook,
+  FiInstagram,
+  FiTwitter,
+  FiYoutube,
+  FiPhone,
+  FiMail,
+  FiClock,
+} from "react-icons/fi";
+import "./Footer.css";
+
 function Footer() {
   return (
     <footer className="footer">
-      <div className="footer-inner">
-        {/* BRAND */}
-        <div className="footer-col">
-          <h2 className="brand">Kamal Dairy</h2>
-          <p className="brand-desc">
-            Delivering fresh dairy essentials from trusted brands to your
-            doorstep — pure, hygienic, and always on time.
+      <div className="footer__inner kd-container">
+        <div className="footer__brand">
+          <span className="footer__wordmark">
+            Kamal <em>Dairy</em>
+          </span>
+
+          <p>
+            Fresh dairy essentials from trusted brands, delivered across Mumbai —
+            pure, hygienic and always on time. Serving the city since 1980.
           </p>
-        </div>
 
-        {/* QUICK LINKS */}
-        <div className="footer-col">
-          <h3>Quick Links</h3>
-          <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/products">Products</a></li>
-            <li><a href="/subscription">Subscription</a></li>
-            <li><a href="/contact">Contact Us</a></li>
-          </ul>
-        </div>
-
-        {/* SUPPORT */}
-        <div className="footer-col">
-          <h3>Customer Support</h3>
-          <ul className="support-list">
-            <li>📞 +91 9970469894</li>
-            <li>📧 kamaldairy@gmail.com</li>
-            <li>🕒 6 AM – 10 PM</li>
-          </ul>
-        </div>
-
-        {/* SOCIAL */}
-        <div className="footer-col">
-          <h3>Follow Us</h3>
-          <div className="social-icons">
-            <span>📘</span>
-            <span>📸</span>
-            <span>🐦</span>
-            <span>▶</span>
+          <div className="footer__social">
+            <a href="#" aria-label="Facebook"><FiFacebook /></a>
+            <a href="#" aria-label="Instagram"><FiInstagram /></a>
+            <a href="#" aria-label="Twitter"><FiTwitter /></a>
+            <a href="#" aria-label="YouTube"><FiYoutube /></a>
           </div>
         </div>
+
+        <nav className="footer__col" aria-label="Footer">
+          <h3>Explore</h3>
+          <ul>
+            <li><Link to="/">Home</Link></li>
+            <li><Link to="/products">Products</Link></li>
+            <li><Link to="/subscription">Subscription</Link></li>
+            <li><Link to="/contact">Contact</Link></li>
+          </ul>
+        </nav>
+
+        <div className="footer__col">
+          <h3>Popular</h3>
+          <ul>
+            <li><Link to="/products/milk">Milk</Link></li>
+            <li><Link to="/products/paneer">Paneer</Link></li>
+            <li><Link to="/products/ghee">Ghee</Link></li>
+            <li><Link to="/products/yoghurt">Yoghurt</Link></li>
+          </ul>
+        </div>
+
+        <div className="footer__col">
+          <h3>Support</h3>
+          <ul className="footer__contact">
+            <li>
+              <FiPhone aria-hidden="true" />
+              <a href="tel:+919970469894">+91 99704 69894</a>
+            </li>
+            <li>
+              <FiMail aria-hidden="true" />
+              <a href="mailto:kamaldairy@gmail.com">kamaldairy@gmail.com</a>
+            </li>
+            <li>
+              <FiClock aria-hidden="true" />
+              <span>6 AM – 10 PM, all week</span>
+            </li>
+          </ul>
+        </div>
       </div>
 
-      {/* COPYRIGHT */}
-      <div className="footer-bottom">
-        © {new Date().getFullYear()} Kamal Dairy — All Rights Reserved
+      <div className="footer__bottom">
+        <div className="kd-container footer__bottom-inner">
+          <span>© {new Date().getFullYear()} Kamal Dairy. All rights reserved.</span>
+          <span className="footer__made">Made with 🥛 in Mumbai</span>
+        </div>
       </div>
-
-      {/* CSS */}
-      <style>
-        {`
-        /* ================================
-           FOOTER BASE
-        ================================= */
-        .footer {
-          background: #0b2e16; /* Darker brand green */
-          padding: 40px 10px 20px;
-          height: 500px;
-          color: #ffffff;
-          border-top: 4px solid #0F3D1E;
-        }
-
-        .footer-inner {
-          max-width: 1200px;
-          margin: 0 auto;
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-          gap: 50px;
-        }
-
-        /* BRAND */
-        .brand {
-          font-size: 28px;
-          font-weight: 800;
-          margin-bottom: 15px;
-          color: #ffffff;
-        }
-
-        .brand-desc {
-          line-height: 1.7;
-          color: #cccccc;
-          font-size: 15px;
-        }
-
-        /* COLUMN TITLES */
-        .footer-col h3 {
-          font-size: 18px;
-          margin-bottom: 18px;
-          color: #ffffff;
-          position: relative;
-        }
-
-        .footer-col h3::after {
-          content: "";
-          width: 35px;
-          height: 2px;
-          background: #D9181F;
-          display: block;
-          margin-top: 6px;
-        }
-
-        /* LISTS */
-        .footer-col ul {
-          list-style: none;
-          padding: 0;
-          margin: 0;
-          line-height: 2.2;
-        }
-
-        .footer-col ul li {
-          font-size: 15px;
-          color: #cccccc;
-        }
-
-        /* LINKS */
-        .footer-col ul li a {
-          text-decoration: none;
-          color: #cccccc;
-          transition: all 0.3s ease;
-        }
-
-        .footer-col ul li a:hover {
-          color: #D9181F;
-          padding-left: 6px;
-        }
-
-        /* SUPPORT */
-        .support-list li {
-          display: flex;
-          align-items: center;
-          gap: 8px;
-        }
-
-        /* SOCIAL ICONS */
-        .social-icons {
-          display: flex;
-          gap: 15px;
-        }
-
-        .social-icons span {
-          width: 42px;
-          height: 42px;
-          background: #0F3D1E;
-          border-radius: 50%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-size: 20px;
-          cursor: pointer;
-          transition: all 0.3s ease;
-        }
-
-        .social-icons span:hover {
-          background: #D9181F;
-          transform: translateY(-5px);
-        }
-
-        /* COPYRIGHT */
-        .footer-bottom {
-          text-align: center;
-          margin-top: 60px;
-          padding-top: 25px;
-          border-top: 1px solid #222;
-          font-size: 14px;
-          color: #999999;
-        }
-
-        /* MOBILE */
-        @media (max-width: 768px) {
-          .footer {
-            padding: 60px 20px 25px;
-          }
-
-          .footer-inner {
-            gap: 40px;
-          }
-
-          .footer-bottom {
-            margin-top: 40px;
-          }
-        }
-        `}
-      </style>
     </footer>
   );
 }

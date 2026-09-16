@@ -1,50 +1,63 @@
 import { Link } from "react-router-dom";
 import "./Products.css";
 
+const CATEGORIES = [
+  { name: "Milk", icon: "🥛", blurb: "Cow, buffalo, A2, toned" },
+  { name: "Paneer", icon: "🧀", blurb: "Soft, fresh, same-day" },
+  { name: "Butter", icon: "🧈", blurb: "Salted & unsalted" },
+  { name: "Ghee", icon: "🍯", blurb: "Bilona and cultured" },
+  { name: "Ice Cream", icon: "🍨", blurb: "Tubs and family packs" },
+  { name: "Buttermilk", icon: "🥤", blurb: "Spiced and plain" },
+  { name: "Yoghurt", icon: "🍶", blurb: "Set curd and Greek" },
+  { name: "Cheese", icon: "🧀", blurb: "Slices, cubes, spreads" },
+  { name: "Lassi", icon: "🥛", blurb: "Sweet, salted, mango" },
+  { name: "Powdered Milk", icon: "🥄", blurb: "Full cream and skimmed" },
+  { name: "Shrikhand", icon: "🍮", blurb: "Kesar, elaichi, mango" },
+  { name: "Chaas", icon: "🥛", blurb: "Chilled, ready to drink" },
+];
+
+const slug = (name) => name.toLowerCase().replaceAll(" ", "");
+
 function Products() {
-  const categories = [
-    { id: 1, name: "Milk", icon: "🥛" },
-    { id: 2, name: "Paneer", icon: "🧀" },
-    { id: 3, name: "Butter", icon: "🧈" },
-    { id: 4, name: "Ghee", icon: "🍯" },
-    { id: 5, name: "Ice Cream", icon: "🍨" },
-    { id: 6, name: "Buttermilk", icon: "🥤" },
-    { id: 7, name: "Yoghurt", icon: "🍶" },
-    { id: 8, name: "Cheese", icon: "🧀" },
-    { id: 9, name: "Lassi", icon: "🥛" },
-    { id: 10, name: "Powdered Milk", icon: "🥄" },
-    { id: 11, name: "Shrikhand", icon: "🍮" },
-    { id: 12, name: "Chaas", icon: "🥛" },
-  ];
-
   return (
-    <section className="products-page">
-      {/* HEADER */}
-      <div className="products-header">
-        <h1>Discover Our Dairy Collection</h1>
-        <p>
-          Fresh, hygienic and premium dairy products curated specially for your
-          daily needs.
-        </p>
-      </div>
+    <>
+      <header className="page-head">
+        <div className="kd-container">
+          <span className="kd-eyebrow">The full range</span>
+          <h1>Discover our dairy collection</h1>
+          <p>
+            Twelve categories, sourced from eleven trusted brands and delivered
+            fresh to your door.
+          </p>
+        </div>
+      </header>
 
-      {/* GRID */}
-      <div className="products-grid">
-        {categories.map((cat) => (
-          <Link
-            key={cat.id}
-            to={`/products/${cat.name.toLowerCase().replaceAll(" ", "")}`}
-            className="category-link"
-          >
-            <div className="category-card">
-              <div className="icon-wrapper">{cat.icon}</div>
-              <h3>{cat.name}</h3>
-              <span className="explore-text">Explore →</span>
-            </div>
-          </Link>
-        ))}
+      <div className="kd-container page-body">
+        <div className="cats">
+          {CATEGORIES.map((cat, i) => (
+            <Link
+              key={cat.name}
+              to={`/products/${slug(cat.name)}`}
+              className="cat kd-card kd-card--hover"
+              style={{ animationDelay: `${i * 35}ms` }}
+            >
+              <span className="cat__icon" aria-hidden="true">
+                {cat.icon}
+              </span>
+
+              <div className="cat__text">
+                <h3>{cat.name}</h3>
+                <p>{cat.blurb}</p>
+              </div>
+
+              <span className="cat__arrow" aria-hidden="true">
+                →
+              </span>
+            </Link>
+          ))}
+        </div>
       </div>
-    </section>
+    </>
   );
 }
 

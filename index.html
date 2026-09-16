@@ -2,13 +2,35 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>kamal-dairy</title>
+    <meta name="theme-color" content="#0b3d2e" />
 
-    <!-- razorpay script -->
-    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <title>Kamal Dairy — Farm-Fresh Dairy, Delivered Daily in Mumbai</title>
+    <meta
+      name="description"
+      content="Fresh milk, paneer, ghee, curd and premium dairy essentials from trusted brands, delivered to your door across Mumbai. Daily, weekly and monthly subscriptions available."
+    />
+
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%A5%9B%3C/text%3E%3C/svg%3E" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Kamal Dairy" />
+    <meta property="og:title" content="Kamal Dairy — Farm-Fresh Dairy, Delivered Daily" />
+    <meta
+      property="og:description"
+      content="Milk, paneer, ghee and more from trusted dairy brands, delivered fresh across Mumbai."
+    />
+    <meta property="og:image" content="/images/banners/banner1.jpg" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- Razorpay Checkout -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js" defer></script>
   </head>
+
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>

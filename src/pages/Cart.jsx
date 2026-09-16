@@ -1,182 +1,194 @@
-import { useCallback, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { api } from "../api/client";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { FiMinus, FiPlus, FiTrash2 } from "react-icons/fi";
+import { useCart } from "../context/CartContext";
+import { useToast } from "../context/ToastContext";
+import { PRODUCT_FALLBACK } from "../utils/images";
 import "./Cart.css";
 
+const DELIVERY_FEE = 0;
+
 function Cart() {
-
-  const [cartItems, setCartItems] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [busy, setBusy] = useState(false);
-
   const navigate = useNavigate();
+  const toast = useToast();
 
-  const handleError = useCallback((err) => {
+  const { items, total, loading, error, updateQuantity, removeItem } = useCart();
+  const [busyId, setBusyId] = useState(null);
+
+  const handleError = (err) => {
     if (err.status === 401) {
       navigate("/login");
       return;
     }
-    setError(err.message);
-  }, [navigate]);
+    toast.error(err.message);
+  };
 
-  const loadCart = useCallback(async () => {
+  const changeQty = async (item, next) => {
+    if (next < 1 || next > 99) return;
+
+    setBusyId(item.id);
     try {
-      setError(null);
-      const data = await api("/api/cart", { auth: true });
-      setCartItems(Array.isArray(data) ? data : []);
+      await updateQuantity(item.id, next);
     } catch (err) {
       handleError(err);
     } finally {
-      setLoading(false);
-    }
-  }, [handleError]);
-
-  useEffect(() => {
-    loadCart();
-  }, [loadCart]);
-
-  const removeItem = async (id) => {
-    setBusy(true);
-    try {
-      await api(`/api/cart/remove/${id}`, { method: "DELETE", auth: true });
-      await loadCart();
-    } catch (err) {
-      handleError(err);
-    } finally {
-      setBusy(false);
+      setBusyId(null);
     }
   };
 
-  const updateQuantity = async (id, qty) => {
-    if (qty < 1 || qty > 99) return;
-
-    setBusy(true);
+  const remove = async (item) => {
+    setBusyId(item.id);
     try {
-      await api(`/api/cart/update?cartItemId=${id}&quantity=${qty}`, {
-        method: "PUT",
-        auth: true,
-      });
-      await loadCart();
+      await removeItem(item.id);
+      toast.info(`${item.productName} removed`);
     } catch (err) {
       handleError(err);
     } finally {
-      setBusy(false);
+      setBusyId(null);
     }
   };
-
-  const total = cartItems.reduce(
-    (sum, item) => sum + item.price * item.quantity,
-    0
-  );
-
-  if (loading) {
-    return (
-      <section className="cart-page">
-        <h1 className="cart-title">Fresh Dairy Cart</h1>
-        <p style={{ textAlign: "center" }}>Loading your cart...</p>
-      </section>
-    );
-  }
 
   return (
-    <section className="cart-page">
-
-      <h1 className="cart-title">Fresh Dairy Cart</h1>
-
-      {error && (
-        <p style={{ textAlign: "center", color: "#c0392b" }}>{error}</p>
-      )}
-
-      {cartItems.length === 0 ? (
-
-        <div className="empty-cart">
-          <h2>Your cart is empty</h2>
-          <p>Add some fresh dairy products</p>
+    <>
+      <header className="page-head">
+        <div className="kd-container">
+          <span className="kd-eyebrow">Your basket</span>
+          <h1>Fresh dairy cart</h1>
+          <p>Prices are confirmed by the server at checkout, so what you see is what you pay.</p>
         </div>
+      </header>
 
-      ) : (
+      <div className="kd-container page-body">
+        {error && <p className="kd-alert">{error}</p>}
 
-        <>
-          <div className="cart-list">
-
-            {cartItems.map((item) => (
-
-              <div className="cart-card" key={item.id}>
-
-                <div className="cart-image">
-                  <img
-                    src={item.image || "/milk.png"}
-                    alt={item.productName}
-                    onError={(e) => {
-                      e.target.onerror = null;
-                      e.target.src = "/milk.png";
-                    }}
-                  />
+        {loading ? (
+          <div className="cart__skeletons">
+            {Array.from({ length: 3 }).map((_, i) => (
+              <div className="cart__row kd-card" key={i}>
+                <div className="kd-skel cart__skel-img" />
+                <div className="cart__skel-text">
+                  <div className="kd-skel cart__skel-line" />
+                  <div className="kd-skel cart__skel-line cart__skel-line--sm" />
                 </div>
-
-                <div className="cart-info">
-                  <h3>{item.productName}</h3>
-                  <p className="price">Rs {item.price}</p>
-
-                  <div className="qty-control">
-                    <button
-                      disabled={busy || item.quantity <= 1}
-                      onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                    >
-                      -
-                    </button>
-
-                    <span>{item.quantity}</span>
-
-                    <button
-                      disabled={busy || item.quantity >= 99}
-                      onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                    >
-                      +
-                    </button>
-                  </div>
-                </div>
-
-                <div className="cart-actions">
-                  <h2>Rs {item.price * item.quantity}</h2>
-
-                  <button
-                    className="remove-btn"
-                    disabled={busy}
-                    onClick={() => removeItem(item.id)}
-                  >
-                    Remove
-                  </button>
-                </div>
-
               </div>
-
             ))}
-
           </div>
+        ) : items.length === 0 ? (
+          <div className="kd-empty">
+            <div className="kd-empty__icon">🛒</div>
+            <h2>Your cart is empty</h2>
+            <p>Add a few fresh things and they will show up here.</p>
+            <Link to="/products" className="kd-btn kd-btn--primary kd-btn--lg">
+              Start shopping
+            </Link>
+          </div>
+        ) : (
+          <div className="cart">
+            <div className="cart__list">
+              {items.map((item) => {
+                const busy = busyId === item.id;
 
-          <div className="cart-total">
+                return (
+                  <article
+                    className={`cart__row kd-card ${busy ? "is-busy" : ""}`}
+                    key={item.id}
+                  >
+                    <div className="cart__thumb">
+                      <img
+                        src={item.imageUrl || PRODUCT_FALLBACK}
+                        alt=""
+                        loading="lazy"
+                        onError={(e) => {
+                          e.target.onerror = null;
+                          e.target.src = PRODUCT_FALLBACK;
+                        }}
+                      />
+                    </div>
 
-            <div className="total-left">
-              <h2>Total Amount</h2>
-              <h1>Rs {total}</h1>
+                    <div className="cart__info">
+                      <h3>{item.productName}</h3>
+                      <p className="cart__unit">₹{item.price} each</p>
+                    </div>
+
+                    <div className="cart__qty">
+                      <button
+                        onClick={() => changeQty(item, item.quantity - 1)}
+                        disabled={busy || item.quantity <= 1}
+                        aria-label={`Decrease quantity of ${item.productName}`}
+                      >
+                        <FiMinus />
+                      </button>
+
+                      <span aria-live="polite">{item.quantity}</span>
+
+                      <button
+                        onClick={() => changeQty(item, item.quantity + 1)}
+                        disabled={busy || item.quantity >= 99}
+                        aria-label={`Increase quantity of ${item.productName}`}
+                      >
+                        <FiPlus />
+                      </button>
+                    </div>
+
+                    <div className="cart__line">
+                      <strong>₹{(item.price * item.quantity).toFixed(2)}</strong>
+
+                      <button
+                        className="cart__remove"
+                        onClick={() => remove(item)}
+                        disabled={busy}
+                        aria-label={`Remove ${item.productName} from cart`}
+                      >
+                        <FiTrash2 />
+                        Remove
+                      </button>
+                    </div>
+                  </article>
+                );
+              })}
             </div>
 
-            <button
-              className="checkout-btn"
-              disabled={busy}
-              onClick={() => navigate("/checkout")}
-            >
-              Proceed to Checkout
-            </button>
+            <aside className="cart__summary kd-panel">
+              <h2>Order summary</h2>
 
+              <dl className="cart__totals">
+                <div>
+                  <dt>Subtotal</dt>
+                  <dd>₹{total.toFixed(2)}</dd>
+                </div>
+                <div>
+                  <dt>Delivery</dt>
+                  <dd className="cart__free">
+                    {DELIVERY_FEE === 0 ? "Free" : `₹${DELIVERY_FEE}`}
+                  </dd>
+                </div>
+              </dl>
+
+              <div className="cart__grand">
+                <span>Total</span>
+                <strong>₹{(total + DELIVERY_FEE).toFixed(2)}</strong>
+              </div>
+
+              <button
+                className="kd-btn kd-btn--primary kd-btn--lg kd-btn--block"
+                onClick={() => navigate("/checkout")}
+                disabled={busyId !== null}
+              >
+                Proceed to checkout
+              </button>
+
+              <Link to="/products" className="cart__continue">
+                or keep shopping
+              </Link>
+
+              <p className="cart__note">
+                🔒 Payments are handled by Razorpay. We never see your card details.
+              </p>
+            </aside>
           </div>
-        </>
-
-      )}
-
-    </section>
+        )}
+      </div>
+    </>
   );
 }
 

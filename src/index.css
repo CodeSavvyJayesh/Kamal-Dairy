@@ -1,0 +1,61 @@
+/* App-level shell styles. Tokens and primitives live in styles/theme.css. */
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-main {
+  flex: 1;
+  /* The navbar is fixed, so the page needs to start below it. */
+  padding-top: var(--nav-h);
+}
+
+/* Shared page header used by the inner pages */
+.page-head {
+  background: linear-gradient(180deg, var(--green-800), var(--green-700));
+  color: var(--white);
+  padding-block: var(--sp-8) var(--sp-7);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.page-head::after {
+  content: "";
+  position: absolute;
+  inset: auto -10% -60% -10%;
+  height: 160px;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(224, 161, 68, 0.28),
+    transparent 70%
+  );
+  pointer-events: none;
+}
+
+.page-head h1 {
+  color: var(--white);
+  margin-bottom: var(--sp-2);
+  position: relative;
+}
+
+.page-head p {
+  color: rgba(255, 255, 255, 0.78);
+  max-width: 620px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.page-head .kd-eyebrow {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.18);
+  color: var(--gold-400);
+  position: relative;
+}
+
+.page-body {
+  padding-block: var(--sp-7) var(--sp-8);
+}

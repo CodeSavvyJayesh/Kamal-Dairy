@@ -1,0 +1,54 @@
+.pskel {
+  overflow: hidden;
+}
+
+.pskel__media {
+  aspect-ratio: 1 / 1;
+  border-radius: 0;
+}
+
+.pskel__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  padding: var(--sp-4);
+}
+
+.pskel__line {
+  height: 12px;
+  width: 100%;
+}
+
+.pskel__line--xs {
+  width: 38%;
+  height: 9px;
+}
+
+.pskel__line--sm {
+  width: 65%;
+}
+
+.pskel__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  margin-top: var(--sp-3);
+}
+
+.pskel__price {
+  width: 70px;
+  height: 24px;
+}
+
+.pskel__btn {
+  width: 84px;
+  height: 34px;
+  border-radius: var(--r-full);
+}
+
+@media (max-width: 560px) {
+  .pskel__body {
+    padding: var(--sp-3);
+  }
+}

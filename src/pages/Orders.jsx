@@ -1,105 +1,138 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { api } from "../api/client";
 import "./Orders.css";
 
+function formatDate(value) {
+  if (!value) return null;
+  const d = new Date(value);
+  if (Number.isNaN(d.getTime())) return null;
+
+  return d.toLocaleString("en-IN", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+  });
+}
+
 function Orders() {
+  const navigate = useNavigate();
 
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const navigate = useNavigate();
-
   useEffect(() => {
+    let alive = true;
+
     (async () => {
       try {
         const data = await api("/api/orders/my-orders", { auth: true });
-        setOrders(Array.isArray(data) ? data : []);
+        if (alive) setOrders(Array.isArray(data) ? data : []);
       } catch (err) {
         if (err.status === 401) {
           navigate("/login");
           return;
         }
-        setError(err.message);
+        if (alive) setError(err.message);
       } finally {
-        setLoading(false);
+        if (alive) setLoading(false);
       }
     })();
+
+    return () => {
+      alive = false;
+    };
   }, [navigate]);
 
-  const formatDate = (value) => {
-    if (!value) return null;
-    const d = new Date(value);
-    return Number.isNaN(d.getTime()) ? null : d.toLocaleString("en-IN");
-  };
-
-  if (loading) {
-    return (
-      <section className="orders-page">
-        <h1 className="orders-title">My Orders</h1>
-        <p style={{ textAlign: "center" }}>Loading your orders...</p>
-      </section>
-    );
-  }
+  // Newest first — the API returns insertion order.
+  const sorted = [...orders].sort((a, b) => (b.id ?? 0) - (a.id ?? 0));
 
   return (
-    <section className="orders-page">
-
-      <h1 className="orders-title">My Orders</h1>
-
-      {error && (
-        <p style={{ textAlign: "center", color: "#c0392b" }}>{error}</p>
-      )}
-
-      {orders.length === 0 ? (
-
-        <div className="no-orders">
-          <h2>No Orders Yet</h2>
-          <p>Start shopping fresh dairy products</p>
+    <>
+      <header className="page-head">
+        <div className="kd-container">
+          <span className="kd-eyebrow">Order history</span>
+          <h1>My orders</h1>
+          <p>Everything you have ordered, with what was in it and what it cost.</p>
         </div>
+      </header>
 
-      ) : (
+      <div className="kd-container page-body">
+        {error && <p className="kd-alert">{error}</p>}
 
-        <div className="orders-container">
-
-          {orders.map((order) => (
-
-            <div className="order-card" key={order.id}>
-
-              <div className="order-header">
-                <h3>Order #{order.id}</h3>
-                <span className="order-status">Paid</span>
+        {loading ? (
+          <div className="orders">
+            {Array.from({ length: 2 }).map((_, i) => (
+              <div className="kd-card orders__skel" key={i}>
+                <div className="kd-skel orders__skel-line orders__skel-line--sm" />
+                <div className="kd-skel orders__skel-line" />
+                <div className="kd-skel orders__skel-line" />
               </div>
+            ))}
+          </div>
+        ) : sorted.length === 0 ? (
+          <div className="kd-empty">
+            <div className="kd-empty__icon">📦</div>
+            <h2>No orders yet</h2>
+            <p>When you place your first order it will show up right here.</p>
+            <Link to="/products" className="kd-btn kd-btn--primary kd-btn--lg">
+              Start shopping
+            </Link>
+          </div>
+        ) : (
+          <div className="orders">
+            {sorted.map((order) => {
+              const date = formatDate(order.createdAt);
+              const count = (order.items || []).reduce(
+                (n, i) => n + (i.quantity || 0),
+                0
+              );
 
-              {formatDate(order.createdAt) && (
-                <p style={{ fontSize: "0.85rem", opacity: 0.7, margin: "4px 0" }}>
-                  {formatDate(order.createdAt)}
-                </p>
-              )}
+              return (
+                <article className="order kd-card" key={order.id}>
+                  <header className="order__head">
+                    <div>
+                      <h2>Order #{order.id}</h2>
+                      {date && <p className="order__date">{date}</p>}
+                    </div>
 
-              <div className="order-items">
-                {order.items && order.items.map((item) => (
-                  <div className="order-item" key={item.id}>
-                    <span>{item.productName}</span>
-                    <span>{item.quantity} x Rs {item.price}</span>
-                  </div>
-                ))}
-              </div>
+                    <span className="kd-badge order__status">
+                      <span className="order__dot" aria-hidden="true" />
+                      Paid
+                    </span>
+                  </header>
 
-              <div className="order-footer">
-                <h2>Total: Rs {order.totalAmount}</h2>
-              </div>
+                  <ul className="order__items">
+                    {(order.items || []).map((item) => (
+                      <li key={item.id}>
+                        <span className="order__item-name">{item.productName}</span>
+                        <span className="order__item-qty">× {item.quantity}</span>
+                        <span className="order__item-price">
+                          ₹{(item.price * item.quantity).toFixed(2)}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
 
-            </div>
+                  <footer className="order__foot">
+                    <span className="order__count">
+                      {count} {count === 1 ? "item" : "items"}
+                    </span>
 
-          ))}
-
-        </div>
-
-      )}
-
-    </section>
+                    <span className="order__total">
+                      Total <strong>₹{Number(order.totalAmount).toFixed(2)}</strong>
+                    </span>
+                  </footer>
+                </article>
+              );
+            })}
+          </div>
+        )}
+      </div>
+    </>
   );
 }
 
