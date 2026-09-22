@@ -25,3 +25,81 @@
   display: block;
   margin: var(--sp-4) auto 0;
 }
+
+/* ---------- Lifecycle ---------- */
+
+.aorders__filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: var(--sp-4);
+}
+
+.aorders__filters .bchip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.aorders__count {
+  min-width: 20px;
+  padding: 1px 6px;
+  border-radius: var(--r-full);
+  background: var(--cream-dark);
+  color: var(--ink-700);
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+
+.aorders__filters .bchip.is-on .aorders__count {
+  background: rgba(255, 255, 255, 0.2);
+  color: var(--white);
+}
+
+.aorders__stat--hot strong {
+  color: var(--gold-600);
+}
+
+.aorders__stat--warn {
+  border-color: #f8d2d3;
+}
+
+.aorders__stat--warn strong {
+  color: var(--red-600);
+}
+
+.aorders__row--new td:first-child {
+  box-shadow: inset 3px 0 0 var(--gold-500);
+}
+
+.aorders__why {
+  margin-top: 4px;
+  max-width: 180px;
+}
+
+.aorders .asubs__actions .kd-btn {
+  white-space: nowrap;
+}
+
+.aorders__warn {
+  display: flex;
+  gap: var(--sp-3);
+  margin: 0 0 var(--sp-4);
+  padding: var(--sp-3) var(--sp-4);
+  border-radius: var(--r-md);
+  background: var(--gold-100);
+  color: var(--ink-700);
+  font-size: var(--step--1);
+  line-height: 1.6;
+}
+
+.aorders__warn svg {
+  flex: none;
+  margin-top: 3px;
+  color: var(--gold-600);
+}
+
+.aorders .asubs__table {
+  min-width: 1000px;
+}

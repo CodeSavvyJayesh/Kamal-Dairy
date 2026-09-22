@@ -11,6 +11,10 @@ const STATUS = {
   DELIVERED: { label: "Delivered", tone: "green" },
   MISSED: { label: "Missed", tone: "red" },
   REFUNDED: { label: "Refunded", tone: "blue" },
+  // cart orders
+  PLACED: { label: "Placed", tone: "blue" },
+  CONFIRMED: { label: "Confirmed", tone: "blue" },
+  OUT_FOR_DELIVERY: { label: "Out for delivery", tone: "gold" },
 };
 
 export function StatusBadge({ status, label }) {

@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { api } from "../api/client";
+import { resendOtp } from "../api/auth";
 import { useToast } from "../context/ToastContext";
+import { useCountdown } from "../utils/useCountdown";
 import "./Auth.css";
 
 function VerifyOtp() {
@@ -12,6 +14,8 @@ function VerifyOtp() {
   const [otp, setOtp] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [resending, setResending] = useState(false);
+  const [wait, startWait] = useCountdown(60); // the signup email just went out
 
   const email = location.state?.email || "";
 
@@ -19,6 +23,22 @@ function VerifyOtp() {
   if (!email) {
     return <Navigate to="/login" replace />;
   }
+
+  const handleResend = async () => {
+    setError(null);
+    setResending(true);
+    try {
+      await resendOtp(email);
+      setOtp("");
+      toast.info("A new code is on its way. Check your inbox and spam folder.");
+      startWait(60);
+    } catch (err) {
+      setError(err.message);
+      if (err.retryAfter) startWait(err.retryAfter);
+    } finally {
+      setResending(false);
+    }
+  };
 
   const handleVerify = async (e) => {
     e.preventDefault();
@@ -51,7 +71,7 @@ function VerifyOtp() {
           <h2>One last step.</h2>
 
           <p style={{ color: "rgba(255,255,255,0.8)" }}>
-            We sent a six-digit code to your email. It expires in five minutes,
+            We sent a six-digit code to your email. It expires in ten minutes,
             so it is worth checking now.
           </p>
         </div>
@@ -99,6 +119,13 @@ function VerifyOtp() {
               )}
             </button>
           </form>
+
+          <p className="auth__resend">
+            Didn't get it?{" "}
+            <button type="button" onClick={handleResend} disabled={wait > 0 || resending}>
+              {resending ? "Sending…" : wait > 0 ? `Resend in ${wait}s` : "Resend code"}
+            </button>
+          </p>
 
           <Link to="/login" className="otp__back">
             Back to sign in

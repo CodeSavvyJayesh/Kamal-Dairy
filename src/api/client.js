@@ -3,10 +3,16 @@ import { jwtDecode } from "jwt-decode";
 const BASE_URL = import.meta.env.VITE_API_URL;
 
 export class ApiError extends Error {
-  constructor(message, status) {
+  constructor(message, status, data = null) {
     super(message);
     this.name = "ApiError";
     this.status = status;
+    this.data = data;
+    // 429s say how long to wait, so pages can show a countdown.
+    this.retryAfter =
+      data && typeof data === "object" && data.retryAfterSeconds
+        ? Number(data.retryAfterSeconds)
+        : null;
   }
 }
 
@@ -75,7 +81,9 @@ export async function api(path, options = {}) {
     body: body === undefined ? undefined : JSON.stringify(body),
   });
 
-  if (res.status === 401) {
+  // Only a signed-in call can have an expired session. A 401 from the login
+  // form itself is a wrong password, and its own message says so.
+  if (res.status === 401 && auth) {
     clearSession();
     throw new ApiError("Your session has expired. Please log in again.", 401);
   }
@@ -97,7 +105,7 @@ export async function api(path, options = {}) {
       (typeof data === "string" && data.trim()) ||
       `Request failed (${res.status})`;
 
-    throw new ApiError(message, res.status);
+    throw new ApiError(message, res.status, data);
   }
 
   return data;

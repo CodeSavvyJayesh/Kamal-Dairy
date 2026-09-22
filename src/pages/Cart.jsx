@@ -4,6 +4,7 @@ import { FiMinus, FiPlus, FiTrash2 } from "react-icons/fi";
 import { useCart } from "../context/CartContext";
 import { useToast } from "../context/ToastContext";
 import { PRODUCT_FALLBACK } from "../utils/images";
+import { stockState } from "../utils/orders";
 import "./Cart.css";
 
 const DELIVERY_FEE = 0;
@@ -14,6 +15,12 @@ function Cart() {
 
   const { items, total, loading, error, updateQuantity, removeItem } = useCart();
   const [busyId, setBusyId] = useState(null);
+
+  // Rows asking for more than is on the shelf. Checkout waits until they are fixed.
+  const stockIssues = items.filter((i) => {
+    const s = stockState(i.stock);
+    return s.tracked && i.quantity > s.left;
+  });
 
   const handleError = (err) => {
     if (err.status === 401) {
@@ -87,10 +94,13 @@ function Cart() {
             <div className="cart__list">
               {items.map((item) => {
                 const busy = busyId === item.id;
+                const stock = stockState(item.stock);
+                const tooMany = stock.tracked && item.quantity > stock.left;
+                const atMax = stock.tracked && item.quantity >= stock.left;
 
                 return (
                   <article
-                    className={`cart__row kd-card ${busy ? "is-busy" : ""}`}
+                    className={`cart__row kd-card ${busy ? "is-busy" : ""} ${tooMany ? "has-issue" : ""}`}
                     key={item.id}
                   >
                     <div className="cart__thumb">
@@ -108,6 +118,15 @@ function Cart() {
                     <div className="cart__info">
                       <h3>{item.productName}</h3>
                       <p className="cart__unit">₹{item.price} each</p>
+                      {tooMany ? (
+                        <p className="cart__stock is-bad" role="alert">
+                          {stock.out
+                            ? "Sold out – remove it to check out"
+                            : `Only ${stock.left} left – lower the quantity to check out`}
+                        </p>
+                      ) : (
+                        stock.low && <p className="cart__stock">Only {stock.left} left</p>
+                      )}
                     </div>
 
                     <div className="cart__qty">
@@ -123,7 +142,8 @@ function Cart() {
 
                       <button
                         onClick={() => changeQty(item, item.quantity + 1)}
-                        disabled={busy || item.quantity >= 99}
+                        disabled={busy || item.quantity >= 99 || atMax}
+                        title={atMax ? "That is all we have right now" : undefined}
                         aria-label={`Increase quantity of ${item.productName}`}
                       >
                         <FiPlus />
@@ -169,10 +189,19 @@ function Cart() {
                 <strong>₹{(total + DELIVERY_FEE).toFixed(2)}</strong>
               </div>
 
+              {stockIssues.length > 0 && (
+                <p className="cart__blocked" role="status">
+                  {stockIssues.length === 1
+                    ? `${stockIssues[0].productName} does not have enough stock.`
+                    : `${stockIssues.length} items do not have enough stock.`}{" "}
+                  Update your cart to continue.
+                </p>
+              )}
+
               <button
                 className="kd-btn kd-btn--primary kd-btn--lg kd-btn--block"
                 onClick={() => navigate("/checkout")}
-                disabled={busyId !== null}
+                disabled={busyId !== null || stockIssues.length > 0}
               >
                 Proceed to checkout
               </button>

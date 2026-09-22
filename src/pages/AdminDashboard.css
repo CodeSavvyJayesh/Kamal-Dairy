@@ -275,3 +275,130 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* ---------- Stock ---------- */
+
+.admin__stat--warn {
+  border-color: #f8d2d3;
+}
+
+.admin__stat--warn strong {
+  color: var(--red-600);
+}
+
+.admin__hint {
+  display: block;
+  margin-top: 4px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.admin__alerts {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+  margin-bottom: var(--sp-5);
+  padding: var(--sp-3) var(--sp-4);
+  border: 1px solid #f3dfbd;
+  border-radius: var(--r-md);
+  background: var(--gold-100);
+  color: var(--gold-600);
+  font-size: var(--step--1);
+}
+
+.admin__alerts-title {
+  font-weight: 800;
+  margin-right: var(--sp-1);
+}
+
+.admin__alert-chip {
+  padding: 5px 12px;
+  border: 1px solid #f3dfbd;
+  border-radius: var(--r-full);
+  background: var(--white);
+  color: var(--ink-700);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color var(--t-fast), transform var(--t-fast);
+}
+
+.admin__alert-chip:hover {
+  border-color: var(--gold-500);
+  transform: translateY(-1px);
+}
+
+.admin__alert-chip b {
+  margin-left: 4px;
+  color: var(--gold-600);
+}
+
+.admin__alert-chip.is-out b {
+  color: var(--red-600);
+}
+
+.admin__stock {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  margin-top: var(--sp-2);
+  padding: 6px 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-full);
+  background: var(--cream);
+  color: var(--ink-500);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: border-color var(--t-fast), background var(--t-fast);
+}
+
+.admin__stock:hover {
+  border-color: var(--green-300);
+}
+
+.admin__stock-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--ink-400);
+}
+
+.admin__stock-cta {
+  margin-left: auto;
+  color: var(--green-700);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.admin__stock--ok {
+  background: var(--green-50);
+  border-color: var(--green-100);
+  color: var(--green-800);
+}
+
+.admin__stock--ok .admin__stock-dot {
+  background: var(--green-500);
+}
+
+.admin__stock--low {
+  background: var(--gold-100);
+  border-color: #f3dfbd;
+  color: var(--gold-600);
+}
+
+.admin__stock--low .admin__stock-dot {
+  background: var(--gold-500);
+}
+
+.admin__stock--out {
+  background: var(--red-100);
+  border-color: #f8d2d3;
+  color: var(--red-600);
+}
+
+.admin__stock--out .admin__stock-dot {
+  background: var(--red-600);
+}

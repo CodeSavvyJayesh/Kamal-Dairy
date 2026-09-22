@@ -45,14 +45,24 @@
 .admin__tabs {
   display: inline-flex;
   gap: 4px;
+  max-width: 100%;
   padding: 4px;
   margin-bottom: var(--sp-6);
   border: 1px solid var(--line);
   border-radius: var(--r-full);
   background: var(--white);
+  /* four tabs do not fit a phone: scroll sideways instead of widening the page */
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.admin__tabs::-webkit-scrollbar {
+  display: none;
 }
 
 .admin__tab {
+  flex: none;
+  white-space: nowrap;
   padding: 9px 20px;
   border: 0;
   border-radius: var(--r-full);

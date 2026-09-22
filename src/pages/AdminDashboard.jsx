@@ -1,17 +1,35 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { FiEdit2, FiPlus, FiTrash2, FiX } from "react-icons/fi";
+import { FiAlertTriangle, FiEdit2, FiPlus, FiTrash2, FiX } from "react-icons/fi";
 import { api } from "../api/client";
+import { getStockAlerts, setStock as saveStock } from "../api/orders";
 import { useToast } from "../context/ToastContext";
 import { PRODUCT_FALLBACK } from "../utils/images";
 import AdminSubscriptions from "../components/admin/AdminSubscriptions";
 import AdminOrders from "../components/admin/AdminOrders";
+import AdminInsights from "../components/admin/AdminInsights";
+import AdminReviews from "../components/admin/AdminReviews";
+import StockModal from "../components/admin/StockModal";
+import { stockState } from "../utils/orders";
 import "./AdminDashboard.css";
 
-const EMPTY_FORM = { name: "", price: "", category: "", imageUrl: "" };
+const EMPTY_FORM = { name: "", price: "", category: "", imageUrl: "", stock: "" };
+
+/** Badge text and tone for a product's stock. */
+function stockBadge(stock) {
+  const s = stockState(stock);
+  if (!s.tracked) return { text: "Not tracked", tone: "none" };
+  if (s.out) return { text: "Out of stock", tone: "out" };
+  if (s.low) return { text: `Only ${s.left} left`, tone: "low" };
+  return { text: `${s.left} in stock`, tone: "ok" };
+}
 const PAGE_SIZE = 20;
 
 const TAB_TITLES = {
+  insights: {
+    title: "Insights",
+    text: "Revenue, best sellers, customers and subscription earnings at a glance.",
+  },
   catalogue: {
     title: "Catalogue management",
     text: "Add, edit and remove products. Every write is re-checked server-side.",
@@ -20,9 +38,13 @@ const TAB_TITLES = {
     title: "Subscriptions desk",
     text: "Tomorrow's dispatch sheet, today's deliveries, refunds and recurring revenue.",
   },
+  reviews: {
+    title: "Reviews",
+    text: "What verified buyers say about each product. Reply in public, or hide what should not be shown.",
+  },
   orders: {
     title: "Orders",
-    text: "Every cart order with who ordered it and where it goes.",
+    text: "Confirm, send out and deliver cart orders. A cancel refunds the customer's wallet and restocks.",
   },
 };
 
@@ -43,7 +65,11 @@ function AdminDashboard() {
   const [error, setError] = useState(null);
 
   const [confirming, setConfirming] = useState(null);
-  const [tab, setTab] = useState("catalogue");
+  const [tab, setTab] = useState("insights");
+
+  const [stocking, setStocking] = useState(null);
+  const [alerts, setAlerts] = useState([]);
+  const [editingStock, setEditingStock] = useState(null);
 
   const handleError = useCallback(
     (err) => {
@@ -81,6 +107,28 @@ function AdminDashboard() {
     fetchProducts();
   }, [fetchProducts]);
 
+  const loadAlerts = useCallback(async () => {
+    try {
+      setAlerts(await getStockAlerts());
+    } catch (err) {
+      handleError(err);
+    }
+  }, [handleError]);
+
+  useEffect(() => {
+    loadAlerts();
+  }, [loadAlerts]);
+
+  const stockSaved = (updated) => {
+    setProducts((list) => list.map((p) => (p.id === updated.id ? updated : p)));
+    setStocking(updated);
+    if (editingId === updated.id) {
+      setEditingStock(updated.stock ?? null);
+      setForm((f) => ({ ...f, stock: updated.stock ?? "" }));
+    }
+    loadAlerts();
+  };
+
   const handleChange = (e) =>
     setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
 
@@ -95,6 +143,7 @@ function AdminDashboard() {
       category: form.category.trim(),
       imageUrl: form.imageUrl.trim(),
     };
+    const stock = String(form.stock).trim() === "" ? null : Number(form.stock);
 
     try {
       if (editingId) {
@@ -103,15 +152,22 @@ function AdminDashboard() {
           auth: true,
           body: payload,
         });
+        // Stock has its own endpoint so a form opened earlier can never
+        // overwrite units that orders have taken since. Only sent if changed.
+        if (stock !== editingStock) {
+          await saveStock(editingId, stock);
+        }
         toast.success(`${payload.name} updated`);
       } else {
-        await api("/api/products", { method: "POST", auth: true, body: payload });
+        await api("/api/products", { method: "POST", auth: true, body: { ...payload, stock } });
         toast.success(`${payload.name} added to the catalogue`);
       }
 
       setForm(EMPTY_FORM);
       setEditingId(null);
+      setEditingStock(null);
       await fetchProducts();
+      loadAlerts();
     } catch (err) {
       handleError(err);
     } finally {
@@ -139,14 +195,17 @@ function AdminDashboard() {
       price: product.price ?? "",
       category: product.category ?? "",
       imageUrl: product.imageUrl ?? "",
+      stock: product.stock ?? "",
     });
     setEditingId(product.id);
+    setEditingStock(product.stock ?? null);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const cancelEdit = () => {
     setForm(EMPTY_FORM);
     setEditingId(null);
+    setEditingStock(null);
   };
 
   const categories = useMemo(
@@ -168,6 +227,14 @@ function AdminDashboard() {
         {error && <p className="kd-alert">{error}</p>}
 
         <div className="admin__tabs" role="tablist" aria-label="Admin sections">
+          <button
+            role="tab"
+            aria-selected={tab === "insights"}
+            className={`admin__tab ${tab === "insights" ? "is-on" : ""}`}
+            onClick={() => setTab("insights")}
+          >
+            Insights
+          </button>
           <button
             role="tab"
             aria-selected={tab === "catalogue"}
@@ -192,10 +259,22 @@ function AdminDashboard() {
           >
             Orders
           </button>
+          <button
+            role="tab"
+            aria-selected={tab === "reviews"}
+            className={`admin__tab ${tab === "reviews" ? "is-on" : ""}`}
+            onClick={() => setTab("reviews")}
+          >
+            Reviews
+          </button>
         </div>
 
-        {tab === "orders" ? (
-          <AdminOrders onError={handleError} />
+        {tab === "insights" ? (
+          <AdminInsights onError={handleError} />
+        ) : tab === "reviews" ? (
+          <AdminReviews onError={handleError} />
+        ) : tab === "orders" ? (
+          <AdminOrders onError={handleError} onLowStock={loadAlerts} />
         ) : tab === "subscriptions" ? (
           <AdminSubscriptions onError={handleError} />
         ) : (
@@ -209,11 +288,28 @@ function AdminDashboard() {
             <strong>{categories}</strong>
             <span>Categories on this page</span>
           </div>
-          <div className="admin__stat kd-card">
-            <strong>{totalPages || 1}</strong>
-            <span>Pages</span>
+          <div className={`admin__stat kd-card ${alerts.length ? "admin__stat--warn" : ""}`}>
+            <strong>{alerts.length}</strong>
+            <span>Low or out of stock</span>
           </div>
         </div>
+
+        {alerts.length > 0 && (
+          <div className="admin__alerts" role="status">
+            <FiAlertTriangle aria-hidden="true" />
+            <span className="admin__alerts-title">Running low:</span>
+            {alerts.map((p) => (
+              <button
+                key={p.id}
+                className={`admin__alert-chip ${p.stock === 0 ? "is-out" : ""}`}
+                onClick={() => setStocking(p)}
+                title="Manage stock"
+              >
+                {p.name} <b>{p.stock === 0 ? "sold out" : `${p.stock} left`}</b>
+              </button>
+            ))}
+          </div>
+        )}
 
         <div className="admin">
           <form className="admin__form kd-panel" onSubmit={handleSubmit}>
@@ -271,6 +367,25 @@ function AdminDashboard() {
                 />
               </label>
             </div>
+
+            <label className="kd-field">
+              <span className="kd-label">Stock on the shelf</span>
+              <input
+                className="kd-input"
+                name="stock"
+                inputMode="numeric"
+                placeholder="Leave blank if it never runs out"
+                value={form.stock}
+                onChange={(e) =>
+                  setForm((f) => ({ ...f, stock: e.target.value.replace(/\D/g, "") }))
+                }
+              />
+              <small className="admin__hint">
+                {editingId
+                  ? "Only saved if you change it. For deliveries use Stock on the card."
+                  : "Blank means not tracked and always available."}
+              </small>
+            </label>
 
             <label className="kd-field">
               <span className="kd-label">Image URL</span>
@@ -359,6 +474,16 @@ function AdminDashboard() {
                       <span className="admin__card-cat">{p.category}</span>
                       <h3>{p.name}</h3>
                       <p className="admin__card-price">₹{p.price}</p>
+                      <button
+                        type="button"
+                        className={`admin__stock admin__stock--${stockBadge(p.stock).tone}`}
+                        onClick={() => setStocking(p)}
+                        aria-label={`Manage stock for ${p.name}`}
+                      >
+                        <span className="admin__stock-dot" aria-hidden="true" />
+                        {stockBadge(p.stock).text}
+                        <span className="admin__stock-cta">Stock</span>
+                      </button>
                     </div>
 
                     <div className="admin__card-actions">
@@ -409,6 +534,13 @@ function AdminDashboard() {
         </>
         )}
       </div>
+
+      <StockModal
+        key={stocking?.id ?? "none"}
+        product={stocking}
+        onClose={() => setStocking(null)}
+        onSaved={stockSaved}
+      />
 
       {/* Replaces window.confirm, which blocks the page and looks like 2004 */}
       {confirming && (

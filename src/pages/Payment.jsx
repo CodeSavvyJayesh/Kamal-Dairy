@@ -59,6 +59,7 @@ function Payment() {
       }
       setError(err.message);
       refreshWallet();
+      if (err.status === 409) refresh(); // stock changed: show the cart's real state
     } finally {
       setPaying(false);
     }
@@ -130,6 +131,11 @@ function Payment() {
               err.message ||
                 "Payment went through but the order could not be confirmed. Please contact support."
             );
+            // 409: something sold out mid-payment and the money went to the wallet.
+            if (err.status === 409) {
+              refresh();
+              refreshWallet();
+            }
           } finally {
             setPaying(false);
           }
@@ -151,6 +157,7 @@ function Payment() {
       }
       setError(err.message);
       setPaying(false);
+      if (err.status === 409) refresh();
     }
   };
 

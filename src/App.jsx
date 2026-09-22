@@ -17,9 +17,11 @@ import Home from "./pages/Home";
 // downloads what the homepage actually needs.
 const Products = lazy(() => import("./pages/Products"));
 const CategoryProducts = lazy(() => import("./pages/CategoryProducts"));
+const ProductDetail = lazy(() => import("./pages/ProductDetail"));
 const Contact = lazy(() => import("./pages/Contact"));
 const Auth = lazy(() => import("./pages/Auth"));
 const VerifyOtp = lazy(() => import("./pages/VerifyOtp"));
+const ForgotPassword = lazy(() => import("./pages/ForgotPassword"));
 const Subscription = lazy(() => import("./pages/Subscription"));
 const MySubscriptions = lazy(() => import("./pages/MySubscriptions"));
 const SubscriptionBuilder = lazy(() => import("./pages/SubscriptionBuilder"));
@@ -48,10 +50,12 @@ function App() {
                 <Route path="/" element={<Home />} />
                 <Route path="/products" element={<Products />} />
                 <Route path="/products/:category" element={<CategoryProducts />} />
+                <Route path="/product/:id" element={<ProductDetail />} />
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/subscription" element={<Subscription />} />
                 <Route path="/login" element={<Auth />} />
                 <Route path="/verify-otp" element={<VerifyOtp />} />
+                <Route path="/forgot-password" element={<ForgotPassword />} />
 
                 {/* Signed in */}
                 <Route

@@ -1,10 +1,12 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FiShoppingBag } from "react-icons/fi";
 import { isLoggedIn } from "../api/client";
 import { useCart } from "../context/CartContext";
 import { useToast } from "../context/ToastContext";
 import { PRODUCT_FALLBACK } from "../utils/images";
+import { stockState } from "../utils/orders";
+import { Stars } from "./Stars";
 import "./ProductCard.css";
 
 function ProductCard({ product }) {
@@ -13,8 +15,11 @@ function ProductCard({ product }) {
   const toast = useToast();
 
   const [adding, setAdding] = useState(false);
+  const stock = stockState(product.stock);
 
   const handleAdd = async () => {
+    if (stock.out) return;
+
     if (!isLoggedIn()) {
       toast.info("Sign in to start your order.");
       navigate("/login");
@@ -41,8 +46,8 @@ function ProductCard({ product }) {
   };
 
   return (
-    <article className="pcard kd-card kd-card--hover">
-      <div className="pcard__media">
+    <article className={`pcard kd-card kd-card--hover ${stock.out ? "is-soldout" : ""}`}>
+      <Link to={`/product/${product.id}`} className="pcard__media" tabIndex={-1} aria-hidden="true">
         <img
           src={product.imageUrl || PRODUCT_FALLBACK}
           alt={product.name}
@@ -53,10 +58,13 @@ function ProductCard({ product }) {
           }}
         />
 
-        {product.isTrending && (
+        {product.isTrending && !stock.out && (
           <span className="kd-badge kd-badge--gold pcard__tag">Bestseller</span>
         )}
-      </div>
+
+        {stock.out && <span className="pcard__soldout">Sold out</span>}
+        {stock.low && <span className="pcard__left">Only {stock.left} left</span>}
+      </Link>
 
       <div className="pcard__body">
         {product.category && (
@@ -64,8 +72,20 @@ function ProductCard({ product }) {
         )}
 
         <h3 className="pcard__name" title={product.name}>
-          {product.name}
+          <Link to={`/product/${product.id}`}>{product.name}</Link>
         </h3>
+
+        <div className="pcard__rating">
+          {product.ratingCount > 0 && (
+            <>
+              <Stars value={product.ratingAverage} size="sm" />
+              <span>
+                {Number(product.ratingAverage).toFixed(1)}
+                <span className="pcard__rating-count"> ({product.ratingCount})</span>
+              </span>
+            </>
+          )}
+        </div>
 
         <div className="pcard__foot">
           <span className="pcard__price">
@@ -76,15 +96,21 @@ function ProductCard({ product }) {
           <button
             className="kd-btn kd-btn--primary kd-btn--sm pcard__add"
             onClick={handleAdd}
-            disabled={adding}
-            aria-label={`Add ${product.name} to cart`}
+            disabled={adding || stock.out}
+            aria-label={stock.out ? `${product.name} is sold out` : `Add ${product.name} to cart`}
           >
-            {adding ? (
-              <span className="kd-spinner" aria-hidden="true" />
+            {stock.out ? (
+              "Sold out"
             ) : (
-              <FiShoppingBag aria-hidden="true" />
+              <>
+                {adding ? (
+                  <span className="kd-spinner" aria-hidden="true" />
+                ) : (
+                  <FiShoppingBag aria-hidden="true" />
+                )}
+                {adding ? "Adding" : "Add"}
+              </>
             )}
-            {adding ? "Adding" : "Add"}
           </button>
         </div>
       </div>

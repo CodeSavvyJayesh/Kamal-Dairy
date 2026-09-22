@@ -1,0 +1,63 @@
+.stockm__now {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--sp-2) var(--sp-3);
+  margin-bottom: var(--sp-5);
+  padding: var(--sp-4);
+  border-radius: var(--r-md);
+  background: var(--cream-dark);
+  color: var(--ink-700);
+  font-size: var(--step--1);
+  font-weight: 600;
+}
+
+.stockm__now svg {
+  font-size: 20px;
+}
+
+.stockm__now strong {
+  font-family: var(--font-display);
+  font-size: var(--step-3);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.stockm__now.is-ok {
+  background: var(--green-50);
+  color: var(--green-800);
+}
+
+.stockm__now.is-low {
+  background: var(--gold-100);
+  color: var(--gold-600);
+}
+
+.stockm__now.is-out {
+  background: var(--red-100);
+  color: var(--red-600);
+}
+
+.stockm__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: var(--sp-3);
+  margin-bottom: var(--sp-2);
+}
+
+.stockm__row .kd-btn {
+  margin-bottom: var(--sp-4);
+}
+
+.stockm__hint {
+  margin: var(--sp-2) 0 0;
+  font-size: var(--step--1);
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.stockm__untrack {
+  margin-right: auto;
+  color: var(--ink-500);
+}

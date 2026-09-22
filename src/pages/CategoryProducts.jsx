@@ -77,7 +77,11 @@ function CategoryProducts() {
           <p>
             {loading
               ? "Fetching the freshest stock…"
-              : `${products.length} ${products.length === 1 ? "product" : "products"} available right now`}
+              : (() => {
+                  // Sold-out items are still listed, but not counted as available.
+                  const n = products.filter((p) => p.stock === null || p.stock === undefined || p.stock > 0).length;
+                  return `${n} ${n === 1 ? "product" : "products"} available right now`;
+                })()}
           </p>
         </div>
       </header>

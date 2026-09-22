@@ -220,6 +220,126 @@
   text-underline-offset: 3px;
 }
 
+/* ---------- Forgot password, resend, hints ---------- */
+
+.auth__forgot {
+  display: block;
+  width: fit-content;
+  margin: calc(var(--sp-2) * -1) 0 var(--sp-4) auto;
+  font-size: var(--step--1);
+  font-weight: 700;
+  color: var(--green-700);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.auth__forgot:hover {
+  color: var(--green-900);
+}
+
+.auth__error {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.auth__error a,
+.auth__error button {
+  width: fit-content;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  font-weight: 800;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.auth__resend {
+  margin: var(--sp-5) 0 0;
+  text-align: center;
+  font-size: var(--step--1);
+  color: var(--text-muted);
+}
+
+.auth__resend button {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--green-800);
+  font: inherit;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.auth__resend button:disabled {
+  color: var(--ink-400);
+  text-decoration: none;
+  cursor: default;
+  font-variant-numeric: tabular-nums;
+}
+
+.otp__back svg {
+  vertical-align: -2px;
+  margin-right: 4px;
+}
+
+.auth__field-error {
+  display: block;
+  margin-top: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--red-600);
+}
+
+.kd-input.is-invalid {
+  border-color: #f0b4b6;
+}
+
+.pw-hints {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2) var(--sp-4);
+  margin: calc(var(--sp-2) * -1) 0 var(--sp-4);
+  padding: 0;
+  list-style: none;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-500);
+}
+
+.pw-hints li {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: color var(--t-fast);
+}
+
+.pw-hints__dot {
+  display: grid;
+  place-items: center;
+  width: 16px;
+  height: 16px;
+  border: 1.5px solid var(--line);
+  border-radius: 50%;
+  color: var(--white);
+  font-size: 10px;
+  transition: background var(--t-fast), border-color var(--t-fast);
+}
+
+.pw-hints li.is-ok {
+  color: var(--green-700);
+}
+
+.pw-hints li.is-ok .pw-hints__dot {
+  background: var(--green-500);
+  border-color: var(--green-500);
+}
+
 /* ---------- Responsive ---------- */
 
 @media (max-width: 900px) {

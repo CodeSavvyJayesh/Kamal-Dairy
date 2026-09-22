@@ -1,0 +1,209 @@
+/* Chart primitives. Quiet chrome: hairline solid grid, muted ticks, thin marks. */
+
+.kchart,
+.kspark {
+  position: relative;
+  width: 100%;
+}
+
+.kchart svg,
+.kspark svg {
+  display: block;
+  overflow: visible;
+}
+
+.kchart__grid {
+  stroke: #efe9de;
+  stroke-width: 1;
+  shape-rendering: crispEdges;
+}
+
+.kchart__axis {
+  stroke: #d9d1c3;
+  stroke-width: 1;
+  shape-rendering: crispEdges;
+}
+
+.kchart__tick {
+  fill: var(--ink-500);
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.kchart__peak {
+  fill: var(--ink-900);
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.kchart g {
+  transition: opacity 140ms ease;
+}
+
+.kchart g.is-dim {
+  opacity: 0.45;
+}
+
+.kchart__hit {
+  fill: transparent;
+  cursor: default;
+  outline: none;
+}
+
+.kchart__hit:focus-visible {
+  fill: rgba(11, 61, 46, 0.06);
+}
+
+.kchart__tip {
+  position: absolute;
+  z-index: 2;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 170px;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--white);
+  box-shadow: 0 8px 24px rgba(6, 35, 26, 0.12);
+  font-size: 12px;
+  color: var(--ink-500);
+  pointer-events: none;
+}
+
+.kchart__tip-date {
+  font-weight: 700;
+}
+
+.kchart__tip-total {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--ink-900);
+}
+
+.kchart__tip-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* line key, not a box */
+.kchart__tip-row i {
+  width: 12px;
+  height: 3px;
+  border-radius: 2px;
+}
+
+.kchart__tip-row b {
+  color: var(--ink-900);
+  font-variant-numeric: tabular-nums;
+}
+
+.kchart__tip-meta {
+  margin-top: 2px;
+  padding-top: 5px;
+  border-top: 1px solid var(--line);
+}
+
+/* ---------- Sparkline ---------- */
+
+.kspark__line {
+  fill: none;
+  stroke: #c9c1b2;
+  stroke-width: 2;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.kspark__dot {
+  fill: var(--green-500);
+  stroke: var(--white);
+  stroke-width: 2;
+}
+
+/* ---------- Bar list ---------- */
+
+.kbars {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.kbars__row {
+  position: relative;
+  display: grid;
+  gap: 5px;
+  padding: 4px 6px;
+  margin: -4px -6px;
+  border-radius: 10px;
+  outline: none;
+  transition: background 140ms ease;
+}
+
+.kbars__row.is-active,
+.kbars__row:focus-visible {
+  background: var(--cream);
+}
+
+.kbars__label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: var(--step--1);
+  font-weight: 700;
+  color: var(--ink-900);
+}
+
+.kbars__track {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.kbars__bar {
+  height: 12px;
+  border-radius: 0 4px 4px 0;
+  background: var(--green-500);
+  transition: width 400ms var(--ease, ease);
+}
+
+.kbars__value {
+  flex: none;
+  font-size: var(--step--1);
+  font-weight: 800;
+  color: var(--ink-900);
+  font-variant-numeric: tabular-nums;
+}
+
+.kbars__tip {
+  position: absolute;
+  right: 6px;
+  top: -26px;
+  z-index: 2;
+  padding: 5px 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--white);
+  box-shadow: 0 6px 18px rgba(6, 35, 26, 0.1);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-700);
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.kbars__empty {
+  margin: 0;
+  padding: var(--sp-5) 0;
+  text-align: center;
+  font-size: var(--step--1);
+  color: var(--text-muted);
+}

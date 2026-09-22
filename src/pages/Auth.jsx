@@ -1,7 +1,9 @@
 import { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FiEye, FiEyeOff } from "react-icons/fi";
+import { passwordOk } from "../api/auth";
 import { api, clearSession } from "../api/client";
+import PasswordHints from "../components/PasswordHints";
 import { useCart } from "../context/CartContext";
 import { useToast } from "../context/ToastContext";
 import "./Auth.css";
@@ -21,20 +23,24 @@ function Auth() {
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  // What to offer next to the error: a reset link when locked, sign-in when the email exists.
+  const [errorKind, setErrorKind] = useState(null);
 
   const from = location.state?.from || "/";
 
   const switchMode = (login) => {
     setIsLogin(login);
     setError(null);
+    setErrorKind(null);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
+    setErrorKind(null);
 
-    if (!isLogin && password.length < 8) {
-      setError("Password must be at least 8 characters.");
+    if (!isLogin && !passwordOk(password)) {
+      setError("Use at least 8 characters, with a letter and a number.");
       return;
     }
 
@@ -65,6 +71,8 @@ function Auth() {
       }
     } catch (err) {
       setError(err.message);
+      if (err.status === 429 && isLogin) setErrorKind("locked");
+      else if (err.status === 409) setErrorKind("exists");
     } finally {
       setLoading(false);
     }
@@ -159,7 +167,7 @@ function Auth() {
                 <input
                   className="kd-input"
                   type={showPassword ? "text" : "password"}
-                  placeholder={isLogin ? "Your password" : "At least 8 characters"}
+                  placeholder={isLogin ? "Your password" : "8+ characters, a letter and a number"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   autoComplete={isLogin ? "current-password" : "new-password"}
@@ -178,7 +186,29 @@ function Auth() {
               </span>
             </label>
 
-            {error && <p className="kd-alert">{error}</p>}
+            {isLogin ? (
+              <Link to="/forgot-password" state={{ email }} className="auth__forgot">
+                Forgot password?
+              </Link>
+            ) : (
+              password && <PasswordHints value={password} />
+            )}
+
+            {error && (
+              <div className="kd-alert auth__error" role="alert">
+                <span>{error}</span>
+                {errorKind === "locked" && (
+                  <Link to="/forgot-password" state={{ email }}>
+                    Reset your password →
+                  </Link>
+                )}
+                {errorKind === "exists" && (
+                  <button type="button" onClick={() => switchMode(true)}>
+                    Sign in instead →
+                  </button>
+                )}
+              </div>
+            )}
 
             <button
               className="kd-btn kd-btn--primary kd-btn--lg kd-btn--block"

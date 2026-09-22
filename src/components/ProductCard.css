@@ -61,6 +61,49 @@
   min-height: 2.8em;
 }
 
+.pcard__media {
+  display: block;
+}
+
+.pcard__name a {
+  color: inherit;
+}
+
+.pcard__name a:hover {
+  color: var(--green-700);
+}
+
+/* stretch the name link over the card body so the whole card opens the product */
+.pcard__name a::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+.pcard__body {
+  position: relative;
+}
+
+.pcard__add {
+  position: relative;
+  z-index: 1;
+}
+
+.pcard__rating {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 18px;
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--ink-700);
+}
+
+.pcard__rating-count {
+  font-weight: 600;
+  color: var(--ink-400);
+}
+
 .pcard__foot {
   display: flex;
   align-items: center;
@@ -87,6 +130,51 @@
 
 .pcard__add {
   flex: none;
+}
+
+/* Stock */
+
+.pcard__soldout,
+.pcard__left {
+  position: absolute;
+  z-index: 1;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  border-radius: var(--r-full);
+  box-shadow: var(--sh-1);
+}
+
+.pcard__soldout {
+  inset: 50% auto auto 50%;
+  transform: translate(-50%, -50%);
+  padding: 8px 16px;
+  background: rgba(6, 35, 26, 0.86);
+  color: var(--white);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.pcard__left {
+  right: var(--sp-3);
+  bottom: var(--sp-3);
+  padding: 5px 12px;
+  background: var(--gold-100);
+  color: var(--gold-600);
+  border: 1px solid #f3dfbd;
+}
+
+.pcard.is-soldout .pcard__media img {
+  filter: grayscale(0.85);
+  opacity: 0.6;
+}
+
+.pcard.is-soldout:hover .pcard__media img {
+  transform: none;
+}
+
+.pcard.is-soldout .pcard__price {
+  color: var(--ink-400);
 }
 
 /* Shared responsive product grid */
