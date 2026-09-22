@@ -5,10 +5,26 @@ import { api } from "../api/client";
 import { useToast } from "../context/ToastContext";
 import { PRODUCT_FALLBACK } from "../utils/images";
 import AdminSubscriptions from "../components/admin/AdminSubscriptions";
+import AdminOrders from "../components/admin/AdminOrders";
 import "./AdminDashboard.css";
 
 const EMPTY_FORM = { name: "", price: "", category: "", imageUrl: "" };
 const PAGE_SIZE = 20;
+
+const TAB_TITLES = {
+  catalogue: {
+    title: "Catalogue management",
+    text: "Add, edit and remove products. Every write is re-checked server-side.",
+  },
+  subscriptions: {
+    title: "Subscriptions desk",
+    text: "Tomorrow's dispatch sheet, today's deliveries, refunds and recurring revenue.",
+  },
+  orders: {
+    title: "Orders",
+    text: "Every cart order with who ordered it and where it goes.",
+  },
+};
 
 function AdminDashboard() {
   const navigate = useNavigate();
@@ -143,12 +159,8 @@ function AdminDashboard() {
       <header className="page-head">
         <div className="kd-container">
           <span className="kd-eyebrow">Admin</span>
-          <h1>{tab === "catalogue" ? "Catalogue management" : "Subscriptions desk"}</h1>
-          <p>
-            {tab === "catalogue"
-              ? "Add, edit and remove products. Every write is re-checked server-side."
-              : "Tomorrow's dispatch sheet, today's deliveries, refunds and recurring revenue."}
-          </p>
+          <h1>{TAB_TITLES[tab].title}</h1>
+          <p>{TAB_TITLES[tab].text}</p>
         </div>
       </header>
 
@@ -172,9 +184,19 @@ function AdminDashboard() {
           >
             Subscriptions
           </button>
+          <button
+            role="tab"
+            aria-selected={tab === "orders"}
+            className={`admin__tab ${tab === "orders" ? "is-on" : ""}`}
+            onClick={() => setTab("orders")}
+          >
+            Orders
+          </button>
         </div>
 
-        {tab === "subscriptions" ? (
+        {tab === "orders" ? (
+          <AdminOrders onError={handleError} />
+        ) : tab === "subscriptions" ? (
           <AdminSubscriptions onError={handleError} />
         ) : (
         <>

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { FiCreditCard, FiLock, FiSmartphone } from "react-icons/fi";
 import { api } from "../api/client";
 import { payCartWithWallet } from "../api/wallet";
@@ -36,6 +36,7 @@ function Payment() {
   const walletShort = Math.max(0, total - balance);
 
   const shipping = location.state?.shipping || {};
+  const hasAddress = Boolean(shipping.name && shipping.phone && shipping.address && shipping.pincode);
 
   const [method, setMethod] = useState("upi");
   const [paying, setPaying] = useState(false);
@@ -47,7 +48,7 @@ function Payment() {
     setError(null);
     setPaying(true);
     try {
-      await payCartWithWallet();
+      await payCartWithWallet(shipping);
       await Promise.all([refresh(), refreshWallet()]);
       toast.success("Paid from your wallet. Your order is on its way!");
       navigate("/orders");
@@ -80,9 +81,12 @@ function Payment() {
     try {
       // The server decides the amount from the cart. There is no amount
       // parameter here, and this endpoint requires a login.
+      // The address is checked here, before Razorpay opens, so nobody pays
+      // for an order the server would then refuse.
       const order = await api("/api/payment/create-order", {
         method: "POST",
         auth: true,
+        body: { address: shipping },
       });
 
       const rzp = new window.Razorpay({
@@ -114,6 +118,7 @@ function Payment() {
                 razorpayOrderId: response.razorpay_order_id,
                 razorpayPaymentId: response.razorpay_payment_id,
                 razorpaySignature: response.razorpay_signature,
+                address: shipping,
               },
             });
 
@@ -148,6 +153,11 @@ function Payment() {
       setPaying(false);
     }
   };
+
+  // Opened directly (bookmark, new tab) with no address: collect it first.
+  if (!hasAddress) {
+    return <Navigate to="/checkout" replace />;
+  }
 
   return (
     <>
@@ -238,7 +248,7 @@ function Payment() {
               </div>
             </div>
 
-            {shipping.address && (
+            {hasAddress && (
               <div className="pay__ship">
                 <h3>Delivering to</h3>
                 <p>
@@ -246,7 +256,7 @@ function Payment() {
                   <br />
                   {shipping.address}, {shipping.city} {shipping.pincode}
                 </p>
-                <Link to="/checkout" className="pay__change">
+                <Link to="/checkout" state={{ shipping }} className="pay__change">
                   Change address
                 </Link>
               </div>

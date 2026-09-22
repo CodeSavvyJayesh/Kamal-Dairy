@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { FiMapPin } from "react-icons/fi";
 import { api } from "../api/client";
 import "./Orders.css";
 
@@ -116,6 +117,18 @@ function Orders() {
                       </li>
                     ))}
                   </ul>
+
+                  {order.deliveryAddress && (
+                    <div className="order__ship">
+                      <FiMapPin aria-hidden="true" />
+                      <p>
+                        <span className="order__ship-label">Delivering to</span>
+                        <strong>{order.deliveryName}</strong> · {order.deliveryPhone}
+                        <br />
+                        {order.deliveryAddress}, {order.deliveryCity} {order.deliveryPincode}
+                      </p>
+                    </div>
+                  )}
 
                   <footer className="order__foot">
                     <span className="order__count">

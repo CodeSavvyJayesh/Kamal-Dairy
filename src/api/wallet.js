@@ -21,5 +21,6 @@ export const verifyTopup = (receipt) =>
     },
   });
 
-export const payCartWithWallet = () =>
-  api("/api/orders/place-with-wallet", { method: "POST", auth: true });
+/** Pays the cart from the wallet. The delivery address travels with it. */
+export const payCartWithWallet = (address) =>
+  api("/api/orders/place-with-wallet", { method: "POST", auth: true, body: { address } });

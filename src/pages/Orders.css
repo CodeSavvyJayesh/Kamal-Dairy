@@ -109,6 +109,41 @@
   text-transform: none;
 }
 
+.order__ship {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-3);
+  margin-top: var(--sp-5);
+  padding: var(--sp-3) var(--sp-4);
+  border-radius: var(--r-md);
+  background: var(--cream);
+  font-size: var(--step--1);
+  line-height: 1.6;
+  color: var(--ink-700);
+}
+
+.order__ship svg {
+  flex: none;
+  margin-top: 4px;
+  font-size: 16px;
+  color: var(--green-700);
+}
+
+.order__ship p {
+  margin: 0;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.order__ship-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
 /* Skeleton */
 
 .orders__skel {

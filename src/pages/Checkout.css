@@ -175,3 +175,42 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* ---------- Address from the last order ---------- */
+
+.checkout__saved {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+  margin: calc(var(--sp-2) * -1) 0 var(--sp-5);
+  padding: var(--sp-3) var(--sp-4);
+  border: 1px solid var(--green-100);
+  border-radius: var(--r-md);
+  background: var(--green-50);
+  color: var(--green-800);
+  font-size: var(--step--1);
+  font-weight: 600;
+}
+
+.checkout__saved svg {
+  flex: none;
+  font-size: 16px;
+}
+
+.checkout__saved button {
+  margin-left: auto;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--green-700);
+  font: inherit;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.checkout__saved button:hover {
+  color: var(--green-900);
+}

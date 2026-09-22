@@ -1,16 +1,49 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { FiMapPin } from "react-icons/fi";
+import { getMyOrders, latestAddress } from "../api/orders";
 import { useCart } from "../context/CartContext";
 import "./Checkout.css";
 
 const EMPTY = { name: "", phone: "", address: "", city: "", pincode: "" };
+const FIELDS = Object.keys(EMPTY);
+
+const isBlank = (f) => FIELDS.every((k) => !String(f[k] ?? "").trim());
+const sameAs = (a, b) => Boolean(a && b) && FIELDS.every((k) => (a[k] ?? "") === (b[k] ?? ""));
 
 function Checkout() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { items, total, loading } = useCart();
 
-  const [form, setForm] = useState(EMPTY);
+  // Coming back from Payment ("Change address") keeps what was typed.
+  const incoming = location.state?.shipping;
+
+  const [form, setForm] = useState(() => ({ ...EMPTY, ...(incoming || {}) }));
+  const [saved, setSaved] = useState(null);
   const [error, setError] = useState(null);
+
+  // Returning customers: fill in the address from their last order. Only
+  // ever fills an empty form, so it never overwrites what someone is typing.
+  useEffect(() => {
+    if (incoming) return undefined;
+    let alive = true;
+
+    getMyOrders()
+      .then((orders) => {
+        const last = latestAddress(orders);
+        if (!alive || !last) return;
+        setSaved(last);
+        setForm((f) => (isBlank(f) ? last : f));
+      })
+      .catch(() => {
+        // Prefill is a convenience. If it fails the form still works.
+      });
+
+    return () => {
+      alive = false;
+    };
+  }, [incoming]);
 
   const handleChange = (e) =>
     setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
@@ -23,8 +56,14 @@ function Checkout() {
       return;
     }
 
-    navigate("/payment", { state: { shipping: form } });
+    const shipping = Object.fromEntries(
+      FIELDS.map((k) => [k, String(form[k] ?? "").trim().replace(/\s+/g, " ")])
+    );
+
+    navigate("/payment", { state: { shipping } });
   };
+
+  const prefilled = sameAs(form, saved);
 
   return (
     <>
@@ -53,6 +92,16 @@ function Checkout() {
         <div className="checkout">
           <form className="checkout__form kd-panel" onSubmit={handleSubmit}>
             <h2>Delivery details</h2>
+
+            {prefilled && (
+              <p className="checkout__saved" role="status">
+                <FiMapPin aria-hidden="true" />
+                <span>Filled in from your last order.</span>
+                <button type="button" onClick={() => setForm(EMPTY)}>
+                  Use a different address
+                </button>
+              </p>
+            )}
 
             <div className="checkout__grid">
               <label className="kd-field checkout__full">

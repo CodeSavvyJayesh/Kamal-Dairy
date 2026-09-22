@@ -1,0 +1,27 @@
+/* Orders tab. Table, panel and print rules come from AdminSubscriptions.css. */
+
+.aorders__email {
+  overflow-wrap: anywhere;
+}
+
+.aorders__pin {
+  margin-top: 2px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.04em;
+}
+
+.aorders__items {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.aorders__items b {
+  white-space: nowrap;
+}
+
+.aorders__more {
+  display: block;
+  margin: var(--sp-4) auto 0;
+}
