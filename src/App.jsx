@@ -9,6 +9,7 @@ import PageLoader from "./components/PageLoader";
 
 import { ToastProvider } from "./context/ToastContext";
 import { CartProvider } from "./context/CartContext";
+import { WalletProvider } from "./context/WalletContext";
 
 import Home from "./pages/Home";
 
@@ -20,6 +21,10 @@ const Contact = lazy(() => import("./pages/Contact"));
 const Auth = lazy(() => import("./pages/Auth"));
 const VerifyOtp = lazy(() => import("./pages/VerifyOtp"));
 const Subscription = lazy(() => import("./pages/Subscription"));
+const MySubscriptions = lazy(() => import("./pages/MySubscriptions"));
+const SubscriptionBuilder = lazy(() => import("./pages/SubscriptionBuilder"));
+const SubscriptionDetail = lazy(() => import("./pages/SubscriptionDetail"));
+const Wallet = lazy(() => import("./pages/Wallet"));
 const Cart = lazy(() => import("./pages/Cart"));
 const Checkout = lazy(() => import("./pages/Checkout"));
 const Payment = lazy(() => import("./pages/Payment"));
@@ -32,6 +37,7 @@ function App() {
     <BrowserRouter>
       <ToastProvider>
         <CartProvider>
+          <WalletProvider>
           <ScrollToTop />
           <Navbar />
 
@@ -81,6 +87,39 @@ function App() {
                   }
                 />
 
+                <Route
+                  path="/subscriptions"
+                  element={
+                    <ProtectedRoute>
+                      <MySubscriptions />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/subscriptions/new"
+                  element={
+                    <ProtectedRoute>
+                      <SubscriptionBuilder />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/subscriptions/:id"
+                  element={
+                    <ProtectedRoute>
+                      <SubscriptionDetail />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/wallet"
+                  element={
+                    <ProtectedRoute>
+                      <Wallet />
+                    </ProtectedRoute>
+                  }
+                />
+
                 {/* Admin only */}
                 <Route
                   path="/admin"
@@ -98,6 +137,7 @@ function App() {
           </main>
 
           <Footer />
+          </WalletProvider>
         </CartProvider>
       </ToastProvider>
     </BrowserRouter>

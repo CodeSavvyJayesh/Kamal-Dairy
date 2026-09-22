@@ -101,7 +101,7 @@ function Orders() {
 
                     <span className="kd-badge order__status">
                       <span className="order__dot" aria-hidden="true" />
-                      Paid
+                      {order.paymentMethod === "WALLET" ? "Paid · Wallet" : "Paid"}
                     </span>
                   </header>
 

@@ -1,0 +1,92 @@
+/* Wallet balance chip in the navbar (signed-in users). */
+
+.navbar__wallet {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 40px;
+  padding: 0 14px;
+  border: 1.5px solid var(--green-100);
+  border-radius: var(--r-full);
+  background: var(--green-50);
+  color: var(--green-800);
+  font-weight: 800;
+  font-size: var(--step--1);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  transition: background var(--t-fast), border-color var(--t-fast), transform var(--t-fast);
+}
+
+.navbar__wallet svg {
+  font-size: 16px;
+}
+
+.navbar__wallet:hover {
+  border-color: var(--green-300);
+  transform: translateY(-1px);
+}
+
+.navbar__wallet.is-low {
+  background: var(--gold-100);
+  border-color: #f3dfbd;
+  color: var(--gold-600);
+}
+
+.navbar__wallet.is-low::after {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--gold-500);
+  box-shadow: 0 0 0 3px rgba(224, 161, 68, 0.25);
+}
+
+/* Admin tabs live here too: small, and loaded wherever the navbar is. */
+.admin__tabs {
+  display: inline-flex;
+  gap: 4px;
+  padding: 4px;
+  margin-bottom: var(--sp-6);
+  border: 1px solid var(--line);
+  border-radius: var(--r-full);
+  background: var(--white);
+}
+
+.admin__tab {
+  padding: 9px 20px;
+  border: 0;
+  border-radius: var(--r-full);
+  background: none;
+  font-weight: 700;
+  font-size: var(--step--1);
+  color: var(--ink-500);
+  transition: background var(--t-fast), color var(--t-fast);
+}
+
+.admin__tab.is-on {
+  background: var(--green-800);
+  color: var(--white);
+}
+
+/* Breadcrumbs in the green page header. Mirrors CategoryProducts.css so pages
+   that are opened directly (without that stylesheet loaded) look identical. */
+.page-head .crumbs {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+  margin-bottom: var(--sp-4);
+  font-size: var(--step--1);
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.6);
+  position: relative;
+  flex-wrap: wrap;
+}
+
+.page-head .crumbs a:hover {
+  color: var(--gold-400);
+}
+
+.page-head .crumbs [aria-current="page"] {
+  color: var(--white);
+}

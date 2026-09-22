@@ -1,0 +1,242 @@
+.asubs__stats {
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+}
+
+.asubs__panel {
+  padding: var(--sp-5);
+}
+
+.asubs__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--sp-4);
+  margin-bottom: var(--sp-4);
+}
+
+.asubs__head h2 {
+  font-family: var(--font-body);
+  font-size: var(--step-1);
+  font-weight: 800;
+  margin: 0 0 2px;
+}
+
+.asubs__head p {
+  margin: 0;
+  font-size: var(--step--1);
+  color: var(--text-muted);
+}
+
+.asubs__tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-2);
+}
+
+.asubs__quick {
+  display: flex;
+  gap: 6px;
+}
+
+/* chips reused from the builder */
+.asubs .bchip {
+  padding: 8px 14px;
+  border: 1.5px solid var(--line);
+  border-radius: var(--r-full);
+  background: var(--white);
+  color: var(--ink-700);
+  font-weight: 700;
+  font-size: var(--step--1);
+}
+
+.asubs .bchip.is-on {
+  background: var(--green-800);
+  border-color: var(--green-800);
+  color: var(--white);
+}
+
+.asubs__date {
+  width: auto;
+  padding: 8px 12px;
+}
+
+.asubs__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+  margin-bottom: var(--sp-5);
+}
+
+.asubs__chips li {
+  padding: 6px 12px;
+  border-radius: var(--r-full);
+  background: var(--cream);
+  border: 1px solid var(--line);
+  font-size: var(--step--1);
+  color: var(--text-muted);
+}
+
+.asubs__chips b {
+  color: var(--ink-900);
+  margin-right: 3px;
+}
+
+.asubs__chips li.is-warn {
+  background: var(--red-100);
+  border-color: #f8d2d3;
+  color: var(--red-600);
+}
+
+.asubs__chips li.is-money {
+  background: var(--green-50);
+  border-color: var(--green-100);
+}
+
+.asubs__group + .asubs__group {
+  margin-top: var(--sp-6);
+}
+
+.asubs__group h3 {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font-family: var(--font-body);
+  font-size: var(--step-0);
+  font-weight: 800;
+  margin-bottom: var(--sp-3);
+}
+
+.asubs__group h3 span {
+  padding: 1px 9px;
+  border-radius: var(--r-full);
+  background: var(--green-800);
+  color: var(--gold-400);
+  font-size: 12px;
+}
+
+.asubs__table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+}
+
+.asubs__table {
+  width: 100%;
+  min-width: 760px;
+  border-collapse: collapse;
+  font-size: var(--step--1);
+}
+
+.asubs__table th {
+  padding: var(--sp-3) var(--sp-4);
+  background: var(--cream);
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.asubs__table td {
+  padding: var(--sp-3) var(--sp-4);
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+
+.asubs__table tr:last-child td {
+  border-bottom: 0;
+}
+
+.asubs__table td strong,
+.asubs__table td small {
+  display: block;
+}
+
+.asubs__table td small {
+  color: var(--text-muted);
+}
+
+.asubs__table td a {
+  color: var(--green-700);
+  font-weight: 600;
+}
+
+.asubs__table .num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.asubs__table tr.is-missed td {
+  background: #fffafa;
+}
+
+.asubs__addr {
+  max-width: 260px;
+  color: var(--ink-700);
+}
+
+.asubs__actions {
+  white-space: nowrap;
+  text-align: right;
+}
+
+.asubs__actions .kd-btn + .kd-btn {
+  margin-left: 6px;
+}
+
+.asubs__skel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.asubs__skel .kd-skel {
+  height: 44px;
+}
+
+.asubs__empty {
+  text-align: center;
+  padding: var(--sp-7) var(--sp-4);
+  color: var(--text-muted);
+}
+
+.asubs__empty span {
+  display: block;
+  font-size: 40px;
+  margin-bottom: var(--sp-2);
+}
+
+/* ---------- Printable packing list ---------- */
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+
+  .asubs__panel,
+  .asubs__panel * {
+    visibility: visible;
+  }
+
+  .asubs__panel {
+    position: absolute;
+    inset: 0 auto auto 0;
+    width: 100%;
+    border: 0;
+    box-shadow: none;
+  }
+
+  .asubs__tools,
+  .asubs__no-print {
+    display: none !important;
+  }
+
+  .asubs__table {
+    min-width: 0;
+  }
+}

@@ -12,11 +12,18 @@ export default defineConfig({
   build: {
     // Keep the vendor libraries in their own chunks so a change to app code
     // does not invalidate the whole bundle in users' browser caches.
+    //
+    // Must be a function: rolldown-vite (pinned in package.json) rejects the
+    // object form with "manualChunks is not a function" and fails the build.
     rollupOptions: {
       output: {
-        manualChunks: {
-          react: ["react", "react-dom", "react-router-dom"],
-          swiper: ["swiper"],
+        manualChunks(id) {
+          if (!id.includes("node_modules")) return undefined;
+          if (/[\\/]node_modules[\\/](react|react-dom|react-router|react-router-dom|scheduler)[\\/]/.test(id)) {
+            return "react";
+          }
+          if (/[\\/]node_modules[\\/]swiper[\\/]/.test(id)) return "swiper";
+          return undefined;
         },
       },
     },

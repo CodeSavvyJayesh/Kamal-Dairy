@@ -2,8 +2,11 @@ import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FiCreditCard, FiLock, FiSmartphone } from "react-icons/fi";
 import { api } from "../api/client";
+import { payCartWithWallet } from "../api/wallet";
 import { useCart } from "../context/CartContext";
 import { useToast } from "../context/ToastContext";
+import { useWallet } from "../context/useWallet";
+import { rupees } from "../utils/format";
 import "./Payment.css";
 
 const METHODS = [
@@ -27,6 +30,10 @@ function Payment() {
   const toast = useToast();
 
   const { items, total, loading, refresh } = useCart();
+  const { balance, refresh: refreshWallet } = useWallet();
+
+  const walletOk = total > 0 && balance >= total;
+  const walletShort = Math.max(0, total - balance);
 
   const shipping = location.state?.shipping || {};
 
@@ -34,7 +41,34 @@ function Payment() {
   const [paying, setPaying] = useState(false);
   const [error, setError] = useState(null);
 
+  // Wallet checkout: one server call. The order, the debit and the cart clear
+  // commit together, and a short balance comes back as 402 with nothing charged.
+  const payFromWallet = async () => {
+    setError(null);
+    setPaying(true);
+    try {
+      await payCartWithWallet();
+      await Promise.all([refresh(), refreshWallet()]);
+      toast.success("Paid from your wallet. Your order is on its way!");
+      navigate("/orders");
+    } catch (err) {
+      if (err.status === 401) {
+        navigate("/login");
+        return;
+      }
+      setError(err.message);
+      refreshWallet();
+    } finally {
+      setPaying(false);
+    }
+  };
+
   const handlePayment = async () => {
+    if (method === "wallet") {
+      await payFromWallet();
+      return;
+    }
+
     if (!window.Razorpay) {
       setError("Payment library failed to load. Please refresh and try again.");
       return;
@@ -138,6 +172,37 @@ function Payment() {
             <h2>Payment method</h2>
 
             <div className="pay__methods" role="radiogroup" aria-label="Payment method">
+              <label
+                className={`pay__method ${method === "wallet" ? "is-selected" : ""} ${
+                  walletOk ? "" : "is-disabled"
+                }`}
+              >
+                <input
+                  type="radio"
+                  name="method"
+                  value="wallet"
+                  checked={method === "wallet"}
+                  disabled={!walletOk}
+                  onChange={(e) => setMethod(e.target.value)}
+                />
+
+                <span className="pay__method-icon" aria-hidden="true">👛</span>
+
+                <span className="pay__method-text">
+                  <strong>Kamal Wallet</strong>
+                  <small>
+                    Balance {rupees(balance)}
+                    {!walletOk && total > 0 && (
+                      <>
+                        {" "}· <Link to="/wallet">add {rupees(walletShort)}</Link>
+                      </>
+                    )}
+                  </small>
+                </span>
+
+                <span className="pay__radio" aria-hidden="true" />
+              </label>
+
               {METHODS.map((m) => (
                 <label
                   key={m.id}
@@ -211,7 +276,9 @@ function Payment() {
                   Processing…
                 </>
               ) : (
-                `Pay ₹${total.toFixed(2)}`
+                method === "wallet"
+                  ? `Pay ₹${total.toFixed(2)} from wallet`
+                  : `Pay ₹${total.toFixed(2)}`
               )}
             </button>
 

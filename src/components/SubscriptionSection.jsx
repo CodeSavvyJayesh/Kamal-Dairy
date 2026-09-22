@@ -59,7 +59,7 @@ function SubscriptionSection() {
             </div>
 
             <Link
-              to="/subscription"
+              to={`/subscriptions/new?plan=${plan.id}`}
               className={`kd-btn kd-btn--block ${
                 plan.featured ? "kd-btn--primary" : "kd-btn--outline"
               }`}

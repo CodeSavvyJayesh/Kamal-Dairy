@@ -4,6 +4,7 @@ import { FiEdit2, FiPlus, FiTrash2, FiX } from "react-icons/fi";
 import { api } from "../api/client";
 import { useToast } from "../context/ToastContext";
 import { PRODUCT_FALLBACK } from "../utils/images";
+import AdminSubscriptions from "../components/admin/AdminSubscriptions";
 import "./AdminDashboard.css";
 
 const EMPTY_FORM = { name: "", price: "", category: "", imageUrl: "" };
@@ -26,6 +27,7 @@ function AdminDashboard() {
   const [error, setError] = useState(null);
 
   const [confirming, setConfirming] = useState(null);
+  const [tab, setTab] = useState("catalogue");
 
   const handleError = useCallback(
     (err) => {
@@ -141,14 +143,41 @@ function AdminDashboard() {
       <header className="page-head">
         <div className="kd-container">
           <span className="kd-eyebrow">Admin</span>
-          <h1>Catalogue management</h1>
-          <p>Add, edit and remove products. Every write is re-checked server-side.</p>
+          <h1>{tab === "catalogue" ? "Catalogue management" : "Subscriptions desk"}</h1>
+          <p>
+            {tab === "catalogue"
+              ? "Add, edit and remove products. Every write is re-checked server-side."
+              : "Tomorrow's dispatch sheet, today's deliveries, refunds and recurring revenue."}
+          </p>
         </div>
       </header>
 
       <div className="kd-container page-body">
         {error && <p className="kd-alert">{error}</p>}
 
+        <div className="admin__tabs" role="tablist" aria-label="Admin sections">
+          <button
+            role="tab"
+            aria-selected={tab === "catalogue"}
+            className={`admin__tab ${tab === "catalogue" ? "is-on" : ""}`}
+            onClick={() => setTab("catalogue")}
+          >
+            Catalogue
+          </button>
+          <button
+            role="tab"
+            aria-selected={tab === "subscriptions"}
+            className={`admin__tab ${tab === "subscriptions" ? "is-on" : ""}`}
+            onClick={() => setTab("subscriptions")}
+          >
+            Subscriptions
+          </button>
+        </div>
+
+        {tab === "subscriptions" ? (
+          <AdminSubscriptions onError={handleError} />
+        ) : (
+        <>
         <div className="admin__stats">
           <div className="admin__stat kd-card">
             <strong>{totalItems || products.length}</strong>
@@ -355,6 +384,8 @@ function AdminDashboard() {
             )}
           </section>
         </div>
+        </>
+        )}
       </div>
 
       {/* Replaces window.confirm, which blocks the page and looks like 2004 */}

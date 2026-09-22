@@ -1,0 +1,105 @@
+.kd-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  display: grid;
+  place-items: center;
+  padding: var(--sp-4);
+  background: rgba(6, 35, 26, 0.55);
+  backdrop-filter: blur(3px);
+  animation: kd-fade-in 180ms var(--ease);
+}
+
+@keyframes kd-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.kd-modal__box {
+  width: 100%;
+  max-height: calc(100vh - 2 * var(--sp-4));
+  overflow: auto;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  box-shadow: var(--sh-3);
+  animation: kd-fade-up 260ms var(--ease) both;
+  outline: none;
+}
+
+.kd-modal__box--sm { max-width: 420px; }
+.kd-modal__box--md { max-width: 520px; }
+.kd-modal__box--lg { max-width: 680px; }
+
+.kd-modal__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  padding: var(--sp-5) var(--sp-5) 0;
+}
+
+.kd-modal__head h2 {
+  font-family: var(--font-body);
+  font-size: var(--step-1);
+  font-weight: 800;
+  margin: 0;
+}
+
+.kd-modal__box--danger .kd-modal__head h2 {
+  color: var(--red-600);
+}
+
+.kd-modal__close {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: var(--white);
+  color: var(--ink-500);
+  font-size: 16px;
+  transition: color var(--t-fast), border-color var(--t-fast);
+}
+
+.kd-modal__close:hover {
+  color: var(--ink-900);
+  border-color: var(--ink-400);
+}
+
+.kd-modal__body {
+  padding: var(--sp-4) var(--sp-5) var(--sp-5);
+}
+
+.kd-modal__body > p {
+  color: var(--text-muted);
+}
+
+.kd-modal__foot {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--sp-3);
+  padding: var(--sp-4) var(--sp-5);
+  border-top: 1px solid var(--line);
+  background: var(--cream);
+  border-radius: 0 0 var(--r-lg) var(--r-lg);
+}
+
+@media (max-width: 480px) {
+  .kd-modal {
+    align-items: end;
+    padding: 0;
+  }
+
+  .kd-modal__box {
+    max-width: none;
+    border-radius: var(--r-lg) var(--r-lg) 0 0;
+  }
+
+  .kd-modal__foot .kd-btn {
+    flex: 1;
+  }
+}

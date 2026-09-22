@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import { FiMenu, FiShoppingBag, FiX } from "react-icons/fi";
+import { FiCreditCard, FiMenu, FiShoppingBag, FiX } from "react-icons/fi";
 import { clearSession, isAdmin, isLoggedIn } from "../api/client";
 import { useCart } from "../context/CartContext";
 import { useToast } from "../context/ToastContext";
+import { useWallet } from "../context/useWallet";
+import { rupeesShort } from "../utils/format";
 import "./Navbar.css";
+import "./WalletChip.css";
 
 const LINKS = [
   { to: "/", label: "Home", end: true },
@@ -19,12 +22,18 @@ function Navbar() {
 
   const navigate = useNavigate();
   const { count, clearLocal } = useCart();
+  const { balance, forecast } = useWallet();
   const toast = useToast();
 
   // Re-evaluated on every render, and every route change re-renders this
   // component, so an expired token stops showing logged-in UI without a reload.
   const loggedIn = isLoggedIn();
   const admin = isAdmin();
+
+  // Signed-in customers go straight to their own subscriptions; guests see the plans.
+  const links = LINKS.map((l) =>
+    l.to === "/subscription" && loggedIn ? { to: "/subscriptions", label: "Subscriptions" } : l
+  );
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
@@ -81,7 +90,7 @@ function Navbar() {
 
           <nav className={`navbar__nav ${open ? "is-open" : ""}`} aria-label="Main">
             <ul className="navbar__links">
-              {LINKS.map((link) => (
+              {links.map((link) => (
                 <li key={link.to}>
                   <NavLink
                     to={link.to}
@@ -126,6 +135,19 @@ function Navbar() {
             </ul>
 
             <div className="navbar__actions">
+              {loggedIn && (
+                <Link
+                  to="/wallet"
+                  className={`navbar__wallet ${forecast?.lowBalance ? "is-low" : ""}`}
+                  onClick={close}
+                  title={forecast?.lowBalance ? "Wallet balance is running low" : "Wallet balance"}
+                >
+                  <FiCreditCard aria-hidden="true" />
+                  <span className="kd-sr-only">Wallet balance</span>
+                  {rupeesShort(balance)}
+                </Link>
+              )}
+
               <Link to="/cart" className="navbar__cart" onClick={close}>
                 <FiShoppingBag aria-hidden="true" />
                 <span className="kd-sr-only">

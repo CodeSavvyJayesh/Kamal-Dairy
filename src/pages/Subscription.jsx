@@ -1,7 +1,9 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import { FiCheck } from "react-icons/fi";
-import { useToast } from "../context/ToastContext";
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { FiArrowRight, FiCheck } from "react-icons/fi";
+import { isLoggedIn } from "../api/client";
+import { getPlans, listSubscriptions } from "../api/subscriptions";
+import { hourLabel } from "../utils/format";
 import "./Subscription.css";
 
 const PLANS = [
@@ -9,72 +11,100 @@ const PLANS = [
     id: "daily",
     name: "Daily Delivery",
     tagline: "For households that go through milk every morning.",
-    price: "Pay as you go",
-    save: null,
     features: [
-      "Fresh milk every morning before 7 AM",
-      "Pause or resume any time",
-      "No minimum order value",
-      "Change products before 11 PM",
+      "Every day, alternate days, or only the days you pick",
+      "Delivered 6 – 8 AM or 5 – 7 PM",
+      "Skip any single day with one tap",
+      "Paid per delivery from your wallet",
     ],
   },
   {
     id: "weekly",
     name: "Weekly Essentials",
-    tagline: "Set it once, and your week is sorted.",
-    price: "Save 8%",
-    save: "8% off every order",
+    tagline: "Paneer, butter and curd, once a week, on your day.",
     featured: true,
     features: [
-      "Choose any products, any quantity",
-      "Auto-renews every 7 days",
-      "Fully customisable each week",
+      "One delivery a week on the day you choose",
+      "8% off every single delivery",
       "Skip a week whenever you like",
+      "Change quantity any time before 11 PM",
     ],
   },
   {
     id: "monthly",
     name: "Monthly Smart Saver",
-    tagline: "The cheapest way to never think about it again.",
-    price: "Save 10%",
-    save: "10% off every order",
+    tagline: "Ghee and pantry staples at our lowest price.",
     features: [
       "Auto-delivery every 30 days",
-      "Priority customer support",
-      "Exclusive member-only offers",
+      "10% off every single delivery",
+      "Vacation mode for when you are away",
       "Cancel any time, no fee",
     ],
   },
 ];
 
-const FAQS = [
-  {
-    q: "Can I pause my subscription?",
-    a: "Yes. Pause or resume any time from your account — there is no limit and no charge for pausing.",
-  },
-  {
-    q: "Can I change the quantity or products?",
-    a: "You can modify products and quantities up to 11:00 PM the night before your delivery.",
-  },
-  {
-    q: "Is there a cancellation fee?",
-    a: "None. Cancel whenever you like and you will only have paid for what was already delivered.",
-  },
-  {
-    q: "Which areas do you deliver to?",
-    a: "Marine Lines, Borivali, Ghatkopar and Chembur today, with more of Mumbai being added each quarter.",
-  },
+const STEPS = [
+  { n: 1, title: "Build your plan", text: "Pick a product, how many, and which days." },
+  { n: 2, title: "Top up your wallet", text: "Add money once through UPI or card." },
+  { n: 3, title: "We deliver", text: "Each delivery is paid the night before it arrives." },
+  { n: 4, title: "Stay in control", text: "Skip, pause or go on vacation any time." },
 ];
 
 function Subscription() {
-  const toast = useToast();
+  const navigate = useNavigate();
   const [open, setOpen] = useState(0);
+  const [discount, setDiscount] = useState({ daily: 0, weekly: 8, monthly: 10 });
+  const [cutoff, setCutoff] = useState(23);
+  const [activeCount, setActiveCount] = useState(0);
 
-  const choose = (plan) => {
-    // The backend has no subscription endpoint yet, so this registers interest
-    // instead of silently pretending a plan was created.
-    toast.info(`${plan.name} — we'll email you as soon as plans go live.`);
-  };
+  useEffect(() => {
+    let alive = true;
+
+    getPlans()
+      .then((p) => {
+        if (!alive) return;
+        const d = {};
+        for (const f of p.frequencies) d[f.plan] = Math.max(d[f.plan] ?? 0, f.discountPercent);
+        setDiscount(d);
+        setCutoff(p.cutoffHour);
+      })
+      .catch(() => {});
+
+    if (isLoggedIn()) {
+      listSubscriptions()
+        .then((list) => alive && setActiveCount(list.filter((s) => s.status !== "CANCELLED").length))
+        .catch(() => {});
+    }
+
+    return () => {
+      alive = false;
+    };
+  }, []);
+
+  const cut = hourLabel(cutoff);
+
+  const faqs = [
+    {
+      q: "How does payment work?",
+      a: `You top up your Kamal wallet once. At ${cut} the night before each delivery we charge that one delivery from the balance - nothing is taken in advance, and you can see every charge in your wallet.`,
+    },
+    {
+      q: "Can I pause or skip?",
+      a: `Yes. Skip a single day, pause indefinitely, or set vacation dates - all from your account, free, as long as it is before ${cut} the night before.`,
+    },
+    {
+      q: "What if my wallet runs low?",
+      a: "That delivery is simply not sent and you are not charged. We email you, and the next delivery goes out as normal once you top up.",
+    },
+    {
+      q: "Is there a cancellation fee?",
+      a: "None. Cancel whenever you like. You only ever pay for deliveries that were actually scheduled, and unused balance stays in your wallet for your next order.",
+    },
+    {
+      q: "Which areas do you deliver to?",
+      a: "Marine Lines, Borivali, Ghatkopar and Chembur today, with more of Mumbai being added each quarter.",
+    },
+  ];
 
   return (
     <>
@@ -83,55 +113,83 @@ function Subscription() {
           <span className="kd-eyebrow">Subscriptions</span>
           <h1>Flexible milk delivery, on your schedule</h1>
           <p>
-            Choose a plan that fits your household. Farm-pure dairy at your door,
-            always on time.
+            Choose a plan that fits your household. Farm-pure dairy at your door, always on
+            time, and always yours to change.
           </p>
         </div>
       </header>
 
       <div className="kd-container page-body">
+        {activeCount > 0 && (
+          <Link to="/subscriptions" className="plans__mine kd-card">
+            <span>
+              You have <strong>{activeCount}</strong> {activeCount === 1 ? "subscription" : "subscriptions"}
+            </span>
+            <span className="plans__mine-cta">
+              Manage <FiArrowRight aria-hidden="true" />
+            </span>
+          </Link>
+        )}
+
         <div className="plans">
-          {PLANS.map((plan) => (
-            <article
-              key={plan.id}
-              className={`plan kd-card ${plan.featured ? "is-featured" : ""}`}
-            >
-              {plan.featured && <span className="plan__ribbon">Most popular</span>}
+          {PLANS.map((plan) => {
+            const off = discount[plan.id] ?? 0;
 
-              <h2>{plan.name}</h2>
-              <p className="plan__tagline">{plan.tagline}</p>
-
-              <div className="plan__price">
-                <strong>{plan.price}</strong>
-                {plan.save && <span>{plan.save}</span>}
-              </div>
-
-              <ul className="plan__features">
-                {plan.features.map((f) => (
-                  <li key={f}>
-                    <FiCheck aria-hidden="true" />
-                    {f}
-                  </li>
-                ))}
-              </ul>
-
-              <button
-                className={`kd-btn kd-btn--block ${
-                  plan.featured ? "kd-btn--primary" : "kd-btn--outline"
-                }`}
-                onClick={() => choose(plan)}
+            return (
+              <article
+                key={plan.id}
+                className={`plan kd-card ${plan.featured ? "is-featured" : ""}`}
               >
-                Choose {plan.name.split(" ")[0]}
-              </button>
-            </article>
-          ))}
+                {plan.featured && <span className="plan__ribbon">Most popular</span>}
+
+                <h2>{plan.name}</h2>
+                <p className="plan__tagline">{plan.tagline}</p>
+
+                <div className="plan__price">
+                  <strong>{off ? `Save ${off}%` : "Pay as you go"}</strong>
+                  <span>{off ? `${off}% off every delivery` : "No minimum order"}</span>
+                </div>
+
+                <ul className="plan__features">
+                  {plan.features.map((f) => (
+                    <li key={f}>
+                      <FiCheck aria-hidden="true" />
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+
+                <button
+                  className={`kd-btn kd-btn--block ${
+                    plan.featured ? "kd-btn--primary" : "kd-btn--outline"
+                  }`}
+                  onClick={() => navigate(`/subscriptions/new?plan=${plan.id}`)}
+                >
+                  Choose {plan.name.split(" ")[0]}
+                </button>
+              </article>
+            );
+          })}
         </div>
+
+        <section className="how" aria-labelledby="how-title">
+          <h2 id="how-title" className="how__title">How it works</h2>
+          <ol className="how__steps">
+            {STEPS.map((s) => (
+              <li key={s.n} className="how__step">
+                <span className="how__num">{s.n}</span>
+                <strong>{s.title}</strong>
+                <p>{s.text}</p>
+              </li>
+            ))}
+          </ol>
+        </section>
 
         <section className="faq">
           <h2 className="faq__title">Frequently asked questions</h2>
 
           <div className="faq__list">
-            {FAQS.map((item, i) => {
+            {faqs.map((item, i) => {
               const isOpen = open === i;
 
               return (
@@ -154,8 +212,7 @@ function Subscription() {
           </div>
 
           <p className="faq__more">
-            Still unsure?{" "}
-            <Link to="/contact">Talk to us</Link> — we answer every message.
+            Still unsure? <Link to="/contact">Talk to us</Link> – we answer every message.
           </p>
         </section>
       </div>
