@@ -2,7 +2,7 @@
 
 React single-page app for **Kamal Dairy**, a dairy e-commerce platform: storefront, cart and
 checkout, Razorpay payments, a prepaid wallet, recurring milk subscriptions, order tracking,
-verified-buyer reviews, and a full admin console with a sales dashboard.
+GST invoice downloads, verified-buyer reviews, and a full admin console with a sales dashboard.
 
 | | |
 |---|---|
@@ -12,7 +12,7 @@ verified-buyer reviews, and a full admin console with a sales dashboard.
 | **Charts** | Hand-built SVG - no chart library |
 | **Other** | `swiper` for the hero, `jwt-decode` for role checks |
 | **API** | [`kamal-dairy-backend`](../kamal-dairy-backend) - Spring Boot, see its README |
-| **Deploy** | `vite build` → static bundle served by Nginx on AWS EC2 |
+| **Deploy** | Vercel (`vercel.json` in the repo) |
 
 ---
 
@@ -138,6 +138,13 @@ horizontally rather than wrapping or overflowing on small screens.
 the request was actually authenticated, so a failed login never logs you out of an existing session.
 The other `api/*.js` modules are thin, typed-by-convention functions over it.
 
+`download()` in the same file handles endpoints that return bytes - invoice PDFs and the register
+CSV. A plain `<a href>` cannot be used for these because they need the bearer token and a link
+carries no headers, so the file is fetched like any other request, turned into a blob and saved
+through a temporary object URL, with the filename taken from `Content-Disposition`. Errors still
+arrive as JSON, so a failure is rethrown as a normal `ApiError` and the user sees a readable message
+rather than a corrupt download.
+
 **Contexts**
 
 | Context | Holds |
@@ -172,6 +179,11 @@ an order is still open, a Cancel button opens a modal that states plainly that t
 back to the wallet. Once delivered, each line gets a *How was it?* chip that opens the review form in
 a modal, and flips to a done state after posting.
 
+Every order also carries a download button: **Proforma** while it is on its way, **Invoice** once it
+is delivered, with the invoice number in the tooltip. The PDF is fetched with the bearer token and
+saved through a blob, since a plain link cannot carry an auth header - see `download()` in
+`api/client.js`. A cancelled order shows no button at all.
+
 **Wallet (`/wallet`).** Balance, a Razorpay top-up flow, the full credit and debit ledger with
 sources (top-up, order, subscription, refund), and a forecast of how long the balance funds the
 active subscriptions.
@@ -187,10 +199,11 @@ responses are surfaced as a readable countdown rather than a raw error.
 
 **Admin (`/admin`).**
 
-- *Products* - create, edit, delete, plus a stock field, low-stock badges and a `StockModal` for
-  setting or adding stock.
-- *Orders* - status filters with counts, advance a status in one click, cancel with a reason, and
-  the customer's delivery address on every row.
+- *Catalogue* - create, edit, delete, plus a stock field, low-stock badges, a `StockModal` for
+  setting or adding stock, and the HSN code and GST rate that drive the invoice.
+- *Orders* - status filters with counts, advance a status in one click, cancel with a reason, the
+  customer's delivery address on every row, the invoice number once one is issued, a per-row invoice
+  download, and a **Register** button that exports the invoice register for a date range as CSV.
 - *Subscriptions* - today's dispatch sheet, mark delivered, refund a delivery.
 - *Reviews* - a moderation desk: All / 1-2 stars / Not replied / Hidden filters with live counts,
   public replies, and hide / show with an admin-only reason. Low ratings are marked with a gold rail
@@ -228,9 +241,20 @@ buyers, the payment mix and a subscription snapshot, with a range selector for 7
 ## 9. Build and deploy
 
 ```bash
-npm run build      # → dist/
+npm run build      # → dist/, about 800 KB, code-split per route
 ```
 
-The output is a static bundle. In production it is served by **Nginx on an AWS EC2 instance**, with
-history-API fallback to `index.html` so client-side routes resolve on refresh, and `VITE_API_URL`
-pointing at the deployed backend. The backend's `CORS_ALLOWED_ORIGINS` must list that origin.
+Deployed on **Vercel**. `vercel.json` is committed, so the framework, build command and output
+directory are detected without any dashboard configuration, and it carries two things that matter:
+
+- a **rewrite of every path to `/index.html`**, without which a hard refresh on `/orders` returns
+  404 - Vercel checks the filesystem first, so real assets still serve normally;
+- **security headers** (`X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`,
+  `Permissions-Policy`) and a one-year immutable cache on the fingerprinted `/assets` bundle.
+
+One environment variable, `VITE_API_URL`, pointing at the Railway backend with no trailing slash.
+Vite inlines `VITE_` variables into the bundle at **build** time, so changing it needs a redeploy,
+and a secret must never be put in one. The backend's `CORS_ALLOWED_ORIGINS` has to list this origin;
+add `https://*.vercel.app` too or every preview deployment is blocked.
+
+Full walkthrough: [DEPLOYMENT.md](../kamal-dairy-backend/DEPLOYMENT.md).

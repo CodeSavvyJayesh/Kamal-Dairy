@@ -103,3 +103,28 @@
 .aorders .asubs__table {
   min-width: 1000px;
 }
+
+/* ---------- Invoices ---------- */
+
+.aorders__invoice-no {
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  color: var(--green-700);
+}
+
+.aorders__modal-lead {
+  margin: 0 0 var(--sp-4);
+  line-height: 1.6;
+}
+
+.aorders__range {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp-3);
+}
+
+@media (max-width: 420px) {
+  .aorders__range {
+    grid-template-columns: 1fr;
+  }
+}

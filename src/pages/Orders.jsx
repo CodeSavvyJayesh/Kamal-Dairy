@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { FiCheck, FiMapPin, FiRotateCcw, FiStar, FiTruck, FiX } from "react-icons/fi";
-import { cancelOrder, getMyOrders } from "../api/orders";
+import { FiCheck, FiDownload, FiMapPin, FiRotateCcw, FiStar, FiTruck, FiX } from "react-icons/fi";
+import { cancelOrder, downloadInvoice, getMyOrders, hasInvoice } from "../api/orders";
 import { getMyReviews } from "../api/reviews";
 import Modal from "../components/Modal";
 import ReviewForm from "../components/ReviewForm";
@@ -71,6 +71,9 @@ function Orders() {
   const [reason, setReason] = useState(CANCEL_REASONS[0]);
   const [note, setNote] = useState("");
   const [busy, setBusy] = useState(false);
+  // Holds the id of the order whose invoice is being fetched, not a boolean:
+  // only that row's button should show as working.
+  const [downloading, setDownloading] = useState(null);
 
   // productId -> the customer's review, for the "How was it?" buttons.
   const [myReviews, setMyReviews] = useState({});
@@ -112,6 +115,29 @@ function Orders() {
     setReason(CANCEL_REASONS[0]);
     setNote("");
     setCancelling(order);
+  };
+
+  /**
+   * Saves the invoice PDF. The button is per order, so the busy flag holds an
+   * order id rather than a boolean - two orders can be asked for at once and
+   * only the one being fetched shows as working.
+   */
+  const saveInvoice = async (order) => {
+    setDownloading(order.id);
+    try {
+      const { invoiceNumber } = await downloadInvoice(order.id);
+      toast.success(
+        invoiceNumber ? `Invoice ${invoiceNumber} downloaded` : "Proforma invoice downloaded"
+      );
+    } catch (err) {
+      if (err.status === 401) {
+        navigate("/login");
+        return;
+      }
+      toast.error(err.message);
+    } finally {
+      setDownloading(null);
+    }
   };
 
   const confirmCancel = async () => {
@@ -293,6 +319,25 @@ function Orders() {
                     </span>
 
                     <div className="order__foot-right">
+                      {hasInvoice(order) && (
+                        <button
+                          className="kd-btn kd-btn--ghost kd-btn--sm order__invoice"
+                          onClick={() => saveInvoice(order)}
+                          disabled={downloading === order.id}
+                          title={
+                            order.invoiceNo
+                              ? `Tax invoice ${order.invoiceNo}`
+                              : "A proforma until the order is delivered"
+                          }
+                        >
+                          <FiDownload aria-hidden="true" />
+                          {downloading === order.id
+                            ? "Preparing…"
+                            : order.invoiceNo
+                              ? "Invoice"
+                              : "Proforma"}
+                        </button>
+                      )}
                       {order.cancellable && (
                         <button
                           className="kd-btn kd-btn--ghost kd-btn--sm order__cancel"

@@ -13,7 +13,22 @@ import StockModal from "../components/admin/StockModal";
 import { stockState } from "../utils/orders";
 import "./AdminDashboard.css";
 
-const EMPTY_FORM = { name: "", price: "", category: "", imageUrl: "", stock: "" };
+const EMPTY_FORM = {
+  name: "",
+  price: "",
+  category: "",
+  imageUrl: "",
+  stock: "",
+  hsnCode: "",
+  gstRatePercent: "",
+};
+
+/**
+ * The GST slabs an Indian dairy actually uses. Left as a choice rather than
+ * worked out from the category: which slab a product sits in depends on how it
+ * is packed and branded, and only the dairy knows that.
+ */
+const GST_RATES = [0, 5, 12, 18];
 
 /** Badge text and tone for a product's stock. */
 function stockBadge(stock) {
@@ -142,6 +157,8 @@ function AdminDashboard() {
       price: Number(form.price),
       category: form.category.trim(),
       imageUrl: form.imageUrl.trim(),
+      hsnCode: form.hsnCode.trim(),
+      gstRatePercent: String(form.gstRatePercent).trim() === "" ? 0 : Number(form.gstRatePercent),
     };
     const stock = String(form.stock).trim() === "" ? null : Number(form.stock);
 
@@ -196,6 +213,8 @@ function AdminDashboard() {
       category: product.category ?? "",
       imageUrl: product.imageUrl ?? "",
       stock: product.stock ?? "",
+      hsnCode: product.hsnCode ?? "",
+      gstRatePercent: product.gstRatePercent ?? "",
     });
     setEditingId(product.id);
     setEditingStock(product.stock ?? null);
@@ -386,6 +405,43 @@ function AdminDashboard() {
                   : "Blank means not tracked and always available."}
               </small>
             </label>
+
+            <div className="admin__row">
+              <label className="kd-field">
+                <span className="kd-label">HSN code</span>
+                <input
+                  className="kd-input"
+                  name="hsnCode"
+                  placeholder="0401"
+                  maxLength={12}
+                  value={form.hsnCode}
+                  onChange={handleChange}
+                />
+                <small className="admin__hint">
+                  Printed on the invoice. Dairy sits in chapter 04 - milk 0401, curd 0403, ghee 0405,
+                  paneer 0406.
+                </small>
+              </label>
+
+              <label className="kd-field">
+                <span className="kd-label">GST rate</span>
+                <select
+                  className="kd-input"
+                  name="gstRatePercent"
+                  value={form.gstRatePercent === "" ? 0 : form.gstRatePercent}
+                  onChange={handleChange}
+                >
+                  {GST_RATES.map((rate) => (
+                    <option key={rate} value={rate}>
+                      {rate === 0 ? "0% - exempt or nil rated" : `${rate}%`}
+                    </option>
+                  ))}
+                </select>
+                <small className="admin__hint">
+                  The shelf price includes this. Tax is worked back out of it on the invoice.
+                </small>
+              </label>
+            </div>
 
             <label className="kd-field">
               <span className="kd-label">Image URL</span>

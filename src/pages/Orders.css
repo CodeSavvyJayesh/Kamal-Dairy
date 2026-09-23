@@ -358,6 +358,14 @@
   color: var(--red-600);
 }
 
+.order__invoice {
+  align-self: center;
+}
+
+.order__invoice:disabled {
+  opacity: 0.6;
+}
+
 /* ---------- Cancel dialog ---------- */
 
 .order__modal-lead {

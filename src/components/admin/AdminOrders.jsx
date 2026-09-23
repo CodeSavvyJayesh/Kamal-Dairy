@@ -1,10 +1,13 @@
 import { useCallback, useEffect, useState } from "react";
-import { FiAlertTriangle, FiArrowRight, FiPrinter, FiRefreshCw, FiX } from "react-icons/fi";
+import { FiAlertTriangle, FiArrowRight, FiDownload, FiFileText, FiPrinter, FiRefreshCw, FiX } from "react-icons/fi";
 import {
   adminCancelOrder,
   advanceOrder,
+  downloadAdminInvoice,
+  downloadInvoiceRegister,
   getAdminOrderStats,
   getAdminOrders,
+  hasInvoice,
 } from "../../api/orders";
 import { useToast } from "../../context/ToastContext";
 import { formatDateTime, rupees } from "../../utils/format";
@@ -26,6 +29,16 @@ const FILTERS = [
   { key: "ALL", label: "All", count: () => null },
 ];
 
+/** yyyy-MM-dd in local time, which is what a date input expects. */
+const isoDay = (d) =>
+  `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+
+/** First of this month to today. */
+function thisMonth() {
+  const now = new Date();
+  return { from: isoDay(new Date(now.getFullYear(), now.getMonth(), 1)), to: isoDay(now) };
+}
+
 /**
  * Order desk: what needs doing, one button to move each order on, and a
  * cancel that refunds the customer's wallet and restocks the shelf.
@@ -44,6 +57,12 @@ function AdminOrders({ onError, onLowStock }) {
 
   const [cancelling, setCancelling] = useState(null);
   const [reason, setReason] = useState("");
+
+  // Invoice register export. Defaults to the current month, which is what the
+  // accountant asks for nine times out of ten.
+  const [exporting, setExporting] = useState(false);
+  const [range, setRange] = useState(thisMonth);
+  const [exportBusy, setExportBusy] = useState(false);
 
   const loadStats = useCallback(async () => {
     try {
@@ -82,6 +101,31 @@ function AdminOrders({ onError, onLowStock }) {
   const refreshAll = () => {
     load(0);
     loadStats();
+  };
+
+  const saveInvoice = async (order) => {
+    setBusy(order.id);
+    try {
+      const { invoiceNumber } = await downloadAdminInvoice(order.id);
+      toast.success(invoiceNumber ? `Invoice ${invoiceNumber} downloaded` : "Proforma downloaded");
+    } catch (err) {
+      toast.error(err.message);
+    } finally {
+      setBusy(null);
+    }
+  };
+
+  const saveRegister = async () => {
+    setExportBusy(true);
+    try {
+      await downloadInvoiceRegister(range.from, range.to);
+      toast.success("Invoice register downloaded");
+      setExporting(false);
+    } catch (err) {
+      toast.error(err.message);
+    } finally {
+      setExportBusy(false);
+    }
   };
 
   // Replace the row in place; drop it if it no longer matches the filter.
@@ -180,6 +224,13 @@ function AdminOrders({ onError, onLowStock }) {
             >
               <FiRefreshCw aria-hidden="true" />
             </button>
+            <button
+              className="kd-btn kd-btn--ghost kd-btn--sm"
+              onClick={() => setExporting(true)}
+              title="Invoice register as CSV, for the accountant"
+            >
+              <FiFileText aria-hidden="true" /> Register
+            </button>
             <button className="kd-btn kd-btn--ghost kd-btn--sm" onClick={() => window.print()}>
               <FiPrinter aria-hidden="true" /> Print
             </button>
@@ -239,6 +290,7 @@ function AdminOrders({ onError, onLowStock }) {
                       <td>
                         <strong>#{o.id}</strong>
                         <small>{formatDateTime(o.createdAt)}</small>
+                        {o.invoiceNo && <small className="aorders__invoice-no">{o.invoiceNo}</small>}
                       </td>
 
                       <td>
@@ -295,6 +347,17 @@ function AdminOrders({ onError, onLowStock }) {
                             disabled={busy === o.id}
                           >
                             {next.label} <FiArrowRight aria-hidden="true" />
+                          </button>
+                        )}
+                        {hasInvoice(o) && (
+                          <button
+                            className="kd-btn kd-btn--ghost kd-btn--sm"
+                            onClick={() => saveInvoice(o)}
+                            disabled={busy === o.id}
+                            aria-label={`Invoice for order ${o.id}`}
+                            title={o.invoiceNo ? `Tax invoice ${o.invoiceNo}` : "Proforma - not delivered yet"}
+                          >
+                            <FiDownload aria-hidden="true" />
                           </button>
                         )}
                         {isOpenOrder(o) && (
@@ -370,6 +433,58 @@ function AdminOrders({ onError, onLowStock }) {
             </label>
           </>
         )}
+      </Modal>
+
+      <Modal
+        open={exporting}
+        title="Invoice register"
+        size="sm"
+        onClose={() => !exportBusy && setExporting(false)}
+        footer={
+          <>
+            <button
+              className="kd-btn kd-btn--ghost"
+              onClick={() => setExporting(false)}
+              disabled={exportBusy}
+            >
+              Back
+            </button>
+            <button
+              className="kd-btn kd-btn--primary"
+              onClick={saveRegister}
+              disabled={exportBusy || !range.from || !range.to}
+            >
+              {exportBusy ? "Preparing…" : "Download CSV"}
+            </button>
+          </>
+        }
+      >
+        <p className="aorders__modal-lead">
+          One row per item, with the taxable value, CGST and SGST split out. Only invoices that were
+          actually issued are included, so cancelled orders never appear.
+        </p>
+        <div className="aorders__range">
+          <label className="kd-field">
+            <span className="kd-label">From</span>
+            <input
+              className="kd-input"
+              type="date"
+              value={range.from}
+              max={range.to}
+              onChange={(e) => setRange((r) => ({ ...r, from: e.target.value }))}
+            />
+          </label>
+          <label className="kd-field">
+            <span className="kd-label">To</span>
+            <input
+              className="kd-input"
+              type="date"
+              value={range.to}
+              min={range.from}
+              onChange={(e) => setRange((r) => ({ ...r, to: e.target.value }))}
+            />
+          </label>
+        </div>
       </Modal>
     </div>
   );
