@@ -7,6 +7,11 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm ci
 
+# package-lock.json was generated on Windows and only records the win32 native
+# bindings for rolldown and lightningcss, so a Linux install is missing the ones
+# the build needs. Remove this once the lockfile is regenerated from scratch.
+RUN npm install --no-save @rolldown/binding-linux-x64-musl@1.0.0-beta.50 lightningcss-linux-x64-musl@1.30.2
+
 COPY . .
 
 # Vite inlines VITE_* at build time, so the API URL has to be present here,

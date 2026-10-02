@@ -1,6 +1,15 @@
 import { jwtDecode } from "jwt-decode";
 
-const BASE_URL = import.meta.env.VITE_API_URL;
+// Trailing slashes are stripped so "https://api.example.com/" does not turn
+// every request into "//api/...". If the variable is missing the build still
+// works, but every call would go to the frontend's own host - say so loudly.
+const BASE_URL = (import.meta.env.VITE_API_URL || "").replace(/\/+$/, "");
+
+if (!BASE_URL) {
+  console.error(
+    "VITE_API_URL is not set. Add it to .env.local for local development, or to the hosting provider's environment variables, then rebuild."
+  );
+}
 
 export class ApiError extends Error {
   constructor(message, status, data = null) {

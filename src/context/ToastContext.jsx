@@ -61,6 +61,8 @@ export function ToastProvider({ children }) {
   );
 }
 
+// The hook lives beside its provider on purpose; fast refresh still works for the provider.
+// eslint-disable-next-line react-refresh/only-export-components
 export function useToast() {
   const ctx = useContext(ToastContext);
 
