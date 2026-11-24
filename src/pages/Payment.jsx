@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { FiCreditCard, FiLock, FiSmartphone } from "react-icons/fi";
-import { api } from "../api/client";
+import { api, isTransient, withRetry } from "../api/client";
 import { payCartWithWallet } from "../api/wallet";
 import { useCart } from "../context/CartContext";
 import { useToast } from "../context/ToastContext";
@@ -112,24 +112,32 @@ function Payment() {
             // Hand the signed receipt back for verification. The backend checks
             // the HMAC signature against its Razorpay secret before creating an
             // order, so "payment done" is never just a claim the browser makes.
-            await api("/api/orders/place", {
-              method: "POST",
-              auth: true,
-              body: {
-                razorpayOrderId: response.razorpay_order_id,
-                razorpayPaymentId: response.razorpay_payment_id,
-                razorpaySignature: response.razorpay_signature,
-                address: shipping,
-              },
-            });
+            // Retried on network errors: the same receipt always returns the
+            // same order, so a retry can never order twice.
+            await withRetry(() =>
+              api("/api/orders/place", {
+                method: "POST",
+                auth: true,
+                body: {
+                  razorpayOrderId: response.razorpay_order_id,
+                  razorpayPaymentId: response.razorpay_payment_id,
+                  razorpaySignature: response.razorpay_signature,
+                  address: shipping,
+                },
+              })
+            );
 
             await refresh();
             toast.success("Payment confirmed. Your order is on its way!");
             navigate("/orders");
           } catch (err) {
+            // The money is taken but we could not reach the server. Razorpay's
+            // webhook still tells the backend, which places the order by itself.
             setError(
-              err.message ||
-                "Payment went through but the order could not be confirmed. Please contact support."
+              isTransient(err)
+                ? "Your payment went through. We are confirming your order - it will appear under My Orders in a minute and we will email you. Please do not pay again."
+                : err.message ||
+                    "Payment went through but the order could not be confirmed. Please contact support."
             );
             // 409: something sold out mid-payment and the money went to the wallet.
             if (err.status === 409) {

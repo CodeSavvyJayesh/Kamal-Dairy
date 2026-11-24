@@ -9,6 +9,7 @@ import {
   FiRotateCcw,
   FiShoppingBag,
 } from "react-icons/fi";
+import { isTransient, withRetry } from "../api/client";
 import { createTopup, getTransactions, verifyTopup } from "../api/wallet";
 import { useToast } from "../context/ToastContext";
 import { useWallet } from "../context/useWallet";
@@ -86,7 +87,18 @@ function Wallet() {
     try {
       const order = await createTopup(chosen);
       const receipt = await openRazorpay({ order, description: "Wallet top-up" });
-      const updated = await verifyTopup(receipt);
+      let updated;
+      try {
+        // Safe to retry: the wallet is credited once per payment, however often we ask.
+        updated = await withRetry(() => verifyTopup(receipt));
+      } catch (err) {
+        if (isTransient(err)) {
+          // Paid, but the server could not be reached. The webhook credits it anyway.
+          setError("Payment received. It will show in your wallet within a minute - please do not pay again.");
+          return;
+        }
+        throw err;
+      }
 
       setWallet(updated);
       setCustom("");

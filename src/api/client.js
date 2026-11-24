@@ -121,6 +121,33 @@ export async function api(path, options = {}) {
 }
 
 /**
+ * True for failures worth retrying: no answer at all (network dropped, server
+ * restarting) or a 5xx. A 4xx is the server's real answer and is final.
+ */
+export function isTransient(err) {
+  return !(err instanceof ApiError) || err.status >= 500;
+}
+
+/**
+ * For confirming a payment the customer has ALREADY made.
+ *
+ * The backend makes these calls idempotent - the same Razorpay receipt always
+ * gets the same answer, and Razorpay's webhook places the order on its own if
+ * we never get through - so a dropped connection is retried a few times rather
+ * than telling someone who has just paid that it failed.
+ */
+export async function withRetry(call, delaysMs = [1500, 3000, 6000]) {
+  for (let attempt = 0; ; attempt++) {
+    try {
+      return await call();
+    } catch (err) {
+      if (!isTransient(err) || attempt >= delaysMs.length) throw err;
+      await new Promise((resolve) => setTimeout(resolve, delaysMs[attempt]));
+    }
+  }
+}
+
+/**
  * Downloads a file the API returns as bytes - today, an invoice PDF or the
  * invoice register CSV.
  *
